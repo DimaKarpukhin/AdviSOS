@@ -75,7 +75,7 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
         m_FieldCode = findViewById(R.id.edit_txt_code);
         m_BtnGo = findViewById(R.id.btn_go);
         m_BtnGo.setOnClickListener(SignUpWithPhoneNumActivity.this);
-        //m_Auth = FirebaseAuth.getInstance();
+        m_Auth = FirebaseAuth.getInstance();
         //m_LoadingBar = new ProgressDialog(this);
     }
 
@@ -100,12 +100,6 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
                 Log.e(TAG, "onVerificationCompleted:" + credential);
 
                 signInWithPhoneAuthCredential(credential);
-            }
-
-            private void setFirbaseData()
-            {
-                m_Auth = FirebaseAuth.getInstance();
-                m_Database = FirebaseDatabase.getInstance();
             }
 
             @Override
@@ -186,8 +180,8 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
 //            m_LoadingBar.setCanceledOnTouchOutside(false);
 //            m_LoadingBar.show();
             String phoneNum = m_FieldPhoneNumber.getText().toString();
-            createDatabaseUser(phoneNum);
             signUpWithPhoneNumber();
+            createDatabaseUser(phoneNum);
             //Intent LoginIntent = new Intent(SignUpWithPhoneNumActivity.this, HomeActivity.class);
             //startActivity(LoginIntent);
         }
@@ -198,8 +192,10 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
 //            m_LoadingBar.setMessage("Wait please");
 //            m_LoadingBar.setCanceledOnTouchOutside(false);
 //            m_LoadingBar.show();
+            String phoneNum = m_FieldPhoneNumber.getText().toString();
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(m_VerificationId, m_FieldCode.getText().toString());
             signInWithPhoneAuthCredential(credential);
+            //createDatabaseUser(phoneNum);
             //Intent LoginIntent = new Intent(SignUpWithPhoneNumActivity.this, HomeActivity.class);
             //startActivity(LoginIntent);
         }

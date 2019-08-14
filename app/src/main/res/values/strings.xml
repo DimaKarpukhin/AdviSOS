@@ -10,4 +10,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="txt_view_connect_with">Connect with</string>
+    <string name="btn_phone_number">Phone number</string>
+    <string name="btn_email_and_password"><![CDATA[Email&Password]]></string>
+    <string name="social_networks">Social networks</string>
 </resources>
