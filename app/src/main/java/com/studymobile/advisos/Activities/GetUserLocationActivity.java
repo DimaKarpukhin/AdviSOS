@@ -8,6 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.studymobile.advisos.BuildConfig;
 import com.studymobile.advisos.R;
+
+import java.util.Locale;
 
 public class GetUserLocationActivity extends AppCompatActivity {
 
@@ -44,7 +49,7 @@ public class GetUserLocationActivity extends AppCompatActivity {
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        this.onStart();
     }
 
     @Override
@@ -54,7 +59,7 @@ public class GetUserLocationActivity extends AppCompatActivity {
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            getLastLocation();
+            getCurrentUserLocationOnGrantedAccess();
         }
     }
 
@@ -69,7 +74,7 @@ public class GetUserLocationActivity extends AppCompatActivity {
                 Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted.
-                getLastLocation();
+                getCurrentUserLocationOnGrantedAccess();
             } else {
                 // Permission denied.
 
@@ -113,6 +118,29 @@ public class GetUserLocationActivity extends AppCompatActivity {
         int permissionState = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+    private void getCurrentUserLocationOnGrantedAccess()
+    {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+
+                            mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                                    mLatitudeLabel,
+                                    mLastLocation.getLatitude()));
+                            mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                                    mLongitudeLabel,
+                                    mLastLocation.getLongitude()));
+                        } else {
+                            Log.w(TAG, "getLastLocation:exception", task.getException());
+                            //getLastLocation();
+
+                        }
+                    }
+                });
     }
 
     private void startLocationPermissionRequest() {

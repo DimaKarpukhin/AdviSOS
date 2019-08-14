@@ -185,7 +185,7 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
 //            m_LoadingBar.setCanceledOnTouchOutside(false);
 //            m_LoadingBar.show();
             String phoneNum = m_FieldPhoneNumber.getText().toString();
-            createDatabaseUser(phoneNum);
+            //createDatabaseUser(phoneNum);
             signUpWithPhoneNumber();
             //Intent LoginIntent = new Intent(SignUpWithPhoneNumActivity.this, HomeActivity.class);
             //startActivity(LoginIntent);
@@ -204,13 +204,13 @@ public class SignUpWithPhoneNumActivity extends AppCompatActivity implements Vie
         }
     }
 
-    private void createDatabaseUser(String phoneNum)
+   /* private void createDatabaseUser(String phoneNum)
     {
         FirebaseUser currentUser = m_Auth.getCurrentUser();
 
         DatabaseReference DBref = m_Database.getReference("Users");
         DBref.child(currentUser.getUid()).setValue(phoneNum);
-    }
+    }*/
 
 
     private boolean isValidPhoneNumber(String i_PhoneNumber) {
