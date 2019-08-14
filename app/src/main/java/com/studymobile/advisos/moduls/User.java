@@ -7,8 +7,9 @@ public class User {
     private  String name;
     private String last_name;
     private String phone_number;
-    LocationUser location;
-
+    private LocationUser location;
+    private Availabilty availabilty;
+    private Rating rate;
     public User(String i_name, String i_last, String i_phone){
         this.name = i_name;
         this.last_name = i_last;
@@ -21,6 +22,25 @@ public class User {
         else {
             updateUserLocation( i_location, i_lang,i_long);
         }
+    }
+    public void ConfigureUserAvalibiltyFrom(){
+        //TODO
+        //
+    }
+    public void ConfigureUserAvailibilityTo(){
+
+    }
+    public void ConfigureIsAlwayAvail(){
+
+    }
+    public void ConfigureIsDoNotDisurbe(){
+
+    }
+    public void ConfigureMaxCurrentConversations(){
+
+    }
+    public void ConfigureIsNumberOfConversationsUnLimited(){
+
     }
     private void updateUserLocation(Location i_location, float i_lang, float i_long){
         //TODO

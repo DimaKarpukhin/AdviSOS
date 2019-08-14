@@ -16,6 +16,6 @@ public class Rating {
     }
     private void calculateCurrntRate(float i_rate)
     {
-
+         //TODO
     }
 }
