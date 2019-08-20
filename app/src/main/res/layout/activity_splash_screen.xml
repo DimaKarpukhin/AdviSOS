@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SplashScreenActivity"
-    android:background="@drawable/img_splash_screen_12">
+    tools:context=".Activities.ActivitySplashScreen"
+    android:background="@drawable/img_splash_screen_narrow">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -16,13 +16,13 @@
         android:layout_alignParentBottom="true">
 
         <TextView
-            android:id="@+id/txtView_slogan"
+            android:id="@+id/txt_slogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="@string/slogan"
             android:gravity="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/blue"
             android:fontFamily="@font/plom_praeng"
             android:textSize="48sp"
             android:textStyle="bold"/>

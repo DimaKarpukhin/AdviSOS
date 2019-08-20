@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name"></string>
-    <string name="slogan">Just when you need advice…</string>
+    <string name="app_name">AdviSOS</string>
+    <string name="slogan">Just when you need an advice…</string>
     <string name="edit_txt_phone_hint">Enter your mobile number</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -13,5 +13,25 @@
     <string name="txt_view_connect_with">Connect with</string>
     <string name="btn_phone_number">Phone number</string>
     <string name="btn_email_and_password"><![CDATA[Email&Password]]></string>
-    <string name="social_networks">Social networks</string>
+    <string name="btn_social_networks">Social networks</string>
+    <string name="choose_an_account">Choose an account</string>
+    <string name="google">GOOGLE</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password"><u>Forgot password</u></string>
+    <string name="create_new_account"><u>Create new account</u></string>
+    <string name="create_an_account">Create an account</string>
+    <string name="enter_email_and_password">Enter email and password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="already_have_an_account"><u>Already have an account</u></string>
+    <string name="to_reset_a_password">To reset a password enter your email account</string>
+    <string name="confirm_your_details">Confirm your details</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email_address">Email address</string>
+    <string name="sms_code_msg">Enter the 6-digit code sent to you by SMS</string>
+    <string name="resend_code"><u>Resend code</u></string>
+    <string name="enter_mobile_number">Enter your mobile number</string>
+
 </resources>

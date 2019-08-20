@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ActivityRegistration">
+
+    <RelativeLayout
+        android:id="@+id/layout_logo_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/logo_ic_with_app_name" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_logo_sign_upp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_logo_sign_up"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/txt_connect_with"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_view_connect_with"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <Button
+            android:id="@+id/btn_phone_num_connection"
+            android:layout_below="@+id/txt_connect_with"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_phone_android_black_24dp"
+            android:drawablePadding="20dp"
+            android:padding="20dp"
+            android:textSize="14sp"
+            android:text="@string/btn_phone_number"
+            android:backgroundTint="@color/transparent"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/btn_email_password_connection"
+            android:layout_below="@+id/btn_phone_num_connection"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_email_black_24dp"
+            android:drawablePadding="20dp"
+            android:padding="20dp"
+            android:textSize="14sp"
+            android:text="@string/btn_email_and_password"
+            android:backgroundTint="@color/transparent"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/btn_social_connection"
+            android:layout_below="@+id/btn_email_password_connection"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/ic_social_network_black_24dp"
+            android:drawablePadding="20dp"
+            android:padding="20dp"
+            android:textSize="14sp"
+            android:text="@string/btn_social_networks"
+            android:backgroundTint="@color/transparent"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>
