@@ -1,12 +1,14 @@
 package com.studymobile.advisos.Activities;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+
 import com.studymobile.advisos.R;
 
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivitySplashScreen extends AppCompatActivity
 {

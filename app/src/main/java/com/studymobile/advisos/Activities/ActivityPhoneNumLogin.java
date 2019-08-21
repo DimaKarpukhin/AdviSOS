@@ -2,11 +2,10 @@ package com.studymobile.advisos.Activities;
 
 import android.content.Intent;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -19,10 +18,8 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
@@ -48,8 +45,6 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
     private String m_InternationalPhoneNumber;
 
     private FirebaseAuth m_Auth;
-    private FirebaseDatabase m_DataBase;
-
 
     @Override
     protected void onCreate(Bundle i_SavedInstanceState)
@@ -90,21 +85,20 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
 
     private boolean isValidPhoneNumber()
     {
-        boolean result = true;
         String localPhoneNumber = m_FieldPhoneNumber.getText().toString();
 
         if (localPhoneNumber.isEmpty())
         {
             m_FieldPhoneNumber.setError("This field can't be empty");
-            result = false;
+            return false;
         }
         else if(!InputValidation.IsValidPhoneNumber(m_InternationalPhoneNumber))
         {
             m_FieldPhoneNumber.setError("Invalid phone number");
-            result = false;
+            return false;
         }
 
-        return result;
+        return  true;
     }
 
     private void sendVerificationCode()
@@ -194,7 +188,6 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
     private void setFirebaseData()
     {
         m_Auth = FirebaseAuth.getInstance();
-        m_DataBase = FirebaseDatabase.getInstance();
     }
 
     private void startCodeVerificationActivity()

@@ -1,16 +1,13 @@
 package com.studymobile.advisos.Activities;
 
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -22,13 +19,9 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-import com.hbb20.CountryCodePicker;
 import com.studymobile.advisos.R;
-import com.studymobile.advisos.Services.InputValidation;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +44,6 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
     private String m_InternationalPhoneNumber;
 
     private FirebaseAuth m_Auth;
-    private FirebaseDatabase m_DataBase;
 
     @Override
     protected void onCreate(Bundle i_SavedInstanceState)
@@ -84,15 +76,14 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
 
     private boolean isCodeLengthValid(String i_Code)
     {
-        boolean result = true;
         if (i_Code.length() < 6)
         {
             Snackbar.make(findViewById(android.R.id.content),
                     "The verification code is to short", Snackbar.LENGTH_SHORT).show();
-            result = false;
+            return false;
         }
 
-        return result;
+        return true;
     }
 
     private void resendVerificationCode()
@@ -191,12 +182,12 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
         m_BtnNext = findViewById(R.id.btn_next_of_code_verification);
         m_BtnNext.setOnClickListener(ActivityCodeVerification.this);
         m_LinkResendCode = findViewById(R.id.link_resend_code);
-        m_LinkResendCode.setOnClickListener(ActivityCodeVerification.this);    }
+        m_LinkResendCode.setOnClickListener(ActivityCodeVerification.this);
+    }
 
     private void setFirebaseData()
     {
         m_Auth = FirebaseAuth.getInstance();
-        m_DataBase = FirebaseDatabase.getInstance();
     }
 
     private void startUserDetailsActivity()

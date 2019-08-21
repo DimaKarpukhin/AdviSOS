@@ -34,4 +34,9 @@
     <string name="resend_code"><u>Resend code</u></string>
     <string name="enter_mobile_number">Enter your mobile number</string>
 
+    //Facebook
+    <string name="facebook_app_id">636914536798291</string>
+    <string name="fb_login_protocol_scheme">fb636914536798291</string>
+
+
 </resources>

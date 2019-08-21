@@ -1,13 +1,13 @@
 package com.studymobile.advisos.Activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.studymobile.advisos.R;
@@ -27,6 +27,11 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private EditText m_FieldFirstName;
     private EditText m_FieldLastName;
 
+    private String m_PhoneNumber = null;
+    private String m_Email = null;
+    private String m_FirstName = null;
+    private String m_LastName = null;
+
     private FirebaseAuth m_Auth;
     private FirebaseDatabase m_DataBase;
 
@@ -45,8 +50,43 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         int id = i_View.getId();
         if(id == m_BtnNext.getId())
         {
-            startHomeActivity();
+            if(isUserDetailsCompleted())
+            {
+                startHomeActivity();
+            }
         }
+    }
+
+    private boolean isUserDetailsCompleted()
+    {
+        String errorMessage = "The field can't be empty";
+        m_FirstName = m_FieldFirstName.getText().toString();
+        m_LastName = m_FieldLastName.getText().toString();
+        m_Email = m_FieldEmail.getText().toString();
+        m_PhoneNumber = m_FieldPhoneNumber.getText().toString();
+
+        if(m_FirstName.isEmpty())
+        {
+            m_FieldFirstName.setError(errorMessage);
+            return false;
+        }
+        else if(m_LastName.isEmpty())
+        {
+            m_FieldLastName.setError(errorMessage);
+            return false;
+        }
+        else if(m_Email.isEmpty())
+        {
+            m_FieldEmail.setError(errorMessage);
+            return false;
+        }
+        else if(m_PhoneNumber.isEmpty())
+        {
+            m_FieldPhoneNumber.setError(errorMessage);
+            return false;
+        }
+
+        return true;
     }
 
     private void setActivityContent()
@@ -68,10 +108,15 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         if(intent != null)
         {
-            m_FieldPhoneNumber.setText(intent.getStringExtra(EXTRA_PHONE_STR));
-            m_FieldEmail.setText(intent.getStringExtra(EXTRA_EMAIL_STR));
-            m_FieldFirstName.setText(intent.getStringExtra(EXTRA_FIRST_NAME_STR));
-            m_FieldLastName.setText(intent.getStringExtra(EXTRA_LAST_NAME_STR));
+            m_FirstName = intent.getStringExtra(EXTRA_FIRST_NAME_STR);
+            m_LastName = intent.getStringExtra(EXTRA_LAST_NAME_STR);
+            m_Email = intent.getStringExtra(EXTRA_EMAIL_STR);
+            m_PhoneNumber = intent.getStringExtra(EXTRA_PHONE_STR);
+
+            m_FieldFirstName.setText(m_FirstName);
+            m_FieldLastName.setText(m_LastName);
+            m_FieldEmail.setText(m_Email);
+            m_FieldPhoneNumber.setText(m_PhoneNumber);
         }
     }
 

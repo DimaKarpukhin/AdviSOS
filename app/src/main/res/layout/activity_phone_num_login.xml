@@ -8,18 +8,19 @@
     tools:context=".Activities.ActivityPhoneNumLogin"
     android:background="@drawable/background_with_high_transparency">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar_phone_num_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:layout_below="@+id/tool_bar_phone_num_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,30 +35,30 @@
         <LinearLayout
             android:id="@+id/layout_phone_login_num"
             android:layout_above="@+id/btn_next_of_phone_num_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_width="320dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
 
             <com.hbb20.CountryCodePicker
                 android:id="@+id/picker_of_country_code"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:paddingTop="12dp"
                 app:ccp_textSize="18sp"
                 app:ccp_arrowSize="18sp"
                 app:ccp_autoDetectCountry="true" >
             </com.hbb20.CountryCodePicker>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_weight="9"
                 app:errorEnabled="true"
                 app:passwordToggleEnabled="true">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/field_phone_of_phone_num_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,15 +67,15 @@
                     android:textColor="@color/colorAccent"
                     android:paddingTop="8dp"
                     android:inputType="phone" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/btn_next_of_phone_num_login"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="270dp"
             android:layout_alignEnd="@+id/layout_phone_login_num"
             android:background="@drawable/design_btn_round_blue"
             android:src="@drawable/ic_arrow_forward_white_24dp" />
