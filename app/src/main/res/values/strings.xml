@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AdviSOS</string>
     <string name="slogan">Just when you need an advice…</string>
+    <string name ="app_name">AdviSOS</string>
     <string name="edit_txt_phone_hint">Enter your mobile number</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -13,6 +14,9 @@
     <string name="txt_view_connect_with">Connect with</string>
     <string name="btn_phone_number">Phone number</string>
     <string name="btn_email_and_password"><![CDATA[Email&Password]]></string>
+    <string name="settings">Settings</string>
+    <string name="textwarn">Permission Mandatory for this App</string>
+
     <string name="btn_social_networks">Social networks</string>
     <string name="choose_an_account">Choose an account</string>
     <string name="google">GOOGLE</string>
