@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">AdviSOS</string>
     <string name="slogan">Just when you need an advice…</string>
-    <string name ="app_name">AdviSOS</string>
     <string name="edit_txt_phone_hint">Enter your mobile number</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="title_activity_home">HomeActivity</string>

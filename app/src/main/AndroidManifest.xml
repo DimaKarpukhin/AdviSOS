@@ -15,15 +15,11 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-                <category android:name="android.intent.category.LAUNCHER" />
+        
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
         <activity android:name="com.facebook.FacebookActivity"
-            </intent-filter>
-        </activity>
-        <activity android:name=".Activities.GetUserLocationActivity">
-            <intent-filter>
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
@@ -91,6 +87,12 @@
             android:name=".Activities.ActivityPhoneNumLogin"
             android:parentActivityName=".Activities.ActivityRegistration">
         </activity>
+
+        <activity
+            android:name=".Activities.GetUserLocationActivity"
+            android:parentActivityName=".Activities.ActivityRegistration">
+        </activity>
+
     </application>
 
 </manifest>
