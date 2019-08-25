@@ -1,21 +1,34 @@
 package com.studymobile.advisos.Models;
 
-public class Rating {
+public class Rating
+{
+    long mVotersNum;
+    float mAvgRating;
 
-   float rate;
-
-   public Rating(){
-       this.rate = 0.0f;
-   }
-
-    public float getRate() {
-        return rate;
-    }
-    public void UpdateRate(float i_rate){
-
-    }
-    private void calculateCurrntRate(float i_rate)
+    public Rating(){}
+    public Rating(long i_VotersNum, float i_AvgRating)
     {
-         //TODO
+        this.mVotersNum = i_VotersNum;
+        this.mAvgRating = i_AvgRating;
+    }
+
+    public long GetVotersNum()
+    {
+        return mVotersNum;
+    }
+
+    public float GetAvgRating()
+    {
+        return mAvgRating;
+    }
+
+    public void SetVotersNum(long i_VotersNum)
+    {
+        this.mVotersNum = i_VotersNum;
+    }
+
+    public void SetAvgRating(float i_AvgRating)
+    {
+        this.mAvgRating = i_AvgRating;
     }
 }

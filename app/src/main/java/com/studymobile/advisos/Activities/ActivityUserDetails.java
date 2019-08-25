@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
@@ -148,7 +147,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private void startExpertConfigActivity()
     {
         Intent IntentExpertConfig = new Intent
-                (ActivityUserDetails.this, ActivityExpertConfig.class);
+                (ActivityUserDetails.this, ActivityExpertSettings.class);
         startActivity(IntentExpertConfig);
     }
 }

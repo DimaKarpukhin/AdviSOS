@@ -8,7 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.studymobile.advisos.R;
@@ -19,7 +18,7 @@ import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ActivityExpertConfig extends AppCompatActivity implements View.OnClickListener,
+public class ActivityExpertSettings extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener
 {
     private Button m_BtnTopics;
@@ -75,7 +74,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expert_config);
+        setContentView(R.layout.activity_expert_settings);
         setActivityContent();
         //setFirebaseData();
     }
@@ -262,7 +261,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
         TimePickerDialog timePicker;
 
         if (i_ViewId == m_BtnStartTimeSunday.getId() || i_ViewId == m_TxtStartTimeSunday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -271,7 +270,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeMonday.getId() || i_ViewId == m_TxtStartTimeMonday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -280,7 +279,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeTuesday.getId() || i_ViewId == m_TxtStartTimeTuesday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -289,7 +288,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeWednesday.getId() || i_ViewId == m_TxtStartTimeWednesday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -298,7 +297,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeThursday.getId() || i_ViewId == m_TxtStartTimeThursday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -307,7 +306,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeFriday.getId() || i_ViewId == m_TxtStartTimeFriday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -316,7 +315,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnStartTimeSaturday.getId() || i_ViewId == m_TxtStartTimeSaturday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -334,7 +333,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
         TimePickerDialog timePicker;
 
         if (i_ViewId == m_BtnEndTimeSunday.getId() || i_ViewId == m_TxtEndTimeSunday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -343,7 +342,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeMonday.getId() || i_ViewId == m_TxtEndTimeMonday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -352,7 +351,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeTuesday.getId() || i_ViewId == m_TxtEndTimeTuesday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -361,7 +360,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeWednesday.getId() || i_ViewId == m_TxtEndWednesday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -370,7 +369,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeThursday.getId() || i_ViewId == m_TxtEndThursday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -379,7 +378,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeFriday.getId() || i_ViewId == m_TxtEndFriday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
@@ -388,7 +387,7 @@ public class ActivityExpertConfig extends AppCompatActivity implements View.OnCl
             }, hour, minute, true);//Yes 24 hour time
             timePicker.show();
         } else if (i_ViewId == m_BtnEndTimeSaturday.getId() || i_ViewId == m_TxtEndSaturday.getId()) {
-            timePicker = new TimePickerDialog(ActivityExpertConfig.this,
+            timePicker = new TimePickerDialog(ActivityExpertSettings.this,
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker i_TimePicker, int i_SelectedHour, int i_SelectedMinute) {
