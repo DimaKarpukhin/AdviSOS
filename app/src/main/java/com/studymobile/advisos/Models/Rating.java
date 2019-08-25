@@ -2,8 +2,8 @@ package com.studymobile.advisos.Models;
 
 public class Rating
 {
-    long mVotersNum;
-    float mAvgRating;
+    private long mVotersNum;
+    private float mAvgRating;
 
     public Rating(){}
     public Rating(long i_VotersNum, float i_AvgRating)
