@@ -15,10 +15,10 @@ public class User
 
     public User(String i_FirstName, String i_LastName, String i_Email, String i_Phone)
     {
-        this.mFirstName = i_FirstName;
-        this.mLastName = i_LastName;
-        this.mEmail = i_Email;
-        this.mPhone = i_Phone;
+        this.SetFirstName(i_FirstName);
+        this.SetLastName(i_LastName);
+        this.SetEmail(i_Email);
+        this.SetPhone(i_Phone);
     }
 
     public String GetFirstName()

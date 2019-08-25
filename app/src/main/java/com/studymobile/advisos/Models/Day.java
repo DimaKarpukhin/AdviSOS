@@ -4,7 +4,7 @@ import com.studymobile.advisos.Enums.eWeekDay;
 
 public class Day
 {
-    private eWeekDay mDay;
+    private eWeekDay mWeekDay;
     private String mStartTime;
     private String mEndTime;
     private boolean mIsAvailable;
@@ -12,15 +12,15 @@ public class Day
     public Day(){}
     public Day(eWeekDay i_WeekDay, String i_StartTime, String i_EndTime, boolean i_IsAvailable)
     {
-        this.mDay = i_WeekDay;
-        this.mStartTime = i_StartTime;
-        this.mEndTime = i_EndTime;
-        this.mIsAvailable = i_IsAvailable;
+        this.SetWeekDay(i_WeekDay);
+        this.SetStartTime(i_StartTime);
+        this.SetEndTime(i_EndTime);
+        this.SetIsAvailable(i_IsAvailable);
     }
 
     public eWeekDay GetWeekDay()
     {
-        return mDay;
+        return mWeekDay;
     }
 
     public String GetStartTime()
@@ -40,7 +40,7 @@ public class Day
 
     public void SetWeekDay(eWeekDay i_Day)
     {
-        this.mDay = i_Day;
+        this.mWeekDay = i_Day;
     }
 
     public void SetStartTime(String i_StartTime)

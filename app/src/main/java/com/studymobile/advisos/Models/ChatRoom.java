@@ -10,7 +10,7 @@ public class ChatRoom
     private String mCreationTime;
     private String mSubjectName;
     private String mSubjectId;
-    private ArrayList<String> mParticipants = new ArrayList<String>();
+    private ArrayList<String> mParticipants = new ArrayList<>();
 
     public ChatRoom(){}
 
@@ -18,13 +18,13 @@ public class ChatRoom
                     String i_CreationTime, String i_SubjectName,
                     String i_SubjectId, ArrayList<String> i_Participants)
     {
-        this.mRoomId = i_RoomId;
-        this.mRoomName = i_RoomName;
-        this.mCreationDate = i_CreationDate;
-        this.mCreationTime = i_CreationTime;
-        this.mSubjectName = i_SubjectName;
-        this.mSubjectId = i_SubjectId;
-        this.mParticipants = i_Participants;
+        this.SetRoomId(i_RoomId);
+        this.SetRoomName(i_RoomName);
+        this.SetCreationDate(i_CreationDate);
+        this.SetCreationTime(i_CreationTime);
+        this.SetSubjectName(i_SubjectName);
+        this.SetSubjectId(i_SubjectId);
+        this.SetParticipants(i_Participants);
     }
 
     public int GetRoomId()
@@ -92,7 +92,7 @@ public class ChatRoom
         this.mSubjectId = i_SubjectId;
     }
 
-    public void setmParticipants(ArrayList<String> i_Participants)
+    public void SetParticipants(ArrayList<String> i_Participants)
     {
         this.mParticipants = i_Participants;
     }

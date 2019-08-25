@@ -10,10 +10,10 @@ public class Subject
 
     public Subject(String i_Name, String i_Description, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
     {
-        this.mName = i_Name;
-        this.mDescription = i_Description;
-        this.mImgLink = i_ImgLink;
-        this.mSubjectUsers = i_SubjectUsers;
+        this.SetName(i_Name);
+        this.SetDescription(i_Description);
+        this.SetImgLink(i_ImgLink);
+        this.SetSubjectUsers(i_SubjectUsers);
     }
 
     public String GetName()

@@ -5,16 +5,16 @@ public class ChatMessage
     private String mMessageBody;
     private int mMessageId;
     private String mSenderName;
-    private String mSentTime;
+    private String mTimeSent;
 
     public ChatMessage(){}
 
-    public ChatMessage(String i_MessageBody, int i_MessageId, String i_SenderName, String i_SentTime)
+    public ChatMessage(String i_MessageBody, int i_MessageId, String i_SenderName, String i_TimeSent)
     {
-        this.mMessageBody = mMessageBody;
-        this.mMessageId = i_MessageId;
-        this.mSenderName = i_SenderName;
-        this.mSentTime = i_SentTime;
+        this.SetMessageBody(i_MessageBody);
+        this.SetMessageId(i_MessageId);
+        this.SetSenderName(i_SenderName);
+        this.SetTimeSent(i_TimeSent);
     }
 
     public String GetMessageBody()
@@ -34,7 +34,7 @@ public class ChatMessage
 
     public String GetTimeSent()
     {
-        return mSentTime;
+        return mTimeSent;
     }
 
     public void SetMessageBody(String i_MessageBody)
@@ -47,14 +47,14 @@ public class ChatMessage
         this.mMessageId = i_MessageId;
     }
 
-    public void setSenderName(String i_SenderName)
+    public void SetSenderName(String i_SenderName)
     {
         this.mSenderName = mSenderName;
     }
 
-    public void setTimeSent(String i_SentTime)
+    public void SetTimeSent(String i_SentTime)
     {
-        this.mSentTime = i_SentTime;
+        this.mTimeSent = i_SentTime;
     }
 }
 

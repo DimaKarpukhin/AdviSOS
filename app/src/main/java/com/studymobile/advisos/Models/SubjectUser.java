@@ -9,8 +9,8 @@ public class SubjectUser
 
     public SubjectUser(String i_UserId, Rating i_Rating)
     {
-        this.mUserId = mUserId;
-        this.mRating = mRating;
+        this.SetUserId(i_UserId);
+        this.SetRating(i_Rating);
     }
 
     public String GetUserId()

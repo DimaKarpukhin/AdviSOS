@@ -8,8 +8,8 @@ public class Rating
     public Rating(){}
     public Rating(long i_VotersNum, float i_AvgRating)
     {
-        this.mVotersNum = i_VotersNum;
-        this.mAvgRating = i_AvgRating;
+        this.SetVotersNum(i_VotersNum);
+        this.SetAvgRating(i_AvgRating);
     }
 
     public long GetVotersNum()

@@ -17,14 +17,14 @@ public class Availability
     public Availability(boolean i_IsAlwaysAvailable, boolean i_IsNotDisturb, Week i_Week,
                         int i_MaxConcurrentChats, boolean i_IsNoNumChatsLimit)
     {
-        this.mIsAlwaysAvailable = i_IsAlwaysAvailable;
-        this.mIsNotDisturb = i_IsNotDisturb;
-        this.mWeek = i_Week;
-        this.mMaxConcurrentChats = i_MaxConcurrentChats;
-        this.mIsNoNumChatsLimit = i_IsNoNumChatsLimit;
+        this.SetIsAlwaysAvailable(i_IsAlwaysAvailable);
+        this.SetIsNotDisturb(i_IsNotDisturb);
+        this.SetWeek(i_Week);
+        this.SetMaxConcurrentChats(i_MaxConcurrentChats);
+        this.SetIsNoNumChatsLimit(i_IsNoNumChatsLimit);
     }
 
-    public boolean GetIsIsAlwaysAvailable()
+    public boolean GetIsAlwaysAvailable()
     {
         return mIsAlwaysAvailable;
     }

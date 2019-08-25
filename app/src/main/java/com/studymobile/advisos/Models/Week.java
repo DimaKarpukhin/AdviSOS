@@ -14,13 +14,13 @@ public class Week
 
     public Week(Day i_Sunday, Day i_Monday, Day i_Tuesday, Day i_Wednesday, Day i_Thursday, Day i_Friday, Day i_Saturday)
     {
-        this.mSunday = i_Sunday;
-        this.mMonday = i_Monday;
-        this.mTuesday = i_Tuesday;
-        this.mWednesday = i_Wednesday;
-        this.mThursday = i_Thursday;
-        this.mFriday = i_Friday;
-        this.mSaturday = i_Saturday;
+        this.SetSunday(i_Sunday);
+        this.SetMonday(i_Monday);
+        this.SetTuesday(i_Tuesday);
+        this.SetWednesday(i_Wednesday);
+        this.SetThursday(i_Thursday);
+        this.SetFriday(i_Friday);
+        this.SetSaturday(i_Saturday);
     }
 
     public Day GetSunday()
