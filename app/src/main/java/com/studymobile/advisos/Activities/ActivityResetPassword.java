@@ -101,6 +101,7 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         m_BtnNext = findViewById(R.id.btn_next_of_reset_password);
         m_BtnNext.setOnClickListener(ActivityResetPassword.this);
         m_FieldEmail = findViewById(R.id.field_email_of_reset_password);

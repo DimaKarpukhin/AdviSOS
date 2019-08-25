@@ -1,4 +1,4 @@
-package com.studymobile.advisos.moduls;
+package com.studymobile.advisos.Models;
 
 public class Rating {
 

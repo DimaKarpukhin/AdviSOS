@@ -156,6 +156,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         m_FieldEmail = findViewById(R.id.field_email_of_password_sign_up);
         m_FieldPassword = findViewById(R.id.field_password_of_password_sign_up);
         m_FieldConfirmPassword = findViewById(R.id.field_confirm_password_of_password_sign_up);

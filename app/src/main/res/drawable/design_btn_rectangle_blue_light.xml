@@ -2,23 +2,23 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" >
-        <shape android:shape="oval">
+        <shape android:shape="rectangle">
             <solid android:color="@color/transparent" />
             <stroke
                 android:width="2dp"
-                android:color="@color/blue"/>
+                android:color="@color/blueLight"/>
             <size
-                android:width="120dp"
-                android:height="120dp"/>
+                android:width="1000dp"
+                android:height="200dp"/>
 
         </shape>
     </item>
     <item>
-        <shape android:shape="oval">
-            <solid android:color="@color/blue"/>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/blueLight"/>
             <size
-                android:width="120dp"
-                android:height="120dp"/>
+                android:width="1000dp"
+                android:height="200dp"/>
 
         </shape>
     </item>

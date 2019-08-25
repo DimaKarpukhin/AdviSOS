@@ -179,7 +179,7 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         m_FieldPhoneNumber = findViewById(R.id.field_phone_of_phone_num_login);
-        m_CountryCodePicker =  findViewById(R.id.picker_of_country_code);
+        m_CountryCodePicker =  findViewById(R.id.picker_of_country_code_num_login);
         m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
         m_BtnNext = findViewById(R.id.btn_next_of_phone_num_login);
         m_BtnNext.setOnClickListener(ActivityPhoneNumLogin.this);

@@ -15,9 +15,10 @@
         android:layout_marginTop="30dp">
 
         <ImageView
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="150dp"
             android:layout_centerInParent="true"
+            android:scaleX="1.2"
             android:src="@drawable/logo_ic_with_app_name" />
     </RelativeLayout>
 
@@ -42,14 +43,14 @@
             android:id="@+id/btn_phone_num_connection"
             android:layout_below="@+id/txt_connect_with"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_phone_android_black_24dp"
             android:drawablePadding="20dp"
             android:padding="20dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:text="@string/btn_phone_number"
             android:backgroundTint="@color/transparent"
             android:textColor="@color/black"/>
@@ -58,13 +59,13 @@
             android:id="@+id/btn_email_password_connection"
             android:layout_below="@+id/btn_phone_num_connection"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_email_black_24dp"
             android:drawablePadding="20dp"
             android:padding="20dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:text="@string/btn_email_and_password"
             android:backgroundTint="@color/transparent"
             android:textColor="@color/black"/>
@@ -73,13 +74,13 @@
             android:id="@+id/btn_social_connection"
             android:layout_below="@+id/btn_email_password_connection"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_social_network_black_24dp"
             android:drawablePadding="20dp"
             android:padding="20dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:text="@string/btn_social_networks"
             android:backgroundTint="@color/transparent"
             android:textColor="@color/black"/>

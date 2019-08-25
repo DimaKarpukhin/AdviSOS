@@ -8,18 +8,10 @@
     tools:context=".Activities.ActivityUserDetails"
     android:background="@drawable/background_with_high_transparency">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar_password_sign_up"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.appcompat.widget.Toolbar>
-
     <RelativeLayout
-        android:layout_below="@+id/tool_bar_password_sign_up"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_margin="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,6 +105,7 @@
             android:layout_marginRight="10dp">
 
             <com.hbb20.CountryCodePicker
+                android:id="@+id/picker_of_country_code_user_details"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
@@ -146,7 +139,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="270dp"
+            android:layout_marginBottom="280dp"
             android:layout_alignEnd="@+id/layout_phone_num_of_user_details"
             android:background="@drawable/design_btn_round_blue"
             android:src="@drawable/ic_arrow_forward_white_24dp" />

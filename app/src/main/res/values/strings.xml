@@ -40,6 +40,8 @@
     //Facebook
     <string name="facebook_app_id">636914536798291</string>
     <string name="fb_login_protocol_scheme">fb636914536798291</string>
+    <string name="always">always</string>
+    <string name="never">never</string>
 
 
 </resources>

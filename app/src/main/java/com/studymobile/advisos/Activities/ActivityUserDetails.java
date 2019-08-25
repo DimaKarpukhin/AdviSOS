@@ -10,7 +10,9 @@ import android.widget.ImageButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hbb20.CountryCodePicker;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.InputValidation;
 
 import java.util.Objects;
 
@@ -26,6 +28,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private EditText m_FieldEmail;
     private EditText m_FieldFirstName;
     private EditText m_FieldLastName;
+    private CountryCodePicker m_CountryCodePicker;
 
     private String m_PhoneNumber = null;
     private String m_Email = null;
@@ -52,37 +55,43 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         {
             if(isUserDetailsCompleted())
             {
-                startHomeActivity();
+                //startHomeActivity();
+                startExpertConfigActivity();
             }
         }
     }
 
     private boolean isUserDetailsCompleted()
     {
-        String errorMessage = "The field can't be empty";
+        String errorMsgEmptyField = "The field can't be empty";
+        String errorMsgInvalidInput = "Invalid input";
         m_FirstName = m_FieldFirstName.getText().toString();
         m_LastName = m_FieldLastName.getText().toString();
         m_Email = m_FieldEmail.getText().toString();
-        m_PhoneNumber = m_FieldPhoneNumber.getText().toString();
+        m_PhoneNumber = m_CountryCodePicker.getFullNumberWithPlus();
 
-        if(m_FirstName.isEmpty())
-        {
-            m_FieldFirstName.setError(errorMessage);
+        if(m_FirstName.isEmpty()) {
+            m_FieldFirstName.setError(errorMsgEmptyField);
             return false;
         }
-        else if(m_LastName.isEmpty())
-        {
-            m_FieldLastName.setError(errorMessage);
+        else if(m_LastName.isEmpty()) {
+            m_FieldLastName.setError(errorMsgEmptyField);
             return false;
         }
-        else if(m_Email.isEmpty())
-        {
-            m_FieldEmail.setError(errorMessage);
+        else if(m_Email.isEmpty()) {
+            m_FieldEmail.setError(errorMsgEmptyField);
             return false;
         }
-        else if(m_PhoneNumber.isEmpty())
-        {
-            m_FieldPhoneNumber.setError(errorMessage);
+        else if(!InputValidation.IsValidEmail(m_Email)) {
+            m_FieldPhoneNumber.setError(errorMsgInvalidInput);
+            return false;
+        }
+        else if(m_PhoneNumber.isEmpty()) {
+            m_FieldPhoneNumber.setError(errorMsgEmptyField);
+            return false;
+        }
+        else if(!InputValidation.IsValidPhoneNumber(m_PhoneNumber)) {
+            m_FieldPhoneNumber.setError(errorMsgInvalidInput);
             return false;
         }
 
@@ -93,12 +102,15 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         m_BtnNext = findViewById(R.id.btn_next_of_user_details);
         m_BtnNext.setOnClickListener(ActivityUserDetails.this);
-        m_FieldPhoneNumber = findViewById(R.id.field_phone_num_of_user_details);
-        m_FieldEmail = findViewById(R.id.field_email_of_user_details);
         m_FieldFirstName = findViewById(R.id.field_first_name_of_user_details);
         m_FieldLastName = findViewById(R.id.field_last_name_of_user_details);
+        m_FieldEmail = findViewById(R.id.field_email_of_user_details);
+        m_FieldPhoneNumber = findViewById(R.id.field_phone_num_of_user_details);
+        m_CountryCodePicker =  findViewById(R.id.picker_of_country_code_user_details);
+        m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
 
         getIntentExtras();
     }
@@ -131,5 +143,12 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         Intent IntentHome = new Intent
                 (ActivityUserDetails.this, HomeActivity.class);
         startActivity(IntentHome);
+    }
+
+    private void startExpertConfigActivity()
+    {
+        Intent IntentExpertConfig = new Intent
+                (ActivityUserDetails.this, ActivityExpertConfig.class);
+        startActivity(IntentExpertConfig);
     }
 }

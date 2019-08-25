@@ -3,10 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" >
         <shape android:shape="oval">
-            <solid android:color="@color/transparent" />
-            <stroke
-                android:width="2dp"
-                android:color="@color/blue"/>
+            <solid android:color="@color/blue" />
             <size
                 android:width="120dp"
                 android:height="120dp"/>
@@ -15,7 +12,10 @@
     </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/blue"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/blue"/>
+            <solid android:color="@color/white"/>
             <size
                 android:width="120dp"
                 android:height="120dp"/>

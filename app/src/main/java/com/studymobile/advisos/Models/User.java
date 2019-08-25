@@ -1,23 +1,21 @@
-package com.studymobile.advisos.moduls;
+package com.studymobile.advisos.Models;
 
 import android.location.Location;
 
+import com.studymobile.advisos.Services.UserAvailability;
+import com.studymobile.advisos.Services.UserLocation;
+
 public class User {
 
-    private  String name;
-    private String last_name;
-    private String phone_number;
-    private LocationUser location;
-    private Availabilty availabilty;
-    private Rating rate;
-    public User(String i_name, String i_last, String i_phone){
-        this.name = i_name;
-        this.last_name = i_last;
-        this.phone_number = i_phone;
-    }
+    private String firstName, lastName, email, phone, authContex;
+    private boolean isExpert;
+    private UserLocation location;
+    private UserAvailability availabilty;
+    private Rating rating;
+    
     public void UpdateUsersLocation(Location i_location, float i_lang, float i_long){
         if (location == null){
-            location = new LocationUser(i_location, i_lang,i_long);
+            location = new UserLocation(i_location, i_lang,i_long);
         }
         else {
             updateUserLocation( i_location, i_lang,i_long);

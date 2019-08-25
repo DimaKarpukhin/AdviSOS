@@ -1,13 +1,13 @@
-package com.studymobile.advisos.moduls;
+package com.studymobile.advisos.Services;
 
 import android.location.Location;
 
-public class LocationUser {
+public class UserLocation {
     private Location location;
     private float langtitude;
     private float longtitude;
 
-    public LocationUser(Location i_location, float i_lang, float i_long){
+    public UserLocation(Location i_location, float i_lang, float i_long){
         this.location =i_location;
         this.langtitude = i_lang;
         this.longtitude = i_long;
@@ -36,7 +36,7 @@ public class LocationUser {
     public void setLongtitude(float longtitude) {
         this.longtitude = longtitude;
     }
-    public float CalculateUsersDistance(LocationUser i_user1, LocationUser i_user2){
+    public float CalculateUsersDistance(UserLocation i_user1, UserLocation i_user2){
         //TODO
         return 0.0f;
     }

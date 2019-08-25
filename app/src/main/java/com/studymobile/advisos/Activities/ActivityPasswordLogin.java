@@ -134,7 +134,7 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
                             Log.e(TAG, "sigInWithEmail:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
                             Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
-                                    Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.LENGTH_LONG).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -146,6 +146,7 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         m_FieldEmail = findViewById(R.id.field_email_of_password_login);
         m_FieldPassword = findViewById(R.id.field_password_of_password_login);
         m_BtnNext = findViewById(R.id.btn_next_of_password_login);

@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ActivityPhoneNumLogin"
+    android:background="@drawable/background_with_high_transparency">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/txt_choose_a_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose topics you're an expert on"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="30dp"
+            tools:ignore="RtlSymmetry">
+
+            <Button
+                android:id="@+id/btn_topics_expert_config"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center_vertical"
+                android:textSize="18sp"
+                android:text="Topics"
+                android:paddingEnd="30dp"
+                android:paddingStart="30dp"
+                android:drawableEnd="@drawable/ic_arrow_forward_black_24dp"
+                android:background="@drawable/design_btn_rectangle_white_blue"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_choose_a_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tell us when you free to advice"
+            android:layout_gravity="center"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:paddingStart="25dp"
+            tools:ignore="RtlSymmetry">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:weightSum="2"
+                android:baselineAligned="false">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Switch
+                        android:id="@+id/switch_always_available"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/always"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="italic|bold"
+                        android:theme="@style/SwitchBlueLight" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Switch
+                        android:id="@+id/switch_never_available"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/never"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="italic|bold"
+                        android:theme="@style/SwitchBlueLight"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_sunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_sunday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="S"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_sunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_sunday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_sunday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_sunday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_sunday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_sunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_sunday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_sunday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_sunday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_sunday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_monday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_monday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="M"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_monday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_monday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_monday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_monday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_monday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_monday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_monday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_monday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_monday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_monday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_tuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_tuesday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="T"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_tuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_tuesday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_tuesday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_tuesday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_tuesday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_tuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_tuesday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_tuesday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_tuesday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_tuesday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_wednesday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="W"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_wednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_wednesday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_wednesday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_wednesday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_wednesday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_wednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_wednesday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_wednesday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_wednesday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_wednesday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_thursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_thursday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="T"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_thursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_thursday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_thursday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_thursday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_thursday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_thursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_thursday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_thursday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_thursday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_thursday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_friday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_friday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="F"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_friday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_friday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_friday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_friday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_friday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_friday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_friday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_friday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_friday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_friday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_saturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="2dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/switch_saturday"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="S"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_blue"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_from_of_saturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="from:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_start_time_saturday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toEndOf="@+id/txt_from_of_saturday"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_start_time_saturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_from_of_saturday"
+                        android:layout_marginStart="5dp"
+                        android:text="00:00"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/txt_to_of_saturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="to:"
+                        android:textSize="16sp"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_end_time_saturday"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/txt_to_of_saturday"
+                        android:layout_marginStart="18dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_btn_round_white_black"
+                        android:enabled="false"/>
+
+                    <TextView
+                        android:id="@+id/txt_end_time_saturday"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txt_to_of_saturday"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black"
+                        android:background="@drawable/design_link_rectangle_grey"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
+

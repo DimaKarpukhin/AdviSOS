@@ -21,13 +21,7 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
     {
         super.onCreate(i_SavedInstanceState);
         setContentView(R.layout.activity_registration);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        m_BtnEmailPasswordLogin = findViewById(R.id.btn_email_password_connection);
-        m_BtnEmailPasswordLogin.setOnClickListener(ActivityRegistration.this);
-        m_BtnSocialLogin = findViewById(R.id.btn_social_connection);
-        m_BtnSocialLogin.setOnClickListener(ActivityRegistration.this);
-        m_BtnPhoneNumLogin = findViewById(R.id.btn_phone_num_connection);
-        m_BtnPhoneNumLogin.setOnClickListener(ActivityRegistration.this);
+        setActivityContent();
     }
 
     @Override
@@ -46,6 +40,17 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
         {
             startPhoneNumLoginActivity();
         }
+    }
+
+    private void setActivityContent()
+    {
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        m_BtnEmailPasswordLogin = findViewById(R.id.btn_email_password_connection);
+        m_BtnEmailPasswordLogin.setOnClickListener(ActivityRegistration.this);
+        m_BtnSocialLogin = findViewById(R.id.btn_social_connection);
+        m_BtnSocialLogin.setOnClickListener(ActivityRegistration.this);
+        m_BtnPhoneNumLogin = findViewById(R.id.btn_phone_num_connection);
+        m_BtnPhoneNumLogin.setOnClickListener(ActivityRegistration.this);
     }
 
     private void startPasswordLoginActivity()

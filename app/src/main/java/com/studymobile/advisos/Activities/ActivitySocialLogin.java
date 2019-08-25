@@ -1,5 +1,6 @@
 package com.studymobile.advisos.Activities;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -246,6 +248,7 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         m_BtnGoogleLogin = findViewById(R.id.btn_google_login);
         m_BtnGoogleLogin.setOnClickListener(ActivitySocialLogin.this);
         m_BtnFacebookLogin = findViewById(R.id.btn_facebook_login);
