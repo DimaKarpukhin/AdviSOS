@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.studymobile.advisos">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_launcher"
@@ -11,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Activities.ActivityExpertSettings"></activity>
+        <activity
+            android:name=".Activities.ActivityExpertSettings"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityUserDetails" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -30,7 +38,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ActivitySplashScreen">
+        <activity
+            android:name=".Activities.ActivitySplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,45 +49,51 @@
         </activity>
         <activity
             android:name=".Activities.HomeActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ActivityRegistration">
+        <activity
+            android:name=".Activities.ActivityRegistration"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.ActivitySocialLogin"
-            android:parentActivityName=".Activities.ActivityRegistration"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityRegistration" />
         <activity
             android:name=".Activities.ActivityPasswordSignUp"
-            android:parentActivityName=".Activities.ActivityPasswordLogin"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityPasswordLogin" />
         <activity
             android:name=".Activities.ActivityPasswordLogin"
-            android:parentActivityName=".Activities.ActivityRegistration"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityRegistration" />
         <activity
             android:name=".Activities.ActivityResetPassword"
-            android:parentActivityName=".Activities.ActivityPasswordLogin"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityPasswordLogin" />
         <activity
             android:name=".Activities.ActivityUserDetails"
-            android:parentActivityName=".Activities.ActivityRegistration"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityRegistration" />
         <activity
             android:name=".Activities.ActivityCodeVerification"
-            android:parentActivityName=".Activities.ActivityPhoneNumLogin"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityPhoneNumLogin" />
         <activity
             android:name=".Activities.ActivityPhoneNumLogin"
-            android:parentActivityName=".Activities.ActivityRegistration"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityRegistration" />
         <activity
             android:name=".Activities.GetUserLocationActivity"
-            android:parentActivityName=".Activities.ActivityRegistration"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ActivityRegistration" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

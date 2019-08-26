@@ -1,13 +1,16 @@
 package com.studymobile.advisos.Activities;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.studymobile.advisos.R;
@@ -21,7 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ActivityExpertSettings extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener
 {
-    private Button m_BtnTopics;
+    private Button m_BtnSubjects;
+    private ImageButton m_BtnNext;
+
     private Switch m_SwitchAlwaysAvailable,m_SwitchNeverAvailable;
     private boolean m_IsSundayEnable = true;
     private boolean m_IsMondayEnable = true;
@@ -110,12 +115,18 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
     public void onClick(View i_View)
     {
         int id = i_View.getId();
+        if(id == m_BtnNext.getId())
+        {
+            startHomeActivity();
+        }
 
         onClickWeekDay(id);
         onClickStartTime(id);
         onClickEndTime(id);
 
     }
+
+
 
     private void switchOnAllDays()
     {
@@ -411,8 +422,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeSunday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeSunday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -421,8 +432,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndTimeSunday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeSunday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -440,8 +451,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeMonday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeMonday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -450,8 +461,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndTimeMonday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeMonday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -469,8 +480,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeTuesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeTuesday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -479,8 +490,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndTimeTuesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeTuesday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -498,8 +509,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeWednesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeWednesday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -508,8 +519,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndWednesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndWednesday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -527,8 +538,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeThursday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeThursday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -537,8 +548,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndThursday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndThursday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -556,8 +567,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeFriday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeFriday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -566,8 +577,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndFriday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndFriday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -585,8 +596,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtStartTimeSaturday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeSaturday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
         else {
@@ -595,8 +606,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 m_TxtEndSaturday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndSaturday.setVisibility(View.VISIBLE);
             } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                        errorMessage, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -606,8 +617,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
-        m_BtnTopics = findViewById(R.id.btn_topics_expert_config);
-        m_BtnTopics.setOnClickListener(this);
+        m_BtnSubjects = findViewById(R.id.btn_subjects_expert_settings);
+        m_BtnSubjects.setOnClickListener(this);
+        m_BtnNext = findViewById(R.id.btn_next_of_expert_settings);
+        m_BtnNext.setOnClickListener(this);
         m_SwitchAlwaysAvailable = findViewById(R.id.switch_always_available);
         m_SwitchAlwaysAvailable.setOnCheckedChangeListener(this);
         m_SwitchNeverAvailable = findViewById(R.id.switch_never_available);
@@ -700,5 +713,12 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         m_TxtEndFriday.setOnClickListener(this);
         m_TxtEndSaturday = findViewById(R.id.txt_end_time_saturday);
         m_TxtEndSaturday.setOnClickListener(this);
+    }
+
+    private void startHomeActivity()
+    {
+        Intent IntentHome = new Intent
+                (ActivityExpertSettings.this, HomeActivity.class);
+        startActivity(IntentHome);
     }
 }

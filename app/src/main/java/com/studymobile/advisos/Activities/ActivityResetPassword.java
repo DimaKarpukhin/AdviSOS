@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,16 +82,21 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
                             if(i_Task.isSuccessful())
                             {
                                 Log.d(TAG, "loginWithPassword:success");
-                                Snackbar.make(findViewById(android.R.id.content),
+                                Toast.makeText(ActivityResetPassword.this,
                                         "Please check your email address to reset your password",
-                                        Snackbar.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
+//                                Snackbar.make(findViewById(android.R.id.content),
+//                                        "Please check your email address to reset your password",
+//                                        Snackbar.LENGTH_SHORT).show();
                                 startPasswordLoginActivity();
                             }
                             else{
                                 Log.e(TAG, "loginWithPassword:failure");
                                 String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        "ERROR:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityResetPassword.this,
+                                        "ERROR:\n" + msg, Toast.LENGTH_SHORT).show();
+//                                Snackbar.make(findViewById(android.R.id.content),
+//                                        "ERROR:\n" + msg, Snackbar.LENGTH_SHORT).show();
 
                             }
                         }

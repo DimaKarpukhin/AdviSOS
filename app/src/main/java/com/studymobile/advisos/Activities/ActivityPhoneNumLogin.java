@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -135,8 +136,10 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
                         {
                             // SMS quota exceeded
                             Log.e(TAG, "SMS Quota exceeded.");
-                            Snackbar.make(findViewById(android.R.id.content), "SMS quota exceeded.",
-                                    Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityPhoneNumLogin.this,
+                                    "SMS quota exceeded.", Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content), "SMS quota exceeded.",
+//                                    Snackbar.LENGTH_SHORT).show();
                         }
                     }
 
@@ -164,9 +167,10 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
                         } else {
                             if (i_Task.getException() instanceof FirebaseAuthInvalidCredentialsException)
                             {
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        i_Task.getException().getLocalizedMessage(),
-                                        Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityPhoneNumLogin.this,
+                                        i_Task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                                Snackbar.make(findViewById(android.R.id.content),
+//                                        i_Task.getException().getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     }

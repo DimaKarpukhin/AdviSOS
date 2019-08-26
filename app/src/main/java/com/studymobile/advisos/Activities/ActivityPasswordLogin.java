@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -100,9 +101,12 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
         else if(!InputValidation.IsValidPassword(m_Password))
         {
             m_FieldPassword.setError("Password to weak");
-            Snackbar.make(findViewById(android.R.id.content),
+            Toast.makeText(ActivityPasswordLogin.this,
                     "Password must contain at list 6 characters without white spaces",
-                    Snackbar.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();
+//            Snackbar.make(findViewById(android.R.id.content),
+//                    "Password must contain at list 6 characters without white spaces",
+//                    Snackbar.LENGTH_SHORT).show();
             return false;
         }
 
@@ -133,8 +137,10 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
                         }  else {
                             Log.e(TAG, "sigInWithEmail:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
-                                    Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(ActivityPasswordLogin.this,
+                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
+//                                    Snackbar.LENGTH_LONG).show();
                         }
 
                         m_LoadingBar.dismiss();

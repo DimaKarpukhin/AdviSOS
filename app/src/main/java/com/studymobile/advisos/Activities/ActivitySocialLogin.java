@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -53,7 +54,6 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     private ProgressDialog m_LoadingBar;
 
     private FirebaseAuth m_Auth;
-    private FirebaseUser m_CurrentUser;
 
     private GoogleSignInClient m_GoogleSignInClient;
     private CallbackManager m_FacebookCallbackManager;
@@ -136,8 +136,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
             {
                 // Google Sign In failed, update UI appropriately
                 String msg = Objects.requireNonNull(task.getException()).getLocalizedMessage();
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Google authentication failed:\n" + msg, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivitySocialLogin.this,
+                        "Google authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content),
+//                        "Google authentication failed:\n" + msg, Snackbar.LENGTH_LONG).show();
                 m_LoadingBar.dismiss();
             }
         }
@@ -164,8 +166,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         } else {
                             Log.e(TAG, "googleCredential:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    "Authentication with Google failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivitySocialLogin.this,
+                                    "Authentication with Google failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content),
+//                                    "Authentication with Google failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -212,8 +216,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
             {
                 Log.d(TAG, "facebook:onError", e);
                 String msg = Objects.requireNonNull(e.getLocalizedMessage());
-                Snackbar.make(findViewById(android.R.id.content),
-                        "facebook auth error:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(ActivitySocialLogin.this,
+                        "Facebook auth error:\n" + msg, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content),
+//                        "Facebook auth error:\n" + msg, Snackbar.LENGTH_SHORT).show();
                 m_LoadingBar.dismiss();
             }
         });
@@ -235,8 +241,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         } else {
                             Log.e(TAG, "facebookCredential:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    "Authentication with Facebook failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivitySocialLogin.this,
+                                    "Authentication with Facebook failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content),
+//                                    "Authentication with Facebook failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -258,16 +266,17 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     private void setFirebaseData()
     {
         m_Auth = FirebaseAuth.getInstance();
-        m_CurrentUser = m_Auth.getCurrentUser();
     }
 
     private void startUserDetailsActivity()
     {
         Intent IntentUserDetails = new Intent
                 (ActivitySocialLogin.this, ActivityUserDetails.class);
-        String email = m_CurrentUser.getEmail();
-        String phoneNumber = m_CurrentUser.getPhoneNumber();
-        String fullName = m_CurrentUser.getDisplayName();
+
+        FirebaseUser currentUser = m_Auth.getCurrentUser();
+        String email = currentUser.getEmail();
+        String phoneNumber = currentUser.getPhoneNumber();
+        String fullName = currentUser.getDisplayName();
         String firstName = "";
         String lastName = "";
         int indexOfSpace;

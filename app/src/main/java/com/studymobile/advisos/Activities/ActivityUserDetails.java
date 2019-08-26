@@ -23,13 +23,14 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private static final String EXTRA_LAST_NAME_STR = "lastName";
 
     private ImageButton m_BtnNext;
+    private ImageButton m_ProfilePicture;
     private EditText m_FieldPhoneNumber;
     private EditText m_FieldEmail;
     private EditText m_FieldFirstName;
     private EditText m_FieldLastName;
     private CountryCodePicker m_CountryCodePicker;
 
-    private String m_PhoneNumber = null;
+    private String m_InternationalPhoneNumber = null;
     private String m_Email = null;
     private String m_FirstName = null;
     private String m_LastName = null;
@@ -47,6 +48,14 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+
+
+    @Override
     public void onClick(View i_View)
     {
         int id = i_View.getId();
@@ -58,6 +67,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                 startExpertConfigActivity();
             }
         }
+        else if (id == m_ProfilePicture.getId())
+        {
+
+        }
     }
 
     private boolean isUserDetailsCompleted()
@@ -67,7 +80,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         m_FirstName = m_FieldFirstName.getText().toString();
         m_LastName = m_FieldLastName.getText().toString();
         m_Email = m_FieldEmail.getText().toString();
-        m_PhoneNumber = m_CountryCodePicker.getFullNumberWithPlus();
+        m_InternationalPhoneNumber = m_CountryCodePicker.getFullNumberWithPlus();
 
         if(m_FirstName.isEmpty()) {
             m_FieldFirstName.setError(errorMsgEmptyField);
@@ -85,11 +98,11 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_FieldPhoneNumber.setError(errorMsgInvalidInput);
             return false;
         }
-        else if(m_PhoneNumber.isEmpty()) {
+        else if(m_InternationalPhoneNumber.isEmpty()) {
             m_FieldPhoneNumber.setError(errorMsgEmptyField);
             return false;
         }
-        else if(!InputValidation.IsValidPhoneNumber(m_PhoneNumber)) {
+        else if(!InputValidation.IsValidPhoneNumber(m_InternationalPhoneNumber)) {
             m_FieldPhoneNumber.setError(errorMsgInvalidInput);
             return false;
         }
@@ -99,9 +112,11 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void setActivityContent()
     {
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        m_ProfilePicture = findViewById(R.id.btn_profile_photo_of_user_details);
+        m_ProfilePicture.setOnClickListener(ActivityUserDetails.this);
         m_BtnNext = findViewById(R.id.btn_next_of_user_details);
         m_BtnNext.setOnClickListener(ActivityUserDetails.this);
         m_FieldFirstName = findViewById(R.id.field_first_name_of_user_details);
@@ -122,12 +137,12 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_FirstName = intent.getStringExtra(EXTRA_FIRST_NAME_STR);
             m_LastName = intent.getStringExtra(EXTRA_LAST_NAME_STR);
             m_Email = intent.getStringExtra(EXTRA_EMAIL_STR);
-            m_PhoneNumber = intent.getStringExtra(EXTRA_PHONE_STR);
+            m_InternationalPhoneNumber = intent.getStringExtra(EXTRA_PHONE_STR);
 
             m_FieldFirstName.setText(m_FirstName);
             m_FieldLastName.setText(m_LastName);
             m_FieldEmail.setText(m_Email);
-            m_FieldPhoneNumber.setText(m_PhoneNumber);
+            m_FieldPhoneNumber.setText(m_InternationalPhoneNumber);
         }
     }
 

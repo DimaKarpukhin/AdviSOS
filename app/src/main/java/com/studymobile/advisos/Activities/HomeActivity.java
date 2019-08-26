@@ -1,6 +1,11 @@
 package com.studymobile.advisos.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
@@ -12,11 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
 import com.studymobile.advisos.R;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +52,44 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //======
+        findViewById(R.id.btn_logout).setOnClickListener(this);
+        //======
     }
+
+    //==================================================
+    @Override
+    public void onClick(View v) {
+
+        if(findViewById(R.id.btn_logout).getId() == v.getId())
+        {
+            Toast.makeText(this,
+                    "Login Out...", Toast.LENGTH_SHORT).show();
+            logOut();
+        }
+    }
+
+    private void logOut()
+    {
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        FirebaseAuth.getInstance().signOut();
+        GoogleSignIn.getClient(this, gso).signOut();
+        LoginManager.getInstance().logOut();
+    }
+    //==================================================
+
+
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
