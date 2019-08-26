@@ -1,5 +1,7 @@
 package com.studymobile.advisos.Models;
 
+import com.studymobile.advisos.Enums.eWeekDay;
+
 public class Week
 {
     private Day mSunday;
@@ -60,43 +62,64 @@ public class Week
 
     public void SetSunday(Day i_Sunday)
     {
-        //TODO
+        if(i_Sunday.GetWeekDay() != eWeekDay.Sunday)
+        {
+            throw new IllegalArgumentException(String.format("Sunday member cannot be assigned with \'%s\'", i_Sunday.GetWeekDay()));
+        }
         this.mSunday = i_Sunday;
     }
 
     public void SetMonday(Day i_Monday)
     {
-        //TODO
+        if(i_Monday.GetWeekDay() != eWeekDay.Monday)
+        {
+            throw new IllegalArgumentException(String.format("Monday member cannot be assigned with \'%s\'", i_Monday.GetWeekDay()));
+        }
         this.mMonday = i_Monday;
     }
 
     public void SetTuesday(Day i_Tuesday)
     {
-        //TODO
+        if(i_Tuesday.GetWeekDay() != eWeekDay.Tuesday)
+        {
+            throw new IllegalArgumentException(String.format("Tuesday member cannot be assigned with \'%s\'", i_Tuesday.GetWeekDay()));
+        }
         this.mTuesday = i_Tuesday;
     }
 
     public void SetWednesday(Day i_Wednesday)
     {
-        //TODO
+        if(i_Wednesday.GetWeekDay() != eWeekDay.Wednesday)
+        {
+            throw new IllegalArgumentException(String.format("Wednesday member cannot be assigned with \'%s\'", i_Wednesday.GetWeekDay()));
+        }
         this.mWednesday = i_Wednesday;
     }
 
     public void SetThursday(Day i_Thursday)
     {
-        //TODO
+        if(i_Thursday.GetWeekDay() != eWeekDay.Thursday)
+        {
+            throw new IllegalArgumentException(String.format("Thursday member cannot be assigned with \'%s\'", i_Thursday.GetWeekDay()));
+        }
         this.mThursday = i_Thursday;
     }
 
     public void SetFriday(Day i_Friday)
     {
-        //TODO
+        if(i_Friday.GetWeekDay() != eWeekDay.Friday)
+        {
+            throw new IllegalArgumentException(String.format("Friday member cannot be assigned with \'%s\'", i_Friday.GetWeekDay()));
+        }
         this.mFriday = i_Friday;
     }
 
     public void SetSaturday(Day i_Saturday)
     {
-        //TODO
+        if(i_Saturday.GetWeekDay() != eWeekDay.Saturday)
+        {
+            throw new IllegalArgumentException(String.format("Saturday member cannot be assigned with \'%s\'", i_Saturday.GetWeekDay()));
+        }
         this.mSaturday = i_Saturday;
     }
 }
