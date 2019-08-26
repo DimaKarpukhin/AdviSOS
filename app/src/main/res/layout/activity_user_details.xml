@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityUserDetails"
-    android:background="@drawable/background_with_high_transparency">
+    android:background="@drawable/background_transparent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,6 +22,18 @@
             android:textSize="24sp"
             android:textColor="@color/black"
             android:textStyle="italic"/>
+
+        <ImageButton
+            android:id="@+id/btn_profile_photo_of_user_details"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/layout_email_of_user_details"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/btn_round_transparent_with_black_frame"
+            android:src="@drawable/ic_add_a_photo_blue_light"
+            android:longClickable="true">
+        </ImageButton>
 
         <LinearLayout
             android:layout_above="@+id/layout_email_of_user_details"
@@ -44,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/first_name"
                     android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:paddingTop="8dp"
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -61,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name"
                     android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:paddingTop="8dp"
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email_address"
                     android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:paddingTop="8dp"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -110,8 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:paddingTop="12dp"
-                app:ccp_textSize="18sp"
-                app:ccp_arrowSize="18sp"
+                app:ccp_textSize="20sp"
+                app:ccp_arrowSize="20sp"
                 app:ccp_autoDetectCountry="true" >
             </com.hbb20.CountryCodePicker>
 
@@ -128,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/mobile_number"
                     android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:paddingTop="8dp"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -139,10 +152,11 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="280dp"
+            android:layout_marginBottom="230dp"
             android:layout_alignEnd="@+id/layout_phone_num_of_user_details"
-            android:background="@drawable/design_btn_round_blue"
-            android:src="@drawable/ic_arrow_forward_white_24dp" />
+            android:background="@drawable/btn_round_blue"
+            android:src="@drawable/ic_arrow_forward_white"
+            android:longClickable="true"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -19,7 +19,7 @@
             android:layout_height="150dp"
             android:layout_centerInParent="true"
             android:scaleX="1.2"
-            android:src="@drawable/logo_ic_with_app_name" />
+            android:src="@drawable/logo" />
     </RelativeLayout>
 
     <RelativeLayout

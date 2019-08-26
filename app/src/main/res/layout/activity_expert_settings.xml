@@ -6,62 +6,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityPhoneNumLogin"
-    android:background="@drawable/background_with_high_transparency">
+    android:background="@drawable/background_transparent">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/layout_all_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/txt_choose_a_topic"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Choose topics you're an expert on"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:text="Choose subjects you're an expert on"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center_horizontal"
             android:textSize="22sp"
             android:textColor="@color/black"
             android:textStyle="italic"/>
 
-        <RelativeLayout
+        <Button
+            android:id="@+id/btn_topics_expert_config"
+            android:layout_below="@+id/txt_choose_a_topic"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:paddingBottom="30dp"
-            tools:ignore="RtlSymmetry">
-
-            <Button
-                android:id="@+id/btn_topics_expert_config"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:gravity="center_vertical"
-                android:textSize="18sp"
-                android:text="Topics"
-                android:paddingEnd="30dp"
-                android:paddingStart="30dp"
-                android:drawableEnd="@drawable/ic_arrow_forward_black_24dp"
-                android:background="@drawable/design_btn_rectangle_white_blue"
-                android:textColor="@color/black" />
-
-        </RelativeLayout>
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:text="Subjects"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:drawableEnd="@drawable/ic_arrow_forward_black"
+            android:background="@drawable/btn_rectangle_white_with_blue_frame"
+            android:textColor="@color/black"
+            android:longClickable="true"/>
 
         <TextView
             android:id="@+id/txt_choose_a_time"
+            android:layout_below="@+id/btn_topics_expert_config"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tell us when you free to advice"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:textSize="22sp"
             android:textColor="@color/black"
             android:textStyle="italic"/>
 
         <LinearLayout
+            android:id="@+id/layout_week_availability"
+            android:layout_below="@+id/txt_choose_a_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:paddingStart="25dp"
             tools:ignore="RtlSymmetry">
 
@@ -129,7 +135,7 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -143,21 +149,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_sunday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_sunday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -170,7 +177,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -191,16 +198,17 @@
 
                     <Button
                         android:id="@+id/btn_end_time_sunday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_sunday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
-                        android:enabled="false"/>
+                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:enabled="false"
+                        android:longClickable="true"/>
 
                     <TextView
                         android:id="@+id/txt_end_time_sunday"
@@ -211,7 +219,7 @@
                         android:gravity="center"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -236,7 +244,7 @@
                         android:text="M"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -250,21 +258,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_monday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_monday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -277,7 +286,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -298,15 +307,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_monday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_monday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -319,7 +328,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -344,7 +353,7 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -358,21 +367,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_tuesday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_tuesday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -385,7 +395,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -406,15 +416,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_tuesday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_tuesday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -427,7 +437,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -452,7 +462,7 @@
                         android:text="W"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -466,21 +476,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_wednesday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_wednesday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -493,7 +504,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -514,15 +525,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_wednesday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_wednesday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -535,7 +546,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -560,7 +571,7 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -574,21 +585,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_thursday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_thursday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -601,7 +613,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -622,15 +634,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_thursday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_thursday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -643,7 +655,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -668,7 +680,7 @@
                         android:text="F"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -682,21 +694,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_friday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_friday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -709,7 +722,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -730,15 +743,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_friday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_friday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -751,7 +764,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -776,7 +789,7 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_blue"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -790,21 +803,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
                         android:text="from:"
                         android:textSize="16sp"
                         android:textColor="@color/black"/>
 
                     <Button
                         android:id="@+id/btn_start_time_saturday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_toEndOf="@+id/txt_from_of_saturday"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -818,7 +832,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -839,15 +853,15 @@
 
                     <Button
                         android:id="@+id/btn_end_time_saturday"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/txt_to_of_saturday"
                         android:layout_marginStart="18dp"
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_btn_round_white_black"
+                        android:background="@drawable/btn_round_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -860,13 +874,19 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/design_link_rectangle_grey"
+                        android:background="@drawable/ink_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-
-
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/btn_next_of_expert_profile"
+            android:layout_below="@+id/layout_week_availability"
+            android:layout_alignEnd="@+id/layout_week_availability"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/btn_round_blue"
+            android:src="@drawable/ic_arrow_forward_white" />
+    </RelativeLayout>
 </RelativeLayout>
 

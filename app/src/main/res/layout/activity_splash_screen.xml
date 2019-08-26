@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivitySplashScreen"
-    android:background="@drawable/img_splash_screen_narrow">
+    android:background="@drawable/background_splash_screen">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -24,8 +24,7 @@
             android:gravity="center"
             android:textColor="@color/blue"
             android:fontFamily="@font/plom_praeng"
-            android:textSize="48sp"
-            android:textStyle="bold"/>
+            android:textSize="48sp" />
 
     </RelativeLayout>
 
