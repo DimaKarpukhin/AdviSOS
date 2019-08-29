@@ -220,7 +220,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
             m_ProfileImgURI = data.getData();
-            Picasso.get().load(m_ProfileImgURI).into(m_ProfileImgView);
+            Picasso.get().load(m_ProfileImgURI).rotate(90f).into(m_ProfileImgView);
             m_IsImgPicked = true;
 
         }
