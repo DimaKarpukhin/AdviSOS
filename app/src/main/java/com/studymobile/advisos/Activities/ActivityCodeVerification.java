@@ -7,9 +7,11 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +34,9 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
     private static final String EXTRA_VERIFICATION_ID_STR = "verification";
     private static final String EXTRA_TOKEN_PARCELABLE = "token";
     private static final String EXTRA_PHONE_STR = "phone";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PHONE_AUTH = "phone";
+
 
     private ImageButton m_BtnNext;
     private TextView m_LinkResendCode;
@@ -53,6 +58,15 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
         setActivityContent();
         setFirebaseData();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -78,8 +92,9 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
     {
         if (i_Code.length() < 6)
         {
-            Snackbar.make(findViewById(android.R.id.content),
-                    "The verification code is to short", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "The verification code is to short", Toast.LENGTH_SHORT).show();
+//            Snackbar.make(findViewById(android.R.id.content),
+//                    "The verification code is to short", Snackbar.LENGTH_SHORT).show();
             return false;
         }
 
@@ -115,15 +130,19 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
                         {
                             // Invalid request
                             Log.e(TAG, "Invalid credential: " + e.getLocalizedMessage());
-                            Snackbar.make(findViewById(android.R.id.content), "Something went wrong",
-                                    Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCodeVerification.this,
+                                    "Something went wrong", Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content), "Something went wrong",
+//                                    Snackbar.LENGTH_SHORT).show();
                         }
                         else if (e instanceof FirebaseTooManyRequestsException)
                         {
                             // SMS quota exceeded
                             Log.e(TAG, "SMS Quota exceeded.");
-                            Snackbar.make(findViewById(android.R.id.content), "SMS quota exceeded.",
-                                    Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCodeVerification.this,
+                                    "SMS quota exceeded.", Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content), "SMS quota exceeded.",
+//                                    Snackbar.LENGTH_SHORT).show();
                         }
                     }
 
@@ -156,9 +175,10 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
                         } else {
                             if (i_Task.getException() instanceof FirebaseAuthInvalidCredentialsException)
                             {
-                                Snackbar.make(findViewById(android.R.id.content),
-                                        i_Task.getException().getLocalizedMessage(),
-                                        Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityCodeVerification.this,
+                                        i_Task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                                Snackbar.make(findViewById(android.R.id.content),
+//                                        i_Task.getException().getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -196,6 +216,7 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
                 (ActivityCodeVerification.this, ActivityUserDetails.class);
         String localPhoneNumber = m_InternationalPhoneNumber.substring(4);
         IntentUserDetails.putExtra(EXTRA_PHONE_STR, localPhoneNumber);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, PHONE_AUTH);
         startActivity(IntentUserDetails);
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_history_black_48dp"
+            android:iconTint="@color/white"
+            android:title="Hi" />
+        <item
+            android:id="@+id/nav_by_price"
+            android:icon="@drawable/ic_magnify_black_48dp"
+            android:iconTint="@color/white"
+            android:title="By" />
+        <item
+            android:id="@+id/nav_by_rating"
+            android:icon="@drawable/ic_close_black_48dp"
+            android:iconTint="@color/white"
+            android:title="Close" />
+        <item
+            android:id="@+id/nav_veggie"
+            android:icon="@drawable/ic_menu_camera"
+            android:iconTint="@color/white"
+            android:title="Camera" />
+
+    </group>
+
+</menu>

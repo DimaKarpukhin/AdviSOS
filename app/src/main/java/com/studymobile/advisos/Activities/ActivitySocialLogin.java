@@ -15,18 +15,24 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.R;
 
+import java.net.URI;
 import java.util.Objects;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,10 +48,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class ActivitySocialLogin extends AppCompatActivity implements View.OnClickListener
 {
     private static final String TAG = "SocialAuth";
+    private static final String EXTRA_PHOTO_URI_STR = "profilePhoto";
     private static final String EXTRA_FIRST_NAME_STR = "firstName";
     private static final String EXTRA_LAST_NAME_STR = "lastName";
     private static final String EXTRA_PHONE_STR = "phone";
     private static final String EXTRA_EMAIL_STR = "email";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String FACEBOOK_AUTH = "facebook";
+    private static final String GOOGLE_AUTH = "google";
     private static  final int RC_SIGN_IN = 9001;
 
     private Button m_BtnGoogleLogin;
@@ -53,7 +63,6 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     private ProgressDialog m_LoadingBar;
 
     private FirebaseAuth m_Auth;
-    private FirebaseUser m_CurrentUser;
 
     private GoogleSignInClient m_GoogleSignInClient;
     private CallbackManager m_FacebookCallbackManager;
@@ -68,6 +77,15 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
         setFirebaseData();
         setGoogleData();
         setFacebookData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -136,8 +154,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
             {
                 // Google Sign In failed, update UI appropriately
                 String msg = Objects.requireNonNull(task.getException()).getLocalizedMessage();
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Google authentication failed:\n" + msg, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(ActivitySocialLogin.this,
+                        "Google authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content),
+//                        "Google authentication failed:\n" + msg, Snackbar.LENGTH_LONG).show();
                 m_LoadingBar.dismiss();
             }
         }
@@ -160,12 +180,14 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         if (i_Task.isSuccessful())
                         {
                             Log.d(TAG, "googleCredential:success");
-                            startUserDetailsActivity();
+                            startUserDetailsActivity(GOOGLE_AUTH);
                         } else {
                             Log.e(TAG, "googleCredential:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    "Authentication with Google failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivitySocialLogin.this,
+                                    "Authentication with Google failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content),
+//                                    "Authentication with Google failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -212,8 +234,10 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
             {
                 Log.d(TAG, "facebook:onError", e);
                 String msg = Objects.requireNonNull(e.getLocalizedMessage());
-                Snackbar.make(findViewById(android.R.id.content),
-                        "facebook auth error:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(ActivitySocialLogin.this,
+                        "Facebook auth error:\n" + msg, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(findViewById(android.R.id.content),
+//                        "Facebook auth error:\n" + msg, Snackbar.LENGTH_SHORT).show();
                 m_LoadingBar.dismiss();
             }
         });
@@ -230,13 +254,15 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         if (i_Task.isSuccessful())
                         {
                             Log.d(TAG, "facebookCredential:success");
-                            startUserDetailsActivity();
+                            startUserDetailsActivity(FACEBOOK_AUTH);
 
                         } else {
                             Log.e(TAG, "facebookCredential:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content),
-                                    "Authentication with Facebook failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(ActivitySocialLogin.this,
+                                    "Authentication with Facebook failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content),
+//                                    "Authentication with Facebook failed:\n" + msg, Snackbar.LENGTH_SHORT).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -258,13 +284,13 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     private void setFirebaseData()
     {
         m_Auth = FirebaseAuth.getInstance();
-        m_CurrentUser = m_Auth.getCurrentUser();
     }
 
-    private void startUserDetailsActivity()
+    private void startUserDetailsActivity(String i_AuthContext)
     {
         Intent IntentUserDetails = new Intent
                 (ActivitySocialLogin.this, ActivityUserDetails.class);
+<<<<<<< HEAD
 //        String email = m_CurrentUser.getEmail();
 //        String phoneNumber = m_CurrentUser.getPhoneNumber();
 //        String fullName = m_CurrentUser.getDisplayName();
@@ -287,6 +313,38 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
 //
 //        IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
 //        IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
+=======
+
+        FirebaseUser currentUser = m_Auth.getCurrentUser();
+        Uri URI = currentUser.getPhotoUrl();
+        String email = currentUser.getEmail();
+        String phoneNumber = currentUser.getPhoneNumber();
+        String fullName = currentUser.getDisplayName();
+        String firstName = "";
+        String lastName = "";
+        int indexOfSpace;
+        if(URI != null)
+        {
+            IntentUserDetails.putExtra(EXTRA_PHOTO_URI_STR, URI.toString());
+        }
+
+        if(fullName != null)
+        {
+            indexOfSpace = fullName.indexOf(" ");
+            if(indexOfSpace != -1)
+            {
+                firstName = fullName.substring(0, indexOfSpace);
+                lastName = fullName.substring(fullName.lastIndexOf(" ") + 1);
+            }
+
+            IntentUserDetails.putExtra(EXTRA_FIRST_NAME_STR, firstName);
+            IntentUserDetails.putExtra(EXTRA_LAST_NAME_STR, lastName);
+        }
+
+        IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
+        IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, i_AuthContext);
+>>>>>>> 60cfefbec4f0d634f6ee2610cb9fe7f7158c31fa
         startActivity(IntentUserDetails);
     }
 }

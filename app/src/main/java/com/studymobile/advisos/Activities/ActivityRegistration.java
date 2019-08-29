@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.studymobile.advisos.R;
 
 import java.util.Objects;
@@ -22,6 +24,17 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
         super.onCreate(i_SavedInstanceState);
         setContentView(R.layout.activity_registration);
         setActivityContent();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+            startHomeActivity();
+        }
     }
 
     @Override
@@ -72,5 +85,12 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
         Intent IntentPhoneNumLogin = new Intent
                 (ActivityRegistration.this, ActivityPhoneNumLogin.class);
         startActivity(IntentPhoneNumLogin);
+    }
+
+    private void startHomeActivity()
+    {
+        Intent IntentHome = new Intent
+                (ActivityRegistration.this, HomeActivity.class);
+        startActivity(IntentHome);
     }
 }

@@ -4,7 +4,7 @@ import com.studymobile.advisos.Ecxeptions.AlwaysAvailTryingDoNotDisturbException
 import com.studymobile.advisos.Ecxeptions.DoNotDisturbTryingToAlwaysAvailableException;
 import com.studymobile.advisos.Ecxeptions.TimeNotValidColisionsException;
 
-public class UserAvailability {
+public class UserServices {
 
     private int mAvailableFrom;
     private int mAvailableTO;
@@ -12,8 +12,8 @@ public class UserAvailability {
     private boolean mDoNotDisturb =false;
     private int mMaxConversationsConcurrently;
     private boolean mNoConversationLimit; //TODO
-    public UserAvailability() {}
-    public UserAvailability(int from, int to, int i_maxConvers)throws TimeNotValidColisionsException {
+    public UserServices() {}
+    public UserServices(int from, int to, int i_maxConvers)throws TimeNotValidColisionsException {
         if(from >= to){
             throw new TimeNotValidColisionsException(from,to);
         }

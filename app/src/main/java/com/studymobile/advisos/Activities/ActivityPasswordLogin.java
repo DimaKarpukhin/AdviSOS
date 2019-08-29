@@ -7,10 +7,12 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +27,8 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
 {
     private static final String TAG = "PasswordAuth";
     private static final String EXTRA_EMAIL_STR = "email";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PASSWORD_AUTH = "password";
 
     private ImageButton m_BtnNext;
     private TextView m_LinkSignUp;
@@ -45,6 +49,15 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_password_login);
         setActivityContent();
         setFirebaseData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -76,7 +89,7 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
 
         if (m_Email.isEmpty())
         {
-            m_FieldEmail.setError("The field can't be empty");
+            m_FieldEmail.setError("The field is required");
             return false;
         }
         else if(!InputValidation.IsValidEmail(m_Email))
@@ -94,15 +107,18 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
 
         if (m_Password.isEmpty())
         {
-            m_FieldPassword.setError("This field can't be empty");
+            m_FieldPassword.setError("This field is required");
             return false;
         }
         else if(!InputValidation.IsValidPassword(m_Password))
         {
             m_FieldPassword.setError("Password to weak");
-            Snackbar.make(findViewById(android.R.id.content),
+            Toast.makeText(ActivityPasswordLogin.this,
                     "Password must contain at list 6 characters without white spaces",
-                    Snackbar.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();
+//            Snackbar.make(findViewById(android.R.id.content),
+//                    "Password must contain at list 6 characters without white spaces",
+//                    Snackbar.LENGTH_SHORT).show();
             return false;
         }
 
@@ -133,8 +149,10 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
                         }  else {
                             Log.e(TAG, "sigInWithEmail:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
-                                    Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(ActivityPasswordLogin.this,
+                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
+//                                    Snackbar.LENGTH_LONG).show();
                         }
 
                         m_LoadingBar.dismiss();
@@ -180,6 +198,8 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
         Intent IntentUserDetails = new Intent
                 (ActivityPasswordLogin.this, ActivityUserDetails.class);
         IntentUserDetails.putExtra(EXTRA_EMAIL_STR, m_Email);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, PASSWORD_AUTH);
+
         startActivity(IntentUserDetails);
     }
 

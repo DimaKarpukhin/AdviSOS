@@ -33,11 +33,11 @@ public class InputValidation
 
     public static boolean IsValidTimeSpan(String i_StartTime, String i_EndTime)
     {
-        if(i_StartTime.isEmpty() && i_EndTime.isEmpty())
+        if(i_StartTime.isEmpty() || i_EndTime.isEmpty())
         {
             return false;
         }
-        else if(!i_StartTime.isEmpty() && !i_EndTime.isEmpty())
+        else
         {
             int startHour = Integer.parseInt(i_StartTime.substring(0, i_StartTime.indexOf(":")));
             int endHour = Integer.parseInt(i_EndTime.substring(0, i_EndTime.indexOf(":")));

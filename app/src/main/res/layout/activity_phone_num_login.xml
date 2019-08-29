@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityPhoneNumLogin"
-    android:background="@drawable/background_with_high_transparency">
+    android:background="@drawable/background_transparent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,8 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:paddingTop="12dp"
-                app:ccp_textSize="18sp"
-                app:ccp_arrowSize="18sp"
+                app:ccp_textSize="20sp"
+                app:ccp_arrowSize="20sp"
                 app:ccp_autoDetectCountry="true" >
             </com.hbb20.CountryCodePicker>
 
@@ -55,21 +56,33 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/mobile_number"
                     android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/black"
                     android:paddingTop="8dp"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="55dp"
+            android:layout_alignStart="@+id/layout_phone_login_num"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="290dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="By continuing you may receive an SMS for verification."
+            android:textColor="@color/black">
+        </TextView>
 
         <ImageButton
             android:id="@+id/btn_next_of_phone_num_login"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="280dp"
+            android:layout_marginBottom="290dp"
             android:layout_alignEnd="@+id/layout_phone_login_num"
-            android:background="@drawable/design_btn_round_blue"
-            android:src="@drawable/ic_arrow_forward_white_24dp" />
+            android:background="@drawable/btn_round_blue"
+            android:src="@drawable/ic_arrow_forward_white" />
     </RelativeLayout>
 
 </RelativeLayout>

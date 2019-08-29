@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityCodeVerification"
-    android:background="@drawable/background_with_high_transparency">
+    android:background="@drawable/background_transparent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,11 +43,11 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="280dp"
+            android:layout_marginBottom="290dp"
             android:layout_marginRight="4dp"
             android:layout_alignEnd="@+id/picker_of_code_verification"
-            android:background="@drawable/design_btn_round_blue"
-            android:src="@drawable/ic_arrow_forward_white_24dp" />
+            android:background="@drawable/btn_round_blue"
+            android:src="@drawable/ic_arrow_forward_white" />
 
         <TextView
             android:id="@+id/link_resend_code"
@@ -56,7 +57,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
             android:text="@string/resend_code"
-            android:background="@drawable/design_link_rectangle_grey"
+            android:background="@drawable/link_with_grey_tint"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:textStyle="italic"/>
