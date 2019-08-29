@@ -265,28 +265,28 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     {
         Intent IntentUserDetails = new Intent
                 (ActivitySocialLogin.this, ActivityUserDetails.class);
-        String email = m_CurrentUser.getEmail();
-        String phoneNumber = m_CurrentUser.getPhoneNumber();
-        String fullName = m_CurrentUser.getDisplayName();
-        String firstName = "";
-        String lastName = "";
-        int indexOfSpace;
-
-        if(fullName != null)
-        {
-            indexOfSpace = fullName.indexOf(" ");
-            if(indexOfSpace != -1)
-            {
-                firstName = fullName.substring(0, indexOfSpace);
-                lastName = fullName.substring(fullName.lastIndexOf(" ") + 1);
-            }
-
-            IntentUserDetails.putExtra(EXTRA_FIRST_NAME_STR, firstName);
-            IntentUserDetails.putExtra(EXTRA_LAST_NAME_STR, lastName);
-        }
-
-        IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
-        IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
+//        String email = m_CurrentUser.getEmail();
+//        String phoneNumber = m_CurrentUser.getPhoneNumber();
+//        String fullName = m_CurrentUser.getDisplayName();
+//        String firstName = "";
+//        String lastName = "";
+//        int indexOfSpace;
+//
+//        if(fullName != null)
+//        {
+//            indexOfSpace = fullName.indexOf(" ");
+//            if(indexOfSpace != -1)
+//            {
+//                firstName = fullName.substring(0, indexOfSpace);
+//                lastName = fullName.substring(fullName.lastIndexOf(" ") + 1);
+//            }
+//
+//            IntentUserDetails.putExtra(EXTRA_FIRST_NAME_STR, firstName);
+//            IntentUserDetails.putExtra(EXTRA_LAST_NAME_STR, lastName);
+//        }
+//
+//        IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
+//        IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
         startActivity(IntentUserDetails);
     }
 }
