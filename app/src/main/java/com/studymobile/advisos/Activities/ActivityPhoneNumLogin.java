@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +35,8 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
     private static final String EXTRA_VERIFICATION_ID_STR = "verification";
     private static final String EXTRA_TOKEN_PARCELABLE = "token";
     private static final String EXTRA_PHONE_STR = "phone";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PHONE_AUTH = "phone";
 
     private ImageButton m_BtnNext;
     private EditText m_FieldPhoneNumber;
@@ -70,6 +73,15 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
 //    }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onClick(View i_View)
     {
         int id = i_View.getId();
@@ -90,7 +102,7 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
 
         if (localPhoneNumber.isEmpty())
         {
-            m_FieldPhoneNumber.setError("This field can't be empty");
+            m_FieldPhoneNumber.setError("This field is required");
             return false;
         }
         else if(!InputValidation.IsValidPhoneNumber(m_InternationalPhoneNumber))
@@ -210,6 +222,7 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
                 (ActivityPhoneNumLogin.this, ActivityUserDetails.class);
         String localPhoneNumber = m_InternationalPhoneNumber.substring(4);
         IntentUserDetails.putExtra(EXTRA_PHONE_STR, localPhoneNumber);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, PHONE_AUTH);
         startActivity(IntentUserDetails);
     }
 

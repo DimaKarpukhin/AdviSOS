@@ -67,6 +67,10 @@ public class HomeActivity extends AppCompatActivity
             Toast.makeText(this,
                     "Login Out...", Toast.LENGTH_SHORT).show();
             logOut();
+            Intent IntentRegistration = new Intent
+                    (HomeActivity.this, ActivityRegistration.class);
+            startActivity(IntentRegistration);
+
         }
     }
 

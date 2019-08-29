@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout_dishes_list"
+    tools:context=".Activities.ActivitySubjectPicker"
+    android:background="@drawable/background_transparent"
+    tools:openDrawer="start">
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_dishes"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:backgroundTint="@color/transparent">
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            style="@style/MaterialSearchBarLight"
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:mt_speechMode="false"
+            app:mt_hint="Type here..."
+            app:mt_hintColor="@color/white"
+            app:mt_maxSuggestionsCount="5"
+            app:mt_searchBarColor="@color/greyTransparent"
+            app:mt_placeholderColor="@color/white"
+            app:mt_textColor="@color/white"
+            app:mt_highlightedTextColor="@color/white"
+            app:mt_roundedSearchBarEnabled="false"
+            app:mt_searchIconTint="@color/white"
+            app:mt_navIconTint="@color/white"
+            app:mt_dividerColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="70dp"
+        android:layout_width="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@drawable/btn_round_blue"
+            android:src="@drawable/ic_arrow_forward_white"  />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

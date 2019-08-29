@@ -1,4 +1,4 @@
-package com.studymobile.advisos.Services;
+package com.studymobile.advisos.Models;
 
 import android.location.Location;
 

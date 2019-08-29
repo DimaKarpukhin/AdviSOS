@@ -15,8 +15,11 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,8 +29,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.R;
 
+import java.net.URI;
 import java.util.Objects;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -43,10 +48,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class ActivitySocialLogin extends AppCompatActivity implements View.OnClickListener
 {
     private static final String TAG = "SocialAuth";
+    private static final String EXTRA_PHOTO_URI_STR = "profilePhoto";
     private static final String EXTRA_FIRST_NAME_STR = "firstName";
     private static final String EXTRA_LAST_NAME_STR = "lastName";
     private static final String EXTRA_PHONE_STR = "phone";
     private static final String EXTRA_EMAIL_STR = "email";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String FACEBOOK_AUTH = "facebook";
+    private static final String GOOGLE_AUTH = "google";
     private static  final int RC_SIGN_IN = 9001;
 
     private Button m_BtnGoogleLogin;
@@ -68,6 +77,15 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
         setFirebaseData();
         setGoogleData();
         setFacebookData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -162,7 +180,7 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         if (i_Task.isSuccessful())
                         {
                             Log.d(TAG, "googleCredential:success");
-                            startUserDetailsActivity();
+                            startUserDetailsActivity(GOOGLE_AUTH);
                         } else {
                             Log.e(TAG, "googleCredential:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
@@ -236,7 +254,7 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
                         if (i_Task.isSuccessful())
                         {
                             Log.d(TAG, "facebookCredential:success");
-                            startUserDetailsActivity();
+                            startUserDetailsActivity(FACEBOOK_AUTH);
 
                         } else {
                             Log.e(TAG, "facebookCredential:failure", i_Task.getException());
@@ -268,18 +286,23 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
         m_Auth = FirebaseAuth.getInstance();
     }
 
-    private void startUserDetailsActivity()
+    private void startUserDetailsActivity(String i_AuthContext)
     {
         Intent IntentUserDetails = new Intent
                 (ActivitySocialLogin.this, ActivityUserDetails.class);
 
         FirebaseUser currentUser = m_Auth.getCurrentUser();
+        Uri URI = currentUser.getPhotoUrl();
         String email = currentUser.getEmail();
         String phoneNumber = currentUser.getPhoneNumber();
         String fullName = currentUser.getDisplayName();
         String firstName = "";
         String lastName = "";
         int indexOfSpace;
+        if(URI != null)
+        {
+            IntentUserDetails.putExtra(EXTRA_PHOTO_URI_STR, URI.toString());
+        }
 
         if(fullName != null)
         {
@@ -296,6 +319,7 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
 
         IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
         IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, i_AuthContext);
         startActivity(IntentUserDetails);
     }
 }

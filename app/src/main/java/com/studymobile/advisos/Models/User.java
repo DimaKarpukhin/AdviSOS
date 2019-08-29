@@ -2,106 +2,103 @@ package com.studymobile.advisos.Models;
 
 import android.location.Location;
 
-import com.studymobile.advisos.Services.UserAvailability;
-import com.studymobile.advisos.Services.UserLocation;
-
 public class User
 {
-    private String mFirstName, mLastName, mEmail, mPhone, mImgLink, mAuthContext;
+    private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext;
     private UserLocation mLocation;
     private UserAvailability mAvailability;
 
     public User(){}
 
-    public User(String i_FirstName, String i_LastName, String i_Email, String i_Phone)
+    public User(String i_FirstName, String i_FamilyName, String i_Email, String i_Phone)
     {
-        this.SetFirstName(i_FirstName);
-        this.SetLastName(i_LastName);
-        this.SetEmail(i_Email);
-        this.SetPhone(i_Phone);
+        this.setFirstName(i_FirstName);
+        this.setFamilyName(i_FamilyName);
+        this.setEmail(i_Email);
+        this.setPhone(i_Phone);
     }
 
-    public String GetFirstName()
+    public String getFirstName()
     {
         return mFirstName;
     }
 
-    public String GetLastName()
+    public String getFamilyName()
     {
-        return mLastName;
+        return mFamilyName;
     }
 
-    public String GetEmail()
+    public String getEmail()
     {
         return mEmail;
     }
 
-    public String GetPhone()
+    public String getPhone()
     {
         return mPhone;
     }
 
-    public String Geti_ImgLink()
+    public String getImgLink()
     {
         return mImgLink;
     }
 
-    public String GetAuthContext()
+    public String getAuthContext()
     {
         return mAuthContext;
     }
 
-    public UserLocation GetLocation()
+    public UserLocation getLocation()
     {
         return mLocation;
     }
 
-    public UserAvailability GetAvailabilty()
+    public UserAvailability getUserAvailability()
     {
         return mAvailability;
     }
 
-    public void SetFirstName(String i_FirstName)
+    public void setFirstName(String i_FirstName)
     {
         this.mFirstName = i_FirstName;
     }
 
-    public void SetLastName(String i_LastName)
+    public void setFamilyName(String i_FamilyName)
     {
-        this.mLastName = i_LastName;
+        this.mFamilyName = i_FamilyName;
     }
 
-    public void SetEmail(String i_Email)
+    public void setEmail(String i_Email)
     {
         this.mEmail = i_Email;
     }
 
-    public void SetPhone(String i_Phone)
+    public void setPhone(String i_Phone)
     {
         this.mPhone = i_Phone;
     }
 
-    public void SetImgLink(String i_ImgLink)
+    public void setImgLink(String i_ImgLink)
     {
         this.mImgLink = i_ImgLink;
     }
 
-    public void SetAuthContext(String i_AuthContext)
+    public void setAuthContext(String i_AuthContext)
     {
         this.mAuthContext = i_AuthContext;
     }
 
-    public void SetLocation(UserLocation i_Location)
+    public void setUserLocation(UserLocation i_Location)
     {
         this.mLocation = i_Location;
     }
 
-    public void SetAvailabilty(UserAvailability i_Availability)
+    public void setUserAvailability(UserAvailability i_Availability)
     {
         this.mAvailability = i_Availability;
     }
 
-    public void UpdateUsersLocation(Location i_location, float i_lang, float i_long) {
+    public void UpdateLocation(Location i_location, float i_lang, float i_long) {
         if (mLocation == null) {
             mLocation = new UserLocation(i_location, i_lang, i_long);
         } else {

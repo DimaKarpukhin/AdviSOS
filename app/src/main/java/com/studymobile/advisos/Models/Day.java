@@ -4,56 +4,56 @@ import com.studymobile.advisos.Enums.eWeekDay;
 
 public class Day
 {
-    private eWeekDay mWeekDay;
+    private eWeekDay mDay;
     private String mStartTime;
     private String mEndTime;
     private boolean mIsAvailable;
 
     public Day(){}
-    public Day(eWeekDay i_WeekDay, String i_StartTime, String i_EndTime, boolean i_IsAvailable)
+    public Day(eWeekDay i_Day, String i_StartTime, String i_EndTime, boolean i_IsAvailable)
     {
-        this.SetWeekDay(i_WeekDay);
-        this.SetStartTime(i_StartTime);
-        this.SetEndTime(i_EndTime);
-        this.SetIsAvailable(i_IsAvailable);
+        this.setDay(i_Day);
+        this.setTimeFrom(i_StartTime);
+        this.setTimeTo(i_EndTime);
+        this.setIsAvailable(i_IsAvailable);
     }
 
-    public eWeekDay GetWeekDay()
+    public eWeekDay getDay()
     {
-        return mWeekDay;
+        return mDay;
     }
 
-    public String GetStartTime()
+    public String getTimeFrom()
     {
         return mStartTime;
     }
 
-    public String GetEndTime()
+    public String getTimeTo()
     {
         return mEndTime;
     }
 
-    public boolean GetIsAvailable()
+    public boolean getIsAvailable()
     {
         return mIsAvailable;
     }
 
-    public void SetWeekDay(eWeekDay i_Day)
+    public void setDay(eWeekDay i_Day)
     {
-        this.mWeekDay = i_Day;
+        this.mDay = i_Day;
     }
 
-    public void SetStartTime(String i_StartTime)
+    public void setTimeFrom(String i_StartTime)
     {
         this.mStartTime = i_StartTime;
     }
 
-    public void SetEndTime(String i_EndTime)
+    public void setTimeTo(String i_EndTime)
     {
         this.mEndTime = i_EndTime;
     }
 
-    public void SetIsAvailable(boolean i_IsAvailable)
+    public void setIsAvailable(boolean i_IsAvailable)
     {
         this.mIsAvailable = i_IsAvailable;
     }

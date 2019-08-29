@@ -23,17 +23,40 @@
             android:textColor="@color/black"
             android:textStyle="italic"/>
 
-        <ImageButton
-            android:id="@+id/btn_profile_photo_of_user_details"
+<!--        <ImageView-->
+<!--            android:id="@+id/img_profile_photo_of_user_details"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_above="@+id/layout_email_of_user_details"-->
+<!--            android:layout_marginBottom="70dp"-->
+<!--            android:background="@drawable/btn_round_transparent_with_black_frame"-->
+<!--            android:scaleType="centerCrop">-->
+<!--        </ImageView>-->
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/img_profile_photo_of_user_details"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
             android:layout_above="@+id/layout_email_of_user_details"
             android:layout_marginBottom="70dp"
-            android:background="@drawable/btn_round_transparent_with_black_frame"
-            android:src="@drawable/ic_add_a_photo_blue_light"
-            android:longClickable="true">
-        </ImageButton>
+            android:src="@drawable/img_add_a_photo_blue_light"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="1dp"/>
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_profile_photo_of_user_details"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_above="@+id/layout_email_of_user_details"-->
+<!--            android:layout_marginBottom="70dp"-->
+<!--            android:background="@drawable/btn_round_transparent_with_black_frame"-->
+<!--            android:src="@drawable/ic_add_a_photo_blue_light"-->
+<!--            android:longClickable="true"-->
+<!--            android:scaleType="center">-->
+<!--        </ImageButton>-->
 
         <LinearLayout
             android:layout_above="@+id/layout_email_of_user_details"

@@ -4,77 +4,79 @@ import com.studymobile.advisos.Ecxeptions.AlwaysAvailTryingDoNotDisturbException
 import com.studymobile.advisos.Ecxeptions.DoNotDisturbTryingToAlwaysAvailableException;
 import com.studymobile.advisos.Ecxeptions.TimeNotValidColisionsException;
 
-public class Availability
+import java.util.ArrayList;
+
+public class UserAvailability
 {
     private boolean mIsAlwaysAvailable;
     private boolean mIsNotDisturb;
-    private Week mWeek;
+    private Week mWeekAvailability;
     private int mMaxConcurrentChats;
     private boolean mIsNoNumChatsLimit;
 
-    public Availability(){}
+    public UserAvailability(){}
 
-    public Availability(boolean i_IsAlwaysAvailable, boolean i_IsNotDisturb, Week i_Week,
-                        int i_MaxConcurrentChats, boolean i_IsNoNumChatsLimit)
+    public UserAvailability(boolean i_IsAlwaysAvailable, boolean i_IsNotDisturb, Week i_Week,
+                            int i_MaxConcurrentChats, boolean i_IsNoNumChatsLimit)
     {
-        this.SetIsAlwaysAvailable(i_IsAlwaysAvailable);
-        this.SetIsNotDisturb(i_IsNotDisturb);
-        this.SetWeek(i_Week);
-        this.SetMaxConcurrentChats(i_MaxConcurrentChats);
-        this.SetIsNoNumChatsLimit(i_IsNoNumChatsLimit);
+        this.setIsAlwaysAvailable(i_IsAlwaysAvailable);
+        this.setIsNotDisturb(i_IsNotDisturb);
+        this.setWeekAvailability(i_Week);
+        this.setMaxConcurrentChats(i_MaxConcurrentChats);
+        this.setIsNoNumChatsLimit(i_IsNoNumChatsLimit);
     }
 
-    public boolean GetIsAlwaysAvailable()
+    public boolean getIsAlwaysAvailable()
     {
         return mIsAlwaysAvailable;
     }
 
-    public boolean GetIsNotDisturb()
+    public boolean getIsNotDisturb()
     {
         return mIsNotDisturb;
     }
 
-    public Week GetWeek()
+    public Week getWeekAvailability()
     {
-        return mWeek;
+        return mWeekAvailability;
     }
 
-    public int GetMaxConcurrentChats()
+    public int getMaxConcurrentChats()
     {
         return mMaxConcurrentChats;
     }
 
-    public boolean GetIsNoNumChatsLimit()
+    public boolean getIsNoNumChatsLimit()
     {
         return mIsNoNumChatsLimit;
     }
 
-    public void SetIsAlwaysAvailable(boolean i_IsAlwaysAvailable)
+    public void setIsAlwaysAvailable(boolean i_IsAlwaysAvailable)
     {
         this.mIsAlwaysAvailable = i_IsAlwaysAvailable;
     }
 
-    public void SetIsNotDisturb(boolean i_IsNotDisturb)
+    public void setIsNotDisturb(boolean i_IsNotDisturb)
     {
         this.mIsNotDisturb = i_IsNotDisturb;
     }
 
-    public void SetWeek(Week i_Week) {
-        this.mWeek = i_Week;
+    public void setWeekAvailability(Week i_Week) {
+        this.mWeekAvailability = i_Week;
     }
 
-    public void SetMaxConcurrentChats(int i_MaxConcurrentChats)
+    public void setMaxConcurrentChats(int i_MaxConcurrentChats)
     {
         this.mMaxConcurrentChats = i_MaxConcurrentChats;
     }
 
-    public void SetIsNoNumChatsLimit(boolean i_IsNoNumChatsLimit)
+    public void setIsNoNumChatsLimit(boolean i_IsNoNumChatsLimit)
     {
         this.mIsNoNumChatsLimit = i_IsNoNumChatsLimit;
     }
 
-    //    public UserAvailability() {}
-//    public UserAvailability(int from, int to, int i_maxConvers)throws TimeNotValidColisionsException {
+    //    public UserServices() {}
+//    public UserServices(int from, int to, int i_maxConvers)throws TimeNotValidColisionsException {
 //        if(from >= to){
 //            throw new TimeNotValidColisionsException(from,to);
 //        }

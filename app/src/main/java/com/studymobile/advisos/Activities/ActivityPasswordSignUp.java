@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +27,8 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
 {
     private static final String TAG = "PasswordSignUp";
     private static final String EXTRA_EMAIL_STR = "email";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PASSWORD_AUTH = "password";
 
     private ImageButton m_BtnNext;
     private TextView m_LinkLogin;
@@ -46,6 +49,15 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_password_sign_up);
         setActivityContent();
         setFirebaseData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -73,7 +85,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
 
         if (m_Email.isEmpty())
         {
-            m_FieldEmail.setError("The field can't be empty");
+            m_FieldEmail.setError("The field is required");
             return false;
         }
         else if(!InputValidation.IsValidEmail(m_Email))
@@ -91,7 +103,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
 
         if (m_Password.isEmpty())
         {
-            m_FieldPassword.setError("This field can't be empty");
+            m_FieldPassword.setError("This field is required");
             return false;
         }
         else if(!InputValidation.IsValidPassword(m_Password))
@@ -182,6 +194,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
         Intent IntentUserDetails = new Intent
                 (ActivityPasswordSignUp.this, ActivityUserDetails.class);
         IntentUserDetails.putExtra(EXTRA_EMAIL_STR, m_Email);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, PASSWORD_AUTH);
         startActivity(IntentUserDetails);
     }
 

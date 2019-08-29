@@ -8,26 +8,26 @@ public class Rating
     public Rating(){}
     public Rating(long i_VotersNum, float i_AvgRating)
     {
-        this.SetVotersNum(i_VotersNum);
-        this.SetAvgRating(i_AvgRating);
+        this.setVotersNum(i_VotersNum);
+        this.setAvgRating(i_AvgRating);
     }
 
-    public long GetVotersNum()
+    public long getVotersNum()
     {
         return mVotersNum;
     }
 
-    public float GetAvgRating()
+    public float getAvgRating()
     {
         return mAvgRating;
     }
 
-    public void SetVotersNum(long i_VotersNum)
+    public void setVotersNum(long i_VotersNum)
     {
         this.mVotersNum = i_VotersNum;
     }
 
-    public void SetAvgRating(float i_AvgRating)
+    public void setAvgRating(float i_AvgRating)
     {
         this.mAvgRating = i_AvgRating;
     }

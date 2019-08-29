@@ -16,109 +16,123 @@ public class Week
 
     public Week(Day i_Sunday, Day i_Monday, Day i_Tuesday, Day i_Wednesday, Day i_Thursday, Day i_Friday, Day i_Saturday)
     {
-        this.SetSunday(i_Sunday);
-        this.SetMonday(i_Monday);
-        this.SetTuesday(i_Tuesday);
-        this.SetWednesday(i_Wednesday);
-        this.SetThursday(i_Thursday);
-        this.SetFriday(i_Friday);
-        this.SetSaturday(i_Saturday);
+        this.setSunday(i_Sunday);
+        this.setMonday(i_Monday);
+        this.setTuesday(i_Tuesday);
+        this.setWednesday(i_Wednesday);
+        this.setThursday(i_Thursday);
+        this.setFriday(i_Friday);
+        this.setSaturday(i_Saturday);
     }
 
-    public Day GetSunday()
+    public Day getSunday()
     {
         return mSunday;
     }
 
-    public Day GetMonday()
+    public Day getMonday()
     {
         return mMonday;
     }
 
-    public Day GetTuesday()
+    public Day getTuesday()
     {
         return mTuesday;
     }
 
-    public Day GetWednesday()
+    public Day getWednesday()
     {
         return mWednesday;
     }
 
-    public Day GetThursday()
+    public Day getThursday()
     {
         return mThursday;
     }
 
-    public Day GetFriday()
+    public Day getFriday()
     {
         return mFriday;
     }
 
-    public Day GetSaturday()
+    public Day getSaturday()
     {
         return mSaturday;
     }
 
-    public void SetSunday(Day i_Sunday)
+    public void setSunday(Day i_Sunday)
     {
-        if(i_Sunday.GetWeekDay() != eWeekDay.Sunday)
+        if(i_Sunday.getDay() != eWeekDay.Sunday)
         {
-            throw new IllegalArgumentException(String.format("Sunday member cannot be assigned with \'%s\'", i_Sunday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Sunday member cannot be assigned with \'%s\'",
+                            i_Sunday.getDay()));
         }
         this.mSunday = i_Sunday;
     }
 
-    public void SetMonday(Day i_Monday)
+    public void setMonday(Day i_Monday)
     {
-        if(i_Monday.GetWeekDay() != eWeekDay.Monday)
+        if(i_Monday.getDay() != eWeekDay.Monday)
         {
-            throw new IllegalArgumentException(String.format("Monday member cannot be assigned with \'%s\'", i_Monday.GetWeekDay()));
+            throw new IllegalArgumentException
+                    (String.format("Monday member cannot be assigned with \'%s\'",
+                            i_Monday.getDay()));
         }
         this.mMonday = i_Monday;
     }
 
-    public void SetTuesday(Day i_Tuesday)
+    public void setTuesday(Day i_Tuesday)
     {
-        if(i_Tuesday.GetWeekDay() != eWeekDay.Tuesday)
+        if(i_Tuesday.getDay() != eWeekDay.Tuesday)
         {
-            throw new IllegalArgumentException(String.format("Tuesday member cannot be assigned with \'%s\'", i_Tuesday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Tuesday member cannot be assigned with \'%s\'",
+                            i_Tuesday.getDay()));
         }
         this.mTuesday = i_Tuesday;
     }
 
-    public void SetWednesday(Day i_Wednesday)
+    public void setWednesday(Day i_Wednesday)
     {
-        if(i_Wednesday.GetWeekDay() != eWeekDay.Wednesday)
+        if(i_Wednesday.getDay() != eWeekDay.Wednesday)
         {
-            throw new IllegalArgumentException(String.format("Wednesday member cannot be assigned with \'%s\'", i_Wednesday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Wednesday member cannot be assigned with \'%s\'",
+                            i_Wednesday.getDay()));
         }
         this.mWednesday = i_Wednesday;
     }
 
-    public void SetThursday(Day i_Thursday)
+    public void setThursday(Day i_Thursday)
     {
-        if(i_Thursday.GetWeekDay() != eWeekDay.Thursday)
+        if(i_Thursday.getDay() != eWeekDay.Thursday)
         {
-            throw new IllegalArgumentException(String.format("Thursday member cannot be assigned with \'%s\'", i_Thursday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Thursday member cannot be assigned with \'%s\'",
+                            i_Thursday.getDay()));
         }
         this.mThursday = i_Thursday;
     }
 
-    public void SetFriday(Day i_Friday)
+    public void setFriday(Day i_Friday)
     {
-        if(i_Friday.GetWeekDay() != eWeekDay.Friday)
+        if(i_Friday.getDay() != eWeekDay.Friday)
         {
-            throw new IllegalArgumentException(String.format("Friday member cannot be assigned with \'%s\'", i_Friday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Friday member cannot be assigned with \'%s\'",
+                            i_Friday.getDay()));
         }
         this.mFriday = i_Friday;
     }
 
-    public void SetSaturday(Day i_Saturday)
+    public void setSaturday(Day i_Saturday)
     {
-        if(i_Saturday.GetWeekDay() != eWeekDay.Saturday)
+        if(i_Saturday.getDay() != eWeekDay.Saturday)
         {
-            throw new IllegalArgumentException(String.format("Saturday member cannot be assigned with \'%s\'", i_Saturday.GetWeekDay()));
+            throw new IllegalArgumentException(
+                    String.format("Saturday member cannot be assigned with \'%s\'",
+                            i_Saturday.getDay()));
         }
         this.mSaturday = i_Saturday;
     }

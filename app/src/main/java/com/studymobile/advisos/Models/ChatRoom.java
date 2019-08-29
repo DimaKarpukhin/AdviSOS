@@ -18,81 +18,81 @@ public class ChatRoom
                     String i_CreationTime, String i_SubjectName,
                     String i_SubjectId, ArrayList<String> i_Participants)
     {
-        this.SetRoomId(i_RoomId);
-        this.SetRoomName(i_RoomName);
-        this.SetCreationDate(i_CreationDate);
-        this.SetCreationTime(i_CreationTime);
-        this.SetSubjectName(i_SubjectName);
-        this.SetSubjectId(i_SubjectId);
-        this.SetParticipants(i_Participants);
+        this.setRoomId(i_RoomId);
+        this.setRoomName(i_RoomName);
+        this.setCreationDate(i_CreationDate);
+        this.setCreationTime(i_CreationTime);
+        this.setSubjectName(i_SubjectName);
+        this.setSubjectId(i_SubjectId);
+        this.setParticipants(i_Participants);
     }
 
-    public int GetRoomId()
+    public int getRoomId()
     {
         return mRoomId;
     }
 
-    public String GetRoomName()
+    public String getRoomName()
     {
         return mRoomName;
     }
 
-    public String GetCreationDate()
+    public String getCreationDate()
     {
         return mCreationDate;
     }
 
-    public String GetCreationTime()
+    public String getCreationTime()
     {
         return mCreationTime;
     }
 
-    public String GetSubjectName()
+    public String getSubjectName()
     {
         return mSubjectName;
     }
 
-    public String GetSubjectId()
+    public String getSubjectId()
     {
         return mSubjectId;
     }
 
-    public ArrayList<String> GetParticipants()
+    public ArrayList<String> getParticipants()
     {
         return mParticipants;
     }
 
-    public void SetRoomId(int i_RoomId)
+    public void setRoomId(int i_RoomId)
     {
         this.mRoomId = i_RoomId;
     }
 
-    public void SetRoomName(String i_RoomName)
+    public void setRoomName(String i_RoomName)
     {
         this.mRoomName = i_RoomName;
     }
 
-    public void SetCreationDate(String i_CreationDate)
+    public void setCreationDate(String i_CreationDate)
     {
         this.mCreationDate = i_CreationDate;
     }
 
-    public void SetCreationTime(String i_CreationTime)
+    public void setCreationTime(String i_CreationTime)
     {
         this.mCreationTime = i_CreationTime;
     }
 
-    public void SetSubjectName(String i_SubjectName)
+    public void setSubjectName(String i_SubjectName)
     {
         this.mSubjectName = i_SubjectName;
     }
 
-    public void SetSubjectId(String i_SubjectId)
+    public void setSubjectId(String i_SubjectId)
     {
         this.mSubjectId = i_SubjectId;
     }
 
-    public void SetParticipants(ArrayList<String> i_Participants)
+    public void setParticipants(ArrayList<String> i_Participants)
     {
         this.mParticipants = i_Participants;
     }

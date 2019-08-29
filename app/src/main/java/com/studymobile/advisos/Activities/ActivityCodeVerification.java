@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
     private static final String EXTRA_VERIFICATION_ID_STR = "verification";
     private static final String EXTRA_TOKEN_PARCELABLE = "token";
     private static final String EXTRA_PHONE_STR = "phone";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PHONE_AUTH = "phone";
+
 
     private ImageButton m_BtnNext;
     private TextView m_LinkResendCode;
@@ -54,6 +58,15 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
         setActivityContent();
         setFirebaseData();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -203,6 +216,7 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
                 (ActivityCodeVerification.this, ActivityUserDetails.class);
         String localPhoneNumber = m_InternationalPhoneNumber.substring(4);
         IntentUserDetails.putExtra(EXTRA_PHONE_STR, localPhoneNumber);
+        IntentUserDetails.putExtra(AUTH_CONTEXT, PHONE_AUTH);
         startActivity(IntentUserDetails);
     }
 }

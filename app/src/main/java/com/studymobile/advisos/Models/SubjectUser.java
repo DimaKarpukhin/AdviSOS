@@ -9,26 +9,26 @@ public class SubjectUser
 
     public SubjectUser(String i_UserId, Rating i_Rating)
     {
-        this.SetUserId(i_UserId);
-        this.SetRating(i_Rating);
+        this.setUserId(i_UserId);
+        this.setRating(i_Rating);
     }
 
-    public String GetUserId()
+    public String getUserId()
     {
         return mUserId;
     }
 
-    public Rating GetRating()
+    public Rating getRating()
     {
         return mRating;
     }
 
-    public void SetUserId(String i_UserId)
+    public void setUserId(String i_UserId)
     {
         this.mUserId = mUserId;
     }
 
-    public void SetRating(Rating i_Rating)
+    public void setRating(Rating i_Rating)
     {
         this.mRating = i_Rating;
     }

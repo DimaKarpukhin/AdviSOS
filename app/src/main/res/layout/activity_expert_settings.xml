@@ -135,7 +135,8 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -174,10 +175,11 @@
                         android:layout_toEndOf="@+id/txt_from_of_sunday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -217,9 +219,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_sunday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
+                        android:textColor="@color/black"
                         android:textStyle="bold|italic"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -244,7 +248,8 @@
                         android:text="M"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -283,10 +288,11 @@
                         android:layout_toEndOf="@+id/txt_from_of_monday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -325,10 +331,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_monday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -353,7 +360,8 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -392,10 +400,11 @@
                         android:layout_toEndOf="@+id/txt_from_of_tuesday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -434,10 +443,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_tuesday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -462,7 +472,8 @@
                         android:text="W"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -501,10 +512,11 @@
                         android:layout_toEndOf="@+id/txt_from_of_wednesday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -543,10 +555,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_wednesday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -571,7 +584,8 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -610,10 +624,11 @@
                         android:layout_toEndOf="@+id/txt_from_of_thursday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -652,10 +667,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_thursday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -680,7 +696,8 @@
                         android:text="F"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -720,9 +737,10 @@
                         android:layout_marginStart="5dp"
                         android:gravity="center"
                         android:textSize="20sp"
+                        android:text="00:00"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -761,10 +779,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_friday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -789,7 +808,8 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"/>
+                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:longClickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -827,12 +847,12 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/txt_from_of_saturday"
                         android:layout_marginStart="5dp"
-                        android:text="00:00"
                         android:gravity="center"
+                        android:text="00:00"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -871,10 +891,11 @@
                         android:layout_toEndOf="@+id/txt_to_of_saturday"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
+                        android:text="23:59"
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/black"
-                        android:background="@drawable/ink_with_grey_tint"
+                        android:background="@drawable/link_with_grey_tint"
                         android:visibility="invisible"/>
                 </RelativeLayout>
             </LinearLayout>

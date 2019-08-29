@@ -11,48 +11,48 @@ public class ChatMessage
 
     public ChatMessage(String i_MessageBody, int i_MessageId, String i_SenderName, String i_TimeSent)
     {
-        this.SetMessageBody(i_MessageBody);
-        this.SetMessageId(i_MessageId);
-        this.SetSenderName(i_SenderName);
-        this.SetTimeSent(i_TimeSent);
+        this.setMessageBody(i_MessageBody);
+        this.setMessageId(i_MessageId);
+        this.setSenderName(i_SenderName);
+        this.setTimeSent(i_TimeSent);
     }
 
-    public String GetMessageBody()
+    public String getMessageBody()
     {
         return mMessageBody;
     }
 
-    public int GetMessageId()
+    public int getMessageId()
     {
         return mMessageId;
     }
 
-    public String GetSenderName()
+    public String getSenderName()
     {
         return mSenderName;
     }
 
-    public String GetTimeSent()
+    public String getTimeSent()
     {
         return mTimeSent;
     }
 
-    public void SetMessageBody(String i_MessageBody)
+    public void setMessageBody(String i_MessageBody)
     {
         this.mMessageBody = i_MessageBody;
     }
 
-    public void SetMessageId(int i_MessageId)
+    public void setMessageId(int i_MessageId)
     {
         this.mMessageId = i_MessageId;
     }
 
-    public void SetSenderName(String i_SenderName)
+    public void setSenderName(String i_SenderName)
     {
         this.mSenderName = mSenderName;
     }
 
-    public void SetTimeSent(String i_SentTime)
+    public void setTimeSent(String i_SentTime)
     {
         this.mTimeSent = i_SentTime;
     }

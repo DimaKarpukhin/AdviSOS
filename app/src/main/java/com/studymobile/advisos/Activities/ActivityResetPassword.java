@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +24,8 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
 {
     private static final String TAG = "ResetPassword";
     private static final String EXTRA_EMAIL_STR = "email";
+    private static final String AUTH_CONTEXT = "auth_context";
+    private static final String PASSWORD_AUTH = "password";
 
     private ImageButton m_BtnNext;
     private EditText m_FieldEmail;
@@ -37,6 +40,15 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_reset_password);
         setActivityContent();
         setFirebaseData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -59,7 +71,7 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
 
         if (m_Email.isEmpty())
         {
-            m_FieldEmail.setError("The field can't be empty");
+            m_FieldEmail.setError("The field is required");
             return false;
         }
         else if(!InputValidation.IsValidEmail(m_Email))
@@ -123,6 +135,7 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
         Intent IntentResetPassword = new Intent
                 (ActivityResetPassword.this, ActivityPasswordLogin.class);
         IntentResetPassword.putExtra(EXTRA_EMAIL_STR, m_Email);
+        IntentResetPassword.putExtra(AUTH_CONTEXT, PASSWORD_AUTH);
         startActivity(IntentResetPassword);
     }
 }

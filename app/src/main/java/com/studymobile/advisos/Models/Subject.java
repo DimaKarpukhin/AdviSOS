@@ -10,48 +10,48 @@ public class Subject
 
     public Subject(String i_Name, String i_Description, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
     {
-        this.SetName(i_Name);
-        this.SetDescription(i_Description);
-        this.SetImgLink(i_ImgLink);
-        this.SetSubjectUsers(i_SubjectUsers);
+        this.setName(i_Name);
+        this.setDescription(i_Description);
+        this.setImgLink(i_ImgLink);
+        this.setSubjectUsers(i_SubjectUsers);
     }
 
-    public String GetName()
+    public String getName()
     {
         return mName;
     }
 
-    public String GetDescription()
+    public String getDescription()
     {
         return mDescription;
     }
 
-    public String GetImgLink()
+    public String getImgLink()
     {
         return mImgLink;
     }
 
-    public List<SubjectUser> GetSubjectUsers()
+    public List<SubjectUser> getSubjectUsers()
     {
         return mSubjectUsers;
     }
 
-    public void SetName(String i_Name)
+    public void setName(String i_Name)
     {
         this.mName = i_Name;
     }
 
-    public void SetDescription(String i_Description)
+    public void setDescription(String i_Description)
     {
         this.mDescription = i_Description;
     }
 
-    public void SetImgLink(String i_ImgLink)
+    public void setImgLink(String i_ImgLink)
     {
         this.mImgLink = i_ImgLink;
     }
 
-    public void SetSubjectUsers(List<SubjectUser> i_SubjectUsers)
+    public void setSubjectUsers(List<SubjectUser> i_SubjectUsers)
     {
         this.mSubjectUsers = i_SubjectUsers;
     }
