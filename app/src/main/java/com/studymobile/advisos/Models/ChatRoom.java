@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class ChatRoom
 {
     private int mRoomId;
+    private String mChatRoomCreator;
     private String mRoomName;
     private String mCreationDate;
     private String mCreationTime;
     private String mSubjectName;
     private String mSubjectId;
-    private ArrayList<String> mParticipants = new ArrayList<>();
 
     public ChatRoom(){}
 
     public ChatRoom(int i_RoomId, String i_RoomName, String i_CreationDate,
                     String i_CreationTime, String i_SubjectName,
-                    String i_SubjectId, ArrayList<String> i_Participants)
+                    String i_SubjectId, String i_creator)
     {
         this.setRoomId(i_RoomId);
         this.setRoomName(i_RoomName);
@@ -24,7 +24,8 @@ public class ChatRoom
         this.setCreationTime(i_CreationTime);
         this.setSubjectName(i_SubjectName);
         this.setSubjectId(i_SubjectId);
-        this.setParticipants(i_Participants);
+        this.mChatRoomCreator = i_creator;
+
     }
 
     public int getRoomId()
@@ -57,11 +58,6 @@ public class ChatRoom
         return mSubjectId;
     }
 
-    public ArrayList<String> getParticipants()
-    {
-        return mParticipants;
-    }
-
     public void setRoomId(int i_RoomId)
     {
         this.mRoomId = i_RoomId;
@@ -92,8 +88,7 @@ public class ChatRoom
         this.mSubjectId = i_SubjectId;
     }
 
-    public void setParticipants(ArrayList<String> i_Participants)
-    {
-        this.mParticipants = i_Participants;
-    }
+    public String getCreatorId(){return this.mChatRoomCreator;}
+
+
 }

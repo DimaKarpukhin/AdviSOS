@@ -290,30 +290,6 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
     {
         Intent IntentUserDetails = new Intent
                 (ActivitySocialLogin.this, ActivityUserDetails.class);
-<<<<<<< HEAD
-//        String email = m_CurrentUser.getEmail();
-//        String phoneNumber = m_CurrentUser.getPhoneNumber();
-//        String fullName = m_CurrentUser.getDisplayName();
-//        String firstName = "";
-//        String lastName = "";
-//        int indexOfSpace;
-//
-//        if(fullName != null)
-//        {
-//            indexOfSpace = fullName.indexOf(" ");
-//            if(indexOfSpace != -1)
-//            {
-//                firstName = fullName.substring(0, indexOfSpace);
-//                lastName = fullName.substring(fullName.lastIndexOf(" ") + 1);
-//            }
-//
-//            IntentUserDetails.putExtra(EXTRA_FIRST_NAME_STR, firstName);
-//            IntentUserDetails.putExtra(EXTRA_LAST_NAME_STR, lastName);
-//        }
-//
-//        IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
-//        IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
-=======
 
         FirebaseUser currentUser = m_Auth.getCurrentUser();
         Uri URI = currentUser.getPhotoUrl();
@@ -344,7 +320,6 @@ public class ActivitySocialLogin extends AppCompatActivity implements View.OnCli
         IntentUserDetails.putExtra(EXTRA_EMAIL_STR, email);
         IntentUserDetails.putExtra(EXTRA_PHONE_STR, phoneNumber);
         IntentUserDetails.putExtra(AUTH_CONTEXT, i_AuthContext);
->>>>>>> 60cfefbec4f0d634f6ee2610cb9fe7f7158c31fa
         startActivity(IntentUserDetails);
     }
 }

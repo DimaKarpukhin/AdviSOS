@@ -2,11 +2,15 @@ package com.studymobile.advisos.Models;
 
 import android.location.Location;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User
 {
     private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext;
     private UserLocation mLocation;
     private UserAvailability mAvailability;
+    private List<String> mChatRoomsImPartOf = new ArrayList<>();
 
     public User(){}
 
