@@ -23,40 +23,18 @@
             android:textColor="@color/black"
             android:textStyle="italic"/>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/img_profile_photo_of_user_details"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_above="@+id/layout_email_of_user_details"-->
-<!--            android:layout_marginBottom="70dp"-->
-<!--            android:background="@drawable/btn_round_transparent_with_black_frame"-->
-<!--            android:scaleType="centerCrop">-->
-<!--        </ImageView>-->
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_profile_photo_of_user_details"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
             android:layout_centerHorizontal="true"
             android:layout_above="@+id/layout_email_of_user_details"
-            android:layout_marginBottom="70dp"
-            android:src="@drawable/img_add_a_photo_blue_light"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="55dp"
+            android:src="@drawable/img_profile_picture"
             app:civ_border_color="@color/black"
             app:civ_border_width="1dp"/>
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_profile_photo_of_user_details"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_above="@+id/layout_email_of_user_details"-->
-<!--            android:layout_marginBottom="70dp"-->
-<!--            android:background="@drawable/btn_round_transparent_with_black_frame"-->
-<!--            android:src="@drawable/ic_add_a_photo_blue_light"-->
-<!--            android:longClickable="true"-->
-<!--            android:scaleType="center">-->
-<!--        </ImageButton>-->
 
         <LinearLayout
             android:layout_above="@+id/layout_email_of_user_details"
@@ -69,7 +47,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:passwordToggleEnabled="true">
@@ -87,7 +65,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 app:passwordToggleEnabled="true">
@@ -177,7 +155,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="230dp"
             android:layout_alignEnd="@+id/layout_phone_num_of_user_details"
-            android:background="@drawable/btn_round_blue"
+            android:background="@drawable/btn_circl_blue_pressed_blue_transparent"
             android:src="@drawable/ic_arrow_forward_white"
             android:longClickable="true"/>
     </RelativeLayout>

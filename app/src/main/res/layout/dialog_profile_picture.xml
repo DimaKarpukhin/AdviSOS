@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/transparent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="@drawable/layout_transparent_with_blue_frame">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/blueTransparent">
+            <RelativeLayout
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/img_of_dialog_profile_picture"
+                    android:layout_margin="10dp"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_profile_picture"
+                    app:civ_border_color="@color/blue"
+                    app:civ_border_width="1dp"/>
+
+                <ImageButton
+                    android:id="@+id/btn_add_a_photo_of_dialog_profile_picture"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/btn_circl_white_pressed_blue_transparent"
+                    android:src="@drawable/ic_add_a_photo_blue">
+
+                </ImageButton>
+
+            </RelativeLayout>
+
+
+            <ImageButton
+                android:id="@+id/btn_close_of_dialog_profile_picture"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_close_blue"
+                android:background="@drawable/btn_circ_transparent_pressed_white_transparent">
+            </ImageButton>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="2">
+
+            <ImageButton
+                android:id="@+id/btn_remove_of_dialog_profile_picture"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_delete_blue"
+                android:background="@drawable/btn_rect_transparent_pressed_blue_transparent">
+
+            </ImageButton>
+            <TextView
+                android:id="@+id/btn_ok_of_dialog_profile_picture"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="Ok"
+                android:textSize="24sp"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:background="@drawable/btn_rect_transparent_pressed_blue_transparent">
+
+            </TextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

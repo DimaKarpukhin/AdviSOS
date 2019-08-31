@@ -7,7 +7,8 @@
     <color name="black">#000000</color>
     <color name="blackTransparent">#66000000</color>
     <color name="blackLight">#242424</color>
-    <color name="white">#ffffff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="whiteTransparent">#B3FFFFFF</color>
     <color name="blue">#0D4FA6</color>
     <color name="blueLight">#7696C9</color>
     <color name="blueTransparent">#597696C9</color>

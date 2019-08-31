@@ -14,7 +14,7 @@
         android:layout_above="@+id/txt_todo"
         android:layout_centerInParent="true"
         android:layout_margin="40dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/img_logo" />
 
     <TextView
         android:id="@+id/txt_todo"

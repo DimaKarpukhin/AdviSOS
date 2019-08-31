@@ -2,6 +2,7 @@ package com.studymobile.advisos.Activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,6 +52,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private static final String FACEBOOK_AUTH = "facebook";
     private static final String GOOGLE_AUTH = "google";
     private static final String DEFAULT = "default";
+    private static final String RES = "android.resource://";
+    private static final String DRAWBLE_DEFAULT = "/drawable/img_profile_picture";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
 
@@ -62,6 +66,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private EditText m_FieldFirstName;
     private EditText m_FieldFamilyName;
     private CountryCodePicker m_CountryCodePicker;
+
+    private Dialog m_PopupDialog;
+    private Uri m_DialogImgURI;
+    private CircleImageView m_DialogImgView;
 
     private String m_InternationalPhoneNumber = null;
     private String m_Email = null;
@@ -122,7 +130,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         }
         else if (id == m_ProfileImgView.getId())
         {
-            addProfileImage();
+            showPopupDialog();
+            //addProfileImage();
         }
     }
 
@@ -172,6 +181,70 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void showPopupDialog()
+    {
+        m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addProfileImage();
+                    }
+                });
+        m_PopupDialog.findViewById(R.id.btn_ok_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m_ProfileImgURI = m_DialogImgURI;
+                        Picasso.get().load(m_DialogImgURI.toString()).into(m_ProfileImgView);
+                        m_PopupDialog.dismiss();
+                    }
+                });
+        m_PopupDialog.findViewById(R.id.btn_remove_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        confirmRemoving();
+                    }
+                });
+        m_PopupDialog.findViewById(R.id.btn_close_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m_PopupDialog.dismiss();
+                    }
+                });
+
+        m_PopupDialog.show();
+    }
+
+    private void confirmRemoving()
+    {
+        final Dialog removeDialog = new Dialog(ActivityUserDetails.this);
+        removeDialog.setContentView(R.layout.dialog_confirm_remove);
+
+        removeDialog.findViewById(R.id.btn_remove_of_dialog_confirm_remove)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m_DialogImgURI = Uri.parse(RES + getApplicationContext()
+                                .getPackageName() + DRAWBLE_DEFAULT);
+                        Picasso.get().load(m_DialogImgURI).into(m_DialogImgView);
+                        m_ProfileImgURI = m_DialogImgURI;
+                        Picasso.get().load(m_ProfileImgURI).into(m_ProfileImgView);
+                        removeDialog.dismiss();
+                    }
+                });
+        removeDialog.findViewById(R.id.btn_cancel_of_dialog_confirm_remove)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeDialog.dismiss();
+                    }
+                });
+
+        removeDialog.show();
+    }
+
     private void addProfileImage()
     {
         if(Build.VERSION.SDK_INT >= 24)
@@ -219,12 +292,154 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
-            m_ProfileImgURI = data.getData();
-            Picasso.get().load(m_ProfileImgURI).into(m_ProfileImgView);
+            m_DialogImgURI = data.getData();
+            Picasso.get().load(m_DialogImgURI).rotate(90f).into(m_DialogImgView);
             m_IsImgPicked = true;
-
+            //setImageToImageView(m_DialogImgURI, m_DialogImgView);
         }
     }
+
+//    private void setImageToImageView(Uri i_ImgURI, ImageView i_ImgView)
+//    {
+//        OkHttpClient client = new OkHttpClient.Builder()
+//                .addNetworkInterceptor(chain ->
+//                {
+//                    Response originalResponse = chain.proceed(chain.request());
+//                    byte[] body = originalResponse.body().bytes();
+//                    ResponseBody newBody = ResponseBody .create(originalResponse.body().contentType(),
+//                            ImageUtils.processImage(body));
+//                    return originalResponse.newBuilder().body(newBody).build();
+//                }) .cache(cache) .build();
+//
+//
+//        public class ImageUtils {
+//            public static byte[] processImage(byte[] originalImg) {
+//                int orientation = Exif.getOrientation(originalImg);
+//                if (orientation != 0) {
+//                    Bitmap bmp = BitmapFactory.decodeByteArray(originalImg, 0, originalImg.length);
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    rotateImage(orientation, bmp).compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                    return stream.toByteArray();
+//                }
+//
+//                return originalImg;
+//            }
+//
+//            private static Bitmap rotateImage(int angle, Bitmap bitmapSrc) {
+//                Matrix matrix = new Matrix();
+//                matrix.postRotate(angle);
+//                return Bitmap.createBitmap(bitmapSrc, 0, 0,
+//                        bitmapSrc.getWidth(),
+//                        bitmapSrc.getHeight(), matrix, true);
+//            }
+//
+//            public class Exif {
+//                private static final String TAG = "Exif";
+//
+//                // Returns the degrees in clockwise. Values are 0, 90, 180, or 270.
+//                public static int getOrientation(byte[] jpeg) {
+//                    if (jpeg == null) {
+//                        return 0;
+//                    }
+//                }
+//
+//                int offset = 0;
+//                int length = 0; // ISO/IEC 10918-1:1993(E)
+//                 while(offset +3 <jpeg.length &&(jpeg[offset++]&0xFF)==0xFF)
+//
+//                {
+//                    int marker = jpeg[offset] & 0xFF;
+//                    // Check if the marker is a padding.
+//                    if (marker == 0xFF) {
+//                        continue;
+//                    }
+//                    offset++;
+//                    // Check if the marker is SOI or TEM.
+//                    if (marker == 0xD8 || marker == 0x01) {
+//                        continue;
+//                    }
+//                    // Check if the marker is EOI or SOS.
+//                    if (marker == 0xD9 || marker == 0xDA) {
+//                        break;
+//                    }
+//                    // Get the length and check if it is reasonable.
+//                    length = pack(jpeg, offset, 2, false);
+//                    if (length < 2 || offset + length > jpeg.length) {
+//                        Log.e(TAG, "Invalid length");
+//                        return 0;
+//                    } // Break if the marker is EXIF in APP1.
+//                    if (marker == 0xE1 && length >= 8 &&
+//                            pack(jpeg, offset + 2, 4, false) == 0x45786966
+//                            && pack(jpeg, offset + 6, 2, false) == 0) {
+//                        offset += 8;
+//                        length -= 8;
+//                        break;
+//                    } // Skip other markers.
+//                    offset += length;
+//                    length = 0;
+//                }
+//                // JEITA CP-3451 Exif Version 2.2
+//                    if(length >8)
+//
+//                {
+//                    // Identify the byte order.
+//                    int tag = pack(jpeg, offset, 4, false);
+//                    if (tag != 0x49492A00 && tag != 0x4D4D002A) {
+//                        Log.e(TAG, "Invalid byte order");
+//                        return 0;
+//                    }
+//                    boolean littleEndian = (tag == 0x49492A00); // Get the offset and check if it is reasonable.
+//                    int count = pack(jpeg, offset + 4, 4, littleEndian) + 2;
+//                    if (count < 10 || count > length) {
+//                        Log.e(TAG, "Invalid offset");
+//                        return 0;
+//                    }
+//                    offset += count;
+//                    length -= count; // Get the count and go through all the elements.
+//                    count = pack(jpeg, offset - 2, 2, littleEndian);
+//                    while (count-- > 0 && length >= 12) { // Get the tag and check if it is orientation.
+//                        tag = pack(jpeg, offset, 2, littleEndian);
+//                        if (tag == 0x0112) { // We do not really care about type and count, do we?
+//                            int orientation = pack(jpeg, offset + 8, 2, littleEndian);
+//                            switch (orientation) {
+//                                case 1:
+//                                    return 0;
+//                                case 3:
+//                                    return 180;
+//                                case 6:
+//                                    return 90;
+//                                case 8:
+//                                    return 270;
+//                            }
+//                            Log.i(TAG, "Unsupported orientation");
+//                            return 0;
+//                        }
+//                        offset += 12;
+//                        length -= 12;
+//                    }
+//                }
+//                    Log.i(TAG,"Orientation not found");
+//                    return 0;
+//            }
+//
+//            private static int pack(byte[] bytes, int offset, int length, boolean littleEndian) {
+//                int step = 1;
+//                if (littleEndian) {
+//                    offset += length - 1;
+//                    step = -1;
+//                }
+//                int value = 0;
+//                while (length-- > 0) {
+//                    value = (value << 8) | (bytes[offset] & 0xFF);
+//                    offset += step;
+//                }
+//                return value;
+//            }
+//        }
+//                 }
+//            }
+//        }
+//    }
 
     private boolean isUserDetailsCompleted()
     {
@@ -280,6 +495,12 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
 
         getIntentExtras();
+
+        m_PopupDialog = new Dialog(ActivityUserDetails.this);
+        m_PopupDialog.setContentView(R.layout.dialog_profile_picture);
+        m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_profile_picture);
+        m_DialogImgURI = m_ProfileImgURI;
+        Picasso.get().load(m_DialogImgURI).into(m_DialogImgView);
     }
 
     @SuppressLint("ResourceType")
@@ -287,6 +508,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     {
         Intent intent = getIntent();
         String improveQuality = "?height=500";
+
         if(intent != null)
         {
             m_AuthContext = intent.getStringExtra(AUTH_CONTEXT);
@@ -295,16 +517,14 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_Email = intent.getStringExtra(EXTRA_EMAIL_STR);
             m_InternationalPhoneNumber = intent.getStringExtra(EXTRA_PHONE_STR);
             m_ProfileImgLink = intent.getStringExtra(EXTRA_PHOTO_URI_STR);
-            //m_ProfileImgURI = Uri.parse(getResources().getDrawable(R.id.img_profile_photo_of_user_details).toString());
+
+            m_ProfileImgURI = Uri.parse(RES + getApplicationContext().getPackageName() + DRAWBLE_DEFAULT);
             if(m_ProfileImgLink != null && !m_ProfileImgLink.isEmpty()) {
                 m_ProfileImgLink = m_ProfileImgLink + improveQuality;
                 Picasso.get().load(m_ProfileImgLink).into(m_ProfileImgView);
                 m_ProfileImgURI = Uri.parse(m_ProfileImgLink);
 
             }
-            m_ProfileImgURI = Uri.parse("android.resource://"
-                    + getApplicationContext().getPackageName()
-                    + "/drawable/img_add_a_photo_blue_light");
             m_FieldFirstName.setText(m_FirstName);
             m_FieldFamilyName.setText(m_FamilyName);
             m_FieldEmail.setText(m_Email);

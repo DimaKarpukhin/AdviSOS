@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:background="@drawable/btn_round_blue"
+            android:background="@drawable/btn_circl_blue_pressed_blue_transparent"
             android:src="@drawable/ic_arrow_forward_white"  />
 
 

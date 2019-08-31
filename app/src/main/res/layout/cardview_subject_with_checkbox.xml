@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="100dp"
     android:layout_marginTop="15dp"
     android:layout_marginBottom="15dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     app:cardBackgroundColor="@color/blueTransparent"
     app:cardElevation="10dp"
-    app:cardCornerRadius="70dp">
+    app:cardCornerRadius="50dp">
 
     <RelativeLayout
         android:orientation="vertical"
@@ -20,8 +20,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img_profile_photo_of_user_details"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerVertical="true"
             android:src="@drawable/img_advisos"
             app:civ_border_color="@color/black"
@@ -45,7 +45,7 @@
             android:id="@+id/checkBox1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/checkbox_black_green"
+            android:button="@drawable/checkbox_black_checked_green"
             android:layout_marginRight="15dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"/>

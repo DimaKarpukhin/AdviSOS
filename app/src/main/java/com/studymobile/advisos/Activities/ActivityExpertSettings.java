@@ -114,7 +114,11 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
     {
         int id = i_View.getId();
 
-        if(id == m_BtnNext.getId()) {
+        if(id == m_BtnSubjects.getId()){
+            Intent IntentHome = new Intent
+                    (ActivityExpertSettings.this, ActivityNewSubject.class);
+            startActivity(IntentHome);
+        }else if(id == m_BtnNext.getId()) {
             populateDatabase();
             startHomeActivity();
         }else if(id == m_SwitchSunday.getId()) {
@@ -340,14 +344,14 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         }
 //        i_TxtFrom.setText("00:00");
 //        i_TxtTo.setText("23:59");
-        i_WeekDay.setBackground(getDrawable(R.drawable.btn_round_blue));
+        i_WeekDay.setBackground(getDrawable(R.drawable.btn_circl_blue_pressed_blue_transparent));
         i_WeekDay.setTextColor(getColor(R.color.white));
 
-        i_TimeFrom.setBackground(getDrawable(R.drawable.btn_round_green_light));
+        i_TimeFrom.setBackground(getDrawable(R.drawable.btn_circl_green_light_pressed_white));
         i_TimeFrom.setText("+");
         i_TimeFrom.setEnabled(true);
 
-        i_TimeTo.setBackground(getDrawable(R.drawable.btn_round_green_light));
+        i_TimeTo.setBackground(getDrawable(R.drawable.btn_circl_green_light_pressed_white));
         i_TimeTo.setText("+");
         i_TimeTo.setEnabled(true);
     }
@@ -365,15 +369,15 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         i_TxtTo.setVisibility(View.INVISIBLE);
         i_TxtTo.setText("23:59");
 
-        i_WeekDay.setBackground(getDrawable(R.drawable.btn_round_white_with_blue_frame));
+        i_WeekDay.setBackground(getDrawable(R.drawable.btn_circl_white_pressed_blue));
         i_WeekDay.setTextColor(getColor(R.color.black));
 
-        i_BtnFrom.setBackground(getDrawable(R.drawable.btn_round_white_with_black_frame));
+        i_BtnFrom.setBackground(getDrawable(R.drawable.btn_circl_white_with_black_frame));
         i_BtnFrom.setText("-");
         i_BtnFrom.setVisibility(View.VISIBLE);
         i_BtnFrom.setEnabled(false);
 
-        i_BtnTo.setBackground(getDrawable(R.drawable.btn_round_white_with_black_frame));
+        i_BtnTo.setBackground(getDrawable(R.drawable.btn_circl_white_with_black_frame));
         i_BtnTo.setText("-");
         i_BtnTo.setVisibility(View.VISIBLE);
         i_BtnTo.setEnabled(false);

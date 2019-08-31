@@ -46,7 +46,7 @@
             android:layout_marginBottom="290dp"
             android:layout_marginRight="4dp"
             android:layout_alignEnd="@+id/picker_of_code_verification"
-            android:background="@drawable/btn_round_blue"
+            android:background="@drawable/btn_circl_blue_pressed_blue_transparent"
             android:src="@drawable/ic_arrow_forward_white" />
 
         <TextView

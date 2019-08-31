@@ -45,7 +45,7 @@
             android:paddingEnd="30dp"
             android:paddingStart="30dp"
             android:drawableEnd="@drawable/ic_arrow_forward_black"
-            android:background="@drawable/btn_rectangle_white_with_blue_frame"
+            android:background="@drawable/btn_rect_white_pressed_blue_transparent"
             android:textColor="@color/black"
             android:longClickable="true"/>
 
@@ -135,7 +135,7 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -165,7 +165,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -208,7 +208,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"
                         android:longClickable="true"/>
 
@@ -248,7 +248,7 @@
                         android:text="M"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -278,7 +278,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -321,7 +321,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -360,7 +360,7 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -390,7 +390,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -433,7 +433,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -472,7 +472,7 @@
                         android:text="W"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -502,7 +502,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -545,7 +545,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -584,7 +584,7 @@
                         android:text="T"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -614,7 +614,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -657,7 +657,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -696,7 +696,7 @@
                         android:text="F"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -726,7 +726,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -769,7 +769,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -808,7 +808,7 @@
                         android:text="S"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_blue_frame"
+                        android:background="@drawable/btn_circl_white_pressed_blue"
                         android:longClickable="true"/>
                 </RelativeLayout>
 
@@ -838,7 +838,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -881,7 +881,7 @@
                         android:text="-"
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:background="@drawable/btn_round_white_with_black_frame"
+                        android:background="@drawable/btn_circl_white_with_black_frame"
                         android:enabled="false"/>
 
                     <TextView
@@ -906,7 +906,7 @@
             android:layout_alignEnd="@+id/layout_week_availability"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:background="@drawable/btn_round_blue"
+            android:background="@drawable/btn_circl_blue_pressed_blue_transparent"
             android:src="@drawable/ic_arrow_forward_white" />
     </RelativeLayout>
 </RelativeLayout>
