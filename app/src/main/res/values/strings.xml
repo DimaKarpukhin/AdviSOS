@@ -36,7 +36,15 @@
     <string name="sms_code_msg">Enter the 6-digit code sent to you by SMS</string>
     <string name="resend_code"><u>Resend code</u></string>
     <string name="enter_mobile_number">Enter your mobile number</string>
-
+    <string name="create_chat_room">Please choose a name for the room</string>
+    <string name="enter_room_name">Enter Room name</string>
+    <string name="create_room_information">Please set the room name as you wish.
+        The room name will be the display name of the current chat room.
+        Make the name count.
+    </string>
+    <string name="hello">Hello</string>
+    <string name="confirm_room_name">Are you sure regarding the room name</string>
+    <string name="empty_room_name">Room name cant be empty, please enter name</string>
     //Facebook
     <string name="facebook_app_id">636914536798291</string>
     <string name="fb_login_protocol_scheme">fb636914536798291</string>
