@@ -210,11 +210,7 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
 
         if(!isSubjectAlreadyExist(subjName)) {
             subject.setName(subjName);
-            if (m_FieldSubjName.getText() != null
-                    && !m_FieldSubjName.getText().toString().isEmpty()) {
-                subject.setDescription(m_FieldSubjName.getText().toString());
-            }
-
+            subject.setDescription(m_FieldSubjDescription.getText().toString());
             subject.setImgLink(m_DialogImgURI.toString());
             databaseRef.child(subjName).setValue(subject)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {

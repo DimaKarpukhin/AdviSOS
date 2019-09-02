@@ -52,7 +52,6 @@
                         android:hint="Subject name"
                         android:padding="5dp"
                         android:textSize="21sp"
-                        android:textAllCaps="true"
                         android:background="@drawable/btn_rect_white_pressed_blue_transparent"
                         android:textColor="@color/black"
                         android:inputType="textMultiLine" />
