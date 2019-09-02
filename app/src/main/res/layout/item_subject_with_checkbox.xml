@@ -19,7 +19,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/img_profile_photo_of_user_details"
+            android:id="@+id/img_subject_of_item_subject_with_checkbox"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerVertical="true"
@@ -27,12 +27,11 @@
             app:civ_border_color="@color/black"
             app:civ_border_width="1dp"/>
 
-
         <TextView
-            android:id="@+id/txt_subject_name"
+            android:id="@+id/txt_subject_name_of_item_subject_with_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/checkBox1"
+            android:layout_toStartOf="@+id/checkBox_of_item_subject_with_checkbox"
             android:layout_toEndOf="@+id/img_profile_photo_of_user_details"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
@@ -42,7 +41,7 @@
             android:text="Subject name"/>
 
         <CheckBox
-            android:id="@+id/checkBox1"
+            android:id="@+id/checkBox_of_item_subject_with_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/checkbox_black_checked_green"

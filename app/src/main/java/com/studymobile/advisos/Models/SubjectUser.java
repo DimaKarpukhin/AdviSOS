@@ -2,8 +2,10 @@ package com.studymobile.advisos.Models;
 
 public class SubjectUser
 {
+    
     private String mUserId;
     private Rating mRating;
+    private boolean mIsChecked; //?
 
     public SubjectUser(){}
 
@@ -12,6 +14,15 @@ public class SubjectUser
         this.setUserId(i_UserId);
         this.setRating(i_Rating);
     }
+
+    public boolean getChecked() {
+        return mIsChecked;
+    }
+
+    public void setChecked(boolean i_Checked) {
+        mIsChecked = i_Checked;
+    }
+
 
     public String getUserId()
     {

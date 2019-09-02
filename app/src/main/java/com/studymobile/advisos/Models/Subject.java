@@ -5,8 +5,11 @@ import java.util.List;
 
 public class Subject
 {
+    private boolean mIsChecked;//?
     private String mName, mDescription, mImgLink;
     private List<SubjectUser> mSubjectUsers = new LinkedList<SubjectUser>();
+
+    public Subject(){}
 
     public Subject(String i_Name, String i_Description, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
     {
@@ -14,6 +17,14 @@ public class Subject
         this.setDescription(i_Description);
         this.setImgLink(i_ImgLink);
         this.setSubjectUsers(i_SubjectUsers);
+    }
+
+    public boolean getChecked() {
+        return mIsChecked;
+    }
+
+    public void setChecked(boolean i_Checked) {
+        mIsChecked = i_Checked;
     }
 
     public String getName()

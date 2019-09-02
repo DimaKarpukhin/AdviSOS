@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import com.studymobile.advisos.Services.InputValidation;
 import java.util.Calendar;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityExpertSettings extends AppCompatActivity implements View.OnClickListener,
@@ -98,6 +101,21 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_expert_settings);
         setActivityContent();
         setFirebaseData();
+        if(isUserExistsInDatabase())
+        {
+            getUserExpertDetailsFromDB();
+        }
+    }
+
+    private boolean isUserExistsInDatabase()
+    {
+        //TODO
+        return true;
+    }
+
+    private void getUserExpertDetailsFromDB()
+    {
+        //TODO
     }
 
     @Override
@@ -116,7 +134,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
 
         if(id == m_BtnSubjects.getId()){
             Intent IntentHome = new Intent
-                    (ActivityExpertSettings.this, ActivityNewSubject.class);
+                    (ActivityExpertSettings.this, ActivitySubjectPicker.class);
             startActivity(IntentHome);
         }else if(id == m_BtnNext.getId()) {
             populateDatabase();
@@ -199,7 +217,17 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         availability.setIsNotDisturb(m_IsNotDisturb);
         availability.setIsNoNumChatsLimit(m_IsNoNumChatsLimit);
         DatabaseReference databaseRef = m_Database.getReference("Users");
-        databaseRef.child(m_CurrentUser.getUid()).child("userAvailability").setValue(availability);
+        databaseRef.child(m_CurrentUser.getUid()).child("userAvailability").setValue(availability)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> i_Task) {
+                if(i_Task.isSuccessful()){ }
+                else{
+                    Toast.makeText(ActivityExpertSettings.this,
+                            "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });;
 
     }
 
