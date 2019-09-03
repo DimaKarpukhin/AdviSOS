@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_checked="false"
-        android:drawable="@drawable/ic_checkbox_unchecked_black">
+        android:drawable="@drawable/ic_checkbox_unchecked_blue">
     </item>
     <item
         android:state_checked="true"

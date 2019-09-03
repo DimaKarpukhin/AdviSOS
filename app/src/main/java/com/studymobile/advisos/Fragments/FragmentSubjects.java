@@ -66,10 +66,19 @@ public class FragmentSubjects extends Fragment {
     {
         super.onStart();
 
+        buildSubjectOptions();
+        populateSubjectsView();
+    }
+
+    private void buildSubjectOptions()
+    {
         mOptions = new FirebaseRecyclerOptions.Builder<Subject>()
                 .setQuery(mSujectRef, Subject.class)
                 .build();
+    }
 
+    private void populateSubjectsView()
+    {
         mAdapter = new FirebaseRecyclerAdapter<Subject, ViewHolderSubject>(mOptions) {
             @NonNull
             @Override
@@ -85,19 +94,15 @@ public class FragmentSubjects extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
                                             @NonNull final Subject i_Subject) {
-//                i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
-//                i_ViewHolder.getArowwRightIcon().setVisibility(View.VISIBLE);
+                i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
+                i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
-                //i_ViewHolder.getSubjectImage().setImageURI(Uri.parse(i_Subject.getImgLink()));
 
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-//                        m_AnalyticsManager.TrackDishChoiceEvent(i_Model);
-//                        Toast.makeText(ActivityDishesList.this,
-//                                "" + i_Model.getName(), Toast.LENGTH_SHORT).show();
-//                        startDisheDetailsActivity(i_Position);
+
                     }
                 });
             }

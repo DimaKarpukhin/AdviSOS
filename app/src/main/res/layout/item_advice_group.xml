@@ -23,7 +23,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_subject_of_item_subject"
+                android:id="@+id/img_subject_of_item_advice_group"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerVertical="true"
@@ -38,7 +38,6 @@
             android:background="@color/white">
 
             <LinearLayout
-                android:layout_toEndOf="@+id/img_subject_of_item_advice_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -90,6 +89,7 @@
                         android:textSize="20sp"
                         android:textStyle="italic"
                         android:text="Last message"/>
+
                     <RelativeLayout
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
