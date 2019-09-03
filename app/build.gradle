@@ -44,10 +44,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.firebaseui:firebase-ui-database:4.2.1'
+
     //Cloud Messaging
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     //Facebbok
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
