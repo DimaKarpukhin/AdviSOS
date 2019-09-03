@@ -1045,7 +1045,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
     private void startHomeActivity()
     {
         Intent IntentHome = new Intent
-                (ActivityExpertSettings.this, HomeActivity.class);
+                (ActivityExpertSettings.this, ActivityHomeScreen.class);
         startActivity(IntentHome);
     }
 }

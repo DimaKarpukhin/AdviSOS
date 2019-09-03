@@ -7,8 +7,18 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_launcher"
         android:roundIcon="@mipmap/ic_app_launcher_round"
-        android:supportsRtl="true"
+        tools:replace="android:supportsRtl"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Activities.ActivityHomeScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Activities.ActivityCreateChatRoom" />
+        <activity
+            android:name=".Activities.ActivityChatRoom"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ActivitySubjectPicker"
             android:screenOrientation="portrait"
@@ -38,7 +48,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -91,10 +100,10 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 

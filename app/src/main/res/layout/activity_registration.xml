@@ -52,7 +52,7 @@
             android:padding="20dp"
             android:textSize="16sp"
             android:text="@string/btn_phone_number"
-            android:backgroundTint="@color/transparent"
+            android:backgroundTint="@color/white"
             android:textColor="@color/black"/>
 
         <Button
@@ -67,7 +67,7 @@
             android:padding="20dp"
             android:textSize="16sp"
             android:text="@string/btn_email_and_password"
-            android:backgroundTint="@color/transparent"
+            android:backgroundTint="@color/white"
             android:textColor="@color/black"/>
 
         <Button
@@ -82,7 +82,7 @@
             android:padding="20dp"
             android:textSize="16sp"
             android:text="@string/btn_social_networks"
-            android:backgroundTint="@color/transparent"
+            android:backgroundTint="@color/white"
             android:textColor="@color/black"/>
     </RelativeLayout>
 

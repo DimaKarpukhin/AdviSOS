@@ -1,20 +1,22 @@
 package com.studymobile.advisos.Models;
 
+import android.net.Uri;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class Subject
 {
     private boolean mIsChecked;//?
-    private String mName, mDescription, mImgLink;
+    private String mSubjectName, mSubjectDescription, mImgLink;
     private List<SubjectUser> mSubjectUsers = new LinkedList<SubjectUser>();
 
     public Subject(){}
 
-    public Subject(String i_Name, String i_Description, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
+    public Subject(String i_SubjectName, String i_SubjectDescription, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
     {
-        this.setName(i_Name);
-        this.setDescription(i_Description);
+        this.setSubjectName(i_SubjectName);
+        this.setSubjectDescription(i_SubjectDescription);
         this.setImgLink(i_ImgLink);
         this.setSubjectUsers(i_SubjectUsers);
     }
@@ -27,14 +29,14 @@ public class Subject
         mIsChecked = i_Checked;
     }
 
-    public String getName()
+    public String getSubjectName()
     {
-        return mName;
+        return mSubjectName;
     }
 
-    public String getDescription()
+    public String getSubjectDescription()
     {
-        return mDescription;
+        return mSubjectDescription;
     }
 
     public String getImgLink()
@@ -47,14 +49,14 @@ public class Subject
         return mSubjectUsers;
     }
 
-    public void setName(String i_Name)
+    public void setSubjectName(String i_SubjectName)
     {
-        this.mName = i_Name;
+        this.mSubjectName = i_SubjectName;
     }
 
-    public void setDescription(String i_Description)
+    public void setSubjectDescription(String i_SubjectDescription)
     {
-        this.mDescription = i_Description;
+        this.mSubjectDescription = i_SubjectDescription;
     }
 
     public void setImgLink(String i_ImgLink)

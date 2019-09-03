@@ -6,7 +6,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.CheckBox;
 
 import com.studymobile.advisos.Models.Subject;
@@ -15,7 +14,6 @@ import com.studymobile.advisos.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AdapterCheckableSubject extends
@@ -30,7 +28,7 @@ public class AdapterCheckableSubject extends
     public ViewHolder onCreateViewHolder(ViewGroup i_Parent, int i_ViewType)
     {
         Context context = i_Parent.getContext();
-        int layoutForItem = R.layout.item_subject_with_checkbox;
+        int layoutForItem = R.layout.item_subject;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(layoutForItem, i_Parent, false);
 
@@ -67,7 +65,7 @@ public class AdapterCheckableSubject extends
         ViewHolder(View i_ItemView)
         {
             super(i_ItemView);
-            m_CheckBox = i_ItemView.findViewById(R.id.checkBox_of_item_subject_with_checkbox);
+            m_CheckBox = i_ItemView.findViewById(R.id.checkBox_of_item_subject);
             i_ItemView.setOnClickListener(this);
         }
 
