@@ -51,7 +51,7 @@
                 android:id="@+id/checkBox_of_item_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_black_checked_green"
+                android:button="@drawable/checkbox_blue_checked_green"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:visibility="invisible"/>
@@ -60,7 +60,7 @@
                 android:id="@+id/img_arrow_right_of_item_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_black_checked_green"
+                android:button="@drawable/checkbox_blue_checked_green"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_keyboard_arrow_right_blue"/>

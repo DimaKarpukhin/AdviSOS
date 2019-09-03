@@ -4,16 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.FragmentAdviceMe"
-    android:background="@drawable/background_splash_screen">
+    tools:context=".Fragments.FragmentAdviceMe">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Advice me Fragment"
-        android:layout_centerInParent="true"
-        android:textSize="26sp"
-        android:textStyle="bold"/>/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_subjects_list_of_fragment_advice_me"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

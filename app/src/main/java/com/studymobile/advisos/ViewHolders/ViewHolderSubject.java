@@ -31,7 +31,7 @@ public class ViewHolderSubject extends RecyclerView.ViewHolder implements View.O
         i_ItemView.setOnClickListener(this);
     }
 
-    public ImageView getArowwRightIcon()
+    public ImageView getArrowRightIcon()
     {
         return m_ArrowRightIcon;
     }
@@ -45,12 +45,6 @@ public class ViewHolderSubject extends RecyclerView.ViewHolder implements View.O
     {
         return m_SubjectImgView;
     }
-
-    public void setSubjectImage(String i_ImgLink)
-    {
-        m_SubjectImgView.setImageURI(Uri.parse(i_ImgLink));
-    }
-
 
     public void setSubjectName(String i_SubjectName)
     {
