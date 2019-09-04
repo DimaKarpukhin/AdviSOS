@@ -10,23 +10,50 @@
         android:id="@+id/app_bar_layout_of_home_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        android:background="@color/blue">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_of_homes_screen"
+
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar_of_homes_screen"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                android:background="@color/blue"-->
+<!--                app:layout_scrollFlags="scroll|enterAlways" />-->
+
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
-            app:layout_scrollFlags="scroll|enterAlways" />
+           app:mt_handlesTintEnabled="false"
+            app:mt_speechMode="false"
+            app:mt_navIconEnabled="true"
+            app:mt_clearIconTint="@color/white"
+            app:mt_hint="Type here..."
+            app:mt_hintColor="@color/white"
+            app:mt_maxSuggestionsCount="5"
+            app:mt_searchBarColor="@color/transparent"
+            app:mt_placeholderColor="@color/white"
+            app:mt_placeholder="AdviSOS"
+            app:mt_textColor="@color/white"
+            app:mt_highlightedTextColor="@color/white"
+            app:mt_roundedSearchBarEnabled="false"
+            app:mt_searchIconTint="@color/white"
+            app:mt_navIconTint="@color/white"
+            app:mt_dividerColor="@color/white"/>
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs_of_home_screen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:background="@color/transparent"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@color/white"
             app:tabMode="fixed"
             app:tabGravity="fill"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

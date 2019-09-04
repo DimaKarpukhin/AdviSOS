@@ -212,21 +212,21 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
             subject.setSubjectName(subjName);
             subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
             subject.setImgLink(m_DialogImgURI.toString());
-            databaseRef.child(subjName).setValue(subject)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> i_Task) {
-                            if (i_Task.isSuccessful()) {
-                                Toast.makeText(ActivitySubjectPicker.this,
-                                        "The subject is created.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(ActivitySubjectPicker.this,
-                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
-                            }
-
-                            setDefaultPopupDialog();
-                        }
-                    });
+//            databaseRef.child(subjName).setValue(subject)
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> i_Task) {
+//                            if (i_Task.isSuccessful()) {
+//                                Toast.makeText(ActivitySubjectPicker.this,
+//                                        "The subject is created.", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(ActivitySubjectPicker.this,
+//                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            setDefaultPopupDialog();
+//                        }
+//                    });
             databaseRef.push().setValue(subject)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

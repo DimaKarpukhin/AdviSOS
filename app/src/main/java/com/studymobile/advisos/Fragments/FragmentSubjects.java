@@ -58,16 +58,44 @@ public class FragmentSubjects extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         mSujectRef = mDatabase.getReference().child("Subjects");
 
+
+        buildSubjectOptions();
+        populateSubjectsView();
+
         return mSubjectsView;
     }
+
 
     @Override
     public void onStart()
     {
         super.onStart();
+        if(mAdapter != null)
+        {
+            mAdapter.startListening();
+        }
 
-        buildSubjectOptions();
-        populateSubjectsView();
+    }
+
+    @Override
+    public void onStop()
+    {
+        if(mAdapter != null)
+        {
+            mAdapter.stopListening();
+        }
+
+        super.onStop();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(mAdapter != null)
+        {
+            mAdapter.startListening();
+        }
     }
 
     private void buildSubjectOptions()
@@ -93,9 +121,8 @@ public class FragmentSubjects extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
-                                            @NonNull final Subject i_Subject) {
-                i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
-                i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
+                                            @NonNull final Subject i_Subject)
+            {
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
 
