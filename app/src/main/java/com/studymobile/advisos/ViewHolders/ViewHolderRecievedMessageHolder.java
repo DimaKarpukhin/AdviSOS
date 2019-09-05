@@ -2,12 +2,12 @@ package com.studymobile.advisos.ViewHolders;
 
 
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.core.view.View;
 import com.studymobile.advisos.Models.ChatMessage;
 import com.studymobile.advisos.R;
 
@@ -25,14 +25,20 @@ public class ViewHolderRecievedMessageHolder extends RecyclerView.ViewHolder {
         profileImage = (ImageView) itemView.findViewById(R.id.image_message_profile_picture);
     }
 
-    void bind(ChatMessage message) {
+    public void setMessageText(String i_messageText) {
+        messageText.setText(i_messageText);
+    }
+    public void setTimeText(String i_timeText)
+    {
+        timeText.setText(i_timeText);
+    }
 
+    public void setNameText(String i_nameText) {
+        this.nameText.setText(i_nameText);
+    }
 
-        // Format the stored timestamp into a readable String using method.
-
-
-        // Insert the profile image from the URL into the ImageView.
-
+    public ImageView getProfileImage() {
+        return profileImage;
     }
 }
-}
+

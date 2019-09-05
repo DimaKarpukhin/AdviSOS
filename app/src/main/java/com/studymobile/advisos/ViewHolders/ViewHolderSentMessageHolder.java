@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.shaishavgandhi.loginbuttons.Utils;
 import com.studymobile.advisos.Models.ChatMessage;
 import com.studymobile.advisos.R;
 
@@ -20,10 +19,12 @@ public class ViewHolderSentMessageHolder extends RecyclerView.ViewHolder {
         timeText = (TextView) itemView.findViewById(R.id.text_message_time_sent);
     }
 
-    void bind(ChatMessage message) {
+    public void setMessageText(String i_messageText) {
+        this.messageText.setText(i_messageText);
 
+    }
 
-        // Format the stored timestamp into a readable String using method.
-
+    public void setTimeText(String i_timeText) {
+        this.timeText.setText(i_timeText);
     }
 }

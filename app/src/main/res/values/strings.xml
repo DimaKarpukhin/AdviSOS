@@ -45,6 +45,7 @@
     <string name="hello">Hello</string>
     <string name="confirm_room_name">Are you sure regarding the room name</string>
     <string name="empty_room_name">Room name cant be empty, please enter name</string>
+    <string name="message_edit_text_toast"> Please enter a massage</string>
     //Facebook
     <string name="facebook_app_id">636914536798291</string>
     <string name="fb_login_protocol_scheme">fb636914536798291</string>
