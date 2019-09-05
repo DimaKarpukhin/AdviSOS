@@ -2,6 +2,7 @@ package com.studymobile.advisos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.icu.text.DateFormat;
@@ -68,6 +69,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
+        mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,6 +191,9 @@ public class ActivityChatRoom extends AppCompatActivity {
                 }
             }
         };
+        mMessagesAdapterd.startListening();
+        mMessagesRecyclerView.setAdapter(mMessagesAdapterd);
+
     }
 
     private void buildMessagesList() {
@@ -196,5 +201,11 @@ public class ActivityChatRoom extends AppCompatActivity {
         mOptions = new FirebaseRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(mChatRoonIdRefMessages, ChatMessage.class)
                 .build();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMessagesAdapterd.stopListening();
     }
 }
