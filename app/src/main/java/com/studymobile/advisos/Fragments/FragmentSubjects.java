@@ -34,7 +34,7 @@ public class FragmentSubjects extends Fragment {
     private RecyclerView mSubjectsList;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mSujectRef;
+    private DatabaseReference mSubjectRef;
     private FirebaseAuth mAuth;
     private String mSubjectID;
 
@@ -56,10 +56,10 @@ public class FragmentSubjects extends Fragment {
         mSubjectsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mDatabase = FirebaseDatabase.getInstance();
-        mSujectRef = mDatabase.getReference().child("Subjects");
+        mSubjectRef = mDatabase.getReference().child("Subjects");
 
 
-        buildSubjectOptions();
+        buildSubjectsOptions();
         populateSubjectsView();
 
         return mSubjectsView;
@@ -98,10 +98,10 @@ public class FragmentSubjects extends Fragment {
         }
     }
 
-    private void buildSubjectOptions()
+    private void buildSubjectsOptions()
     {
         mOptions = new FirebaseRecyclerOptions.Builder<Subject>()
-                .setQuery(mSujectRef, Subject.class)
+                .setQuery(mSubjectRef, Subject.class)
                 .build();
     }
 
@@ -123,6 +123,8 @@ public class FragmentSubjects extends Fragment {
             protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
                                             @NonNull final Subject i_Subject)
             {
+                i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
+                i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
 

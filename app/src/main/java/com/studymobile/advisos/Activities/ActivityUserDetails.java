@@ -96,6 +96,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
+        setPopupDialog();
+
         if(isUserExistsInDatabase())
         {
             getUserPersonalDetailsFromDB();
@@ -407,7 +409,6 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
 
         getIntentExtras();
-        setPopupDialog();
     }
 
     @SuppressLint("ResourceType")

@@ -48,7 +48,7 @@ public class AdapterTabsAccessor extends FragmentPagerAdapter
             case 1:
                 return "Advice me";
             case 2:
-                return "Advice Others";
+                return "Advice you";
             default:
                 return null;
         }

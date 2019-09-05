@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="290dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:id="@+id/drawer_layout_subject_picker"
+    android:background="@color/white">
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/search_bar_of_dialog_subjects_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mt_searchBarColor="@color/greenTransparent"
+        app:mt_textColor="@color/blueLight"
+        app:mt_highlightedTextColor="@color/blue"
+        app:mt_placeholder="Choose subjects"
+        app:mt_placeholderColor="@color/blue"
+        app:mt_searchIconTint="@color/blue"
+        app:mt_clearIconTint="@color/blue"
+        app:mt_backIconTint="@color/blue"
+        app:mt_hint="Search..."
+        app:mt_hintColor="@color/blue"
+        app:mt_dividerColor="@color/blue"
+        app:mt_maxSuggestionsCount="5"
+        app:mt_roundedSearchBarEnabled="false"
+        app:mt_speechMode="false"
+        app:elevation="0dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_of_dialog_subjects_list"
+        android:layout_below="@+id/search_bar_of_dialog_subjects_list"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_create_a_subject_of_dialog_subjects_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="65dp"
+            android:backgroundTint="@color/greenTransparent"
+            android:src="@drawable/ic_add"
+            app:elevation="0dp"
+            app:borderWidth="1dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_next_of_dialog_subjects_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/greenTransparent"
+            android:src="@drawable/ic_arrow_forward_blue"
+            app:elevation="0dp"
+            app:borderWidth="1dp"/>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

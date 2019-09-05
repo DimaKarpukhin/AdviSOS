@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="75dp"
     app:cardBackgroundColor="@color/white">
 
     <RelativeLayout
@@ -24,8 +24,8 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_subject_of_item_subject"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/img_advisos" />
         </RelativeLayout>
@@ -33,7 +33,7 @@
         <RelativeLayout
             android:layout_toEndOf="@+id/layout_image"
             android:layout_width="match_parent"
-            android:layout_height="79.5dp"
+            android:layout_height="74.5dp"
             android:layout_alignParentEnd="true"
             android:background="@color/white">
 
@@ -54,6 +54,7 @@
                 android:button="@drawable/checkbox_blue_checked_green"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
                 android:visibility="invisible"/>
 
             <ImageView

@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.Manifest;
@@ -16,6 +18,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,10 +36,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.R;
 
-public class ActivitySubjectPicker extends AppCompatActivity implements View.OnClickListener
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActivitySubjectPicker extends AppCompatActivity implements
+        View.OnClickListener, TextWatcher, MaterialSearchBar.OnSearchActionListener
 {
     private static final String RES = "android.resource://";
     private static final String DRAWABLE_DEFAULT = "/drawable/img_advisos";
@@ -48,22 +57,29 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
     private FirebaseDatabase m_Database;
     private FirebaseStorage m_Storage;
 
-    private ImageButton m_FabCreateSubj;
-
-    private Dialog m_PopupDialog;
+    private Dialog m_DialogCreateSubj;
     private Uri m_DialogImgURI;
     private CircleImageView m_DialogImgView;
     private EditText m_FieldSubjName;
     private EditText m_FieldSubjDescription;
+
+    private Dialog m_DialogSubjList;
+    private ImageButton m_FabCreateSubj;
+    private ImageButton m_FabNext;
+    private List<String> m_SuggestionsList;
+    private MaterialSearchBar m_SearchBar;
+    private RecyclerView m_RecyclerView;
+
 
     private boolean m_IsImgPicked = false;
 
     @Override
     protected void onCreate(Bundle i_SavedInstanceState) {
         super.onCreate(i_SavedInstanceState);
-        setContentView(R.layout.activity_subject_picker);
+        setContentView(R.layout.dialog_subjects_list);
         setFirebaseData();
-        setActivityContent();
+        setDialogSubjectList();
+        setDialogCreateSubj();
     }
 
     @Override
@@ -71,24 +87,48 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
     {
         int id = i_View.getId();
 
-        if(id == m_FabCreateSubj.getId())
+     if(id == m_FabCreateSubj.getId())
         {
-            showPopupDialog();
+            showDialogCreateSubj();
         }
     }
 
-    private void showPopupDialog()
+    private void showDialogSubjList()
+    {
+//        buildSubjectsOptions();
+//        populateSubjectsView();
+
+        m_DialogSubjList.findViewById(R.id.fab_create_a_subject_of_dialog_subjects_list)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View i_View) {
+                        showDialogCreateSubj();
+                    }
+                });
+
+        m_DialogSubjList.findViewById(R.id.fab_next_of_dialog_subjects_list)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View i_View) {
+                        m_DialogSubjList.dismiss();
+                    }
+                });
+
+        m_DialogCreateSubj.show();
+    }
+
+    private void showDialogCreateSubj()
     {
         m_DialogImgView.setImageURI(m_DialogImgURI);
 
-        m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_create_a_subj)
+        m_DialogCreateSubj.findViewById(R.id.btn_add_a_photo_of_dialog_create_a_subj)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         addProfileImage();
                     }
                 });
-        m_PopupDialog.findViewById(R.id.btn_create_of_dialog_create_a_subj)
+        m_DialogCreateSubj.findViewById(R.id.btn_create_of_dialog_create_a_subj)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -104,20 +144,20 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
                                 uploadImgToStorage(ADVISOS);
                             }
 
-                            m_PopupDialog.dismiss();
+                            m_DialogCreateSubj.dismiss();
                         }
                     }
                 });
-        m_PopupDialog.findViewById(R.id.btn_cancel_of_dialog_create_a_subj)
+        m_DialogCreateSubj.findViewById(R.id.btn_cancel_of_dialog_create_a_subj)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setDefaultPopupDialog();
-                        m_PopupDialog.dismiss();
+                        setDefaultDialogCreateSubj();
+                        m_DialogCreateSubj.dismiss();
                     }
                 });
 
-        m_PopupDialog.show();
+        m_DialogCreateSubj.show();
     }
 
     private void addProfileImage()
@@ -188,7 +228,7 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
                                 public void onSuccess(Uri uri)
                                 {
                                     m_DialogImgURI = uri;
-                                    populateDatabase();
+                                    pushNewSubjToDatabase();
                                 }
                             });
                         }
@@ -202,7 +242,7 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void populateDatabase()
+    private void pushNewSubjToDatabase()
     {
         final Subject subject = new Subject();
         DatabaseReference databaseRef = m_Database.getReference("Subjects");
@@ -239,14 +279,14 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
                                         "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
                             }
 
-                            //setDefaultPopupDialog();
+                            setDefaultDialogCreateSubj();
                         }
                     });
         }
 
     }
 
-    private void setDefaultPopupDialog()
+    private void setDefaultDialogCreateSubj()
     {
         m_DialogImgURI = Uri.parse(RES + getApplicationContext()
                 .getPackageName() + DRAWABLE_DEFAULT);
@@ -272,23 +312,66 @@ public class ActivitySubjectPicker extends AppCompatActivity implements View.OnC
         m_Storage = FirebaseStorage.getInstance();
     }
 
-    private void setActivityContent()
+    private void setDialogSubjectList()
     {
-        m_FabCreateSubj = findViewById(R.id.fab_create_a_subject_of_subject_picker);
-        m_FabCreateSubj.setOnClickListener(this);
+        m_DialogSubjList = new Dialog(ActivitySubjectPicker.this);
+        m_DialogSubjList.setContentView(R.layout.dialog_create_a_subject);
+        m_DialogSubjList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        setPopupDialog();
+        m_SuggestionsList = new ArrayList<>();
+        m_SearchBar = findViewById(R.id.search_bar);
+
+        m_SearchBar.setCardViewElevation(10);
+        m_SearchBar.setMaxSuggestionCount(5);
+        m_SearchBar.addTextChangeListener(this);
+        m_SearchBar.setOnSearchActionListener(this);
+
+        m_RecyclerView = findViewById(R.id.recycler_view_of_dialog_subjects_list);
+        m_RecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        m_RecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void setPopupDialog()
+    private void setDialogCreateSubj()
     {
-        m_PopupDialog = new Dialog(ActivitySubjectPicker.this);
-        m_PopupDialog.setContentView(R.layout.dialog_create_a_subject);
-        m_PopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_create_a_subj);
+        m_DialogCreateSubj = new Dialog(ActivitySubjectPicker.this);
+        m_DialogCreateSubj.setContentView(R.layout.dialog_create_a_subject);
+        m_DialogCreateSubj.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        m_DialogImgView = m_DialogCreateSubj.findViewById(R.id.img_of_dialog_create_a_subj);
         m_DialogImgURI = Uri.parse(RES + getApplicationContext()
                 .getPackageName() + DRAWABLE_DEFAULT);
-        m_FieldSubjName = m_PopupDialog.findViewById(R.id.field_subject_name_of_dialog_create_a_subj);
-        m_FieldSubjDescription = m_PopupDialog.findViewById(R.id.field_subject_description_of_dialog_create_a_subj);
+        m_FieldSubjName = m_DialogCreateSubj.findViewById(R.id.field_subject_name_of_dialog_create_a_subj);
+        m_FieldSubjDescription = m_DialogCreateSubj.findViewById(R.id.field_subject_description_of_dialog_create_a_subj);
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+
     }
 }

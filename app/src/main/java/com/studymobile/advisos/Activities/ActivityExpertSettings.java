@@ -1,44 +1,117 @@
 package com.studymobile.advisos.Activities;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Enums.eWeekDay;
+import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.Models.Day;
+import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
+import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ActivityExpertSettings extends AppCompatActivity implements View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener
+public class ActivityExpertSettings extends AppCompatActivity implements
+        View.OnClickListener, CompoundButton.OnCheckedChangeListener,
+        TextWatcher, MaterialSearchBar.OnSearchActionListener
 {
+    private static final String RES = "android.resource://";
+    private static final String DRAWABLE_DEFAULT = "/drawable/img_advisos";
+    private static final String ADVISOS = "Advisos";
+    private static final int IMG_REQ = 1;
+    private static final int REQ_CODE = 2;
+
+    private FirebaseAuth m_Auth;
+    private FirebaseUser m_CurrentUser;
+    private FirebaseDatabase m_Database;
+    private FirebaseStorage m_Storage;
+    private FirebaseRecyclerOptions<Subject> m_Options;
+    private FirebaseRecyclerAdapter<Subject, ViewHolderSubject> m_Adapter;
+
+    private Dialog m_DialogCreateSubj;
+    private Uri m_DialogImgURI;
+    private CircleImageView m_DialogImgView;
+    private EditText m_FieldSubjName;
+    private EditText m_FieldSubjDescription;
+    private boolean m_IsImgPicked = false;
+
+    private Dialog m_DialogSubjList;
+    private ImageButton m_FabCreateSubj;
+    private ImageButton m_FabNext;
+    private List<String> m_SuggestionsList;
+    private MaterialSearchBar m_SearchBar;
+    private RecyclerView m_DialogRecyclerView;
     private Button m_BtnSubjects;
     private ImageButton m_BtnNext;
-
     private Switch m_SwitchAlwaysAvailable,m_SwitchNotDisturb;
+
+    private Button m_SwitchSunday, m_SwitchMonday, m_SwitchTuesday,
+            m_SwitchWednesday, m_SwitchThursday, m_SwitchFriday, m_SwitchSaturday;
+
+    private Button m_BtnStartTimeSunday, m_BtnStartTimeMonday, m_BtnStartTimeTuesday,
+            m_BtnStartTimeWednesday,  m_BtnStartTimeThursday, m_BtnStartTimeFriday, m_BtnStartTimeSaturday;
+
+    private Button m_BtnEndTimeSunday, m_BtnEndTimeMonday, m_BtnEndTimeTuesday,
+            m_BtnEndTimeWednesday, m_BtnEndTimeThursday, m_BtnEndTimeFriday, m_BtnEndTimeSaturday;
+
+    private TextView m_TxtStartTimeSunday, m_TxtStartTimeMonday, m_TxtStartTimeTuesday,
+            m_TxtStartTimeWednesday, m_TxtStartTimeThursday, m_TxtStartTimeFriday, m_TxtStartTimeSaturday;
+
+    private TextView m_TxtEndTimeSunday, m_TxtEndTimeMonday, m_TxtEndTimeTuesday,
+            m_TxtEndTimeWednesday, m_TxtEndTimeThursday, m_TxtEndTimeFriday, m_TxtEndTimeSaturday;
 
     private short m_AvailableDays = 0;
     private boolean m_IsNoNumChatsLimit = true;
@@ -53,60 +126,20 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
     private boolean m_IsFridayAvailable = false;
     private boolean m_IsSaturdayAvailable = false;
 
-    private Button m_SwitchSunday;
-    private Button m_SwitchMonday;
-    private Button m_SwitchTuesday;
-    private Button m_SwitchWednesday;
-    private Button m_SwitchThursday;
-    private Button m_SwitchFriday;
-    private Button m_SwitchSaturday;
-
-    private Button m_BtnStartTimeSunday;
-    private Button m_BtnStartTimeMonday;
-    private Button m_BtnStartTimeTuesday;
-    private Button m_BtnStartTimeWednesday;
-    private Button m_BtnStartTimeThursday;
-    private Button m_BtnStartTimeFriday;
-    private Button m_BtnStartTimeSaturday;
-    private Button m_BtnEndTimeSunday;
-    private Button m_BtnEndTimeMonday;
-    private Button m_BtnEndTimeTuesday;
-    private Button m_BtnEndTimeWednesday;
-    private Button m_BtnEndTimeThursday;
-    private Button m_BtnEndTimeFriday;
-    private Button m_BtnEndTimeSaturday;
-
-    private TextView m_TxtStartTimeSunday;
-    private TextView m_TxtStartTimeMonday;
-    private TextView m_TxtStartTimeTuesday;
-    private TextView m_TxtStartTimeWednesday;
-    private TextView m_TxtStartTimeThursday;
-    private TextView m_TxtStartTimeFriday;
-    private TextView m_TxtStartTimeSaturday;
-    private TextView m_TxtEndTimeSunday;
-    private TextView m_TxtEndTimeMonday;
-    private TextView m_TxtEndTimeTuesday;
-    private TextView m_TxtEndTimeWednesday;
-    private TextView m_TxtEndTimeThursday;
-    private TextView m_TxtEndTimeFriday;
-    private TextView m_TxtEndTimeSaturday;
-
-    private FirebaseAuth m_Auth;
-    private FirebaseUser m_CurrentUser;
-    private FirebaseDatabase m_Database;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expert_settings);
         setActivityContent();
         setFirebaseData();
+        setDialogSubjectList();
+        setDialogCreateSubj();
+
         if(isUserExistsInDatabase())
         {
             getUserExpertDetailsFromDB();
         }
     }
-
     private boolean isUserExistsInDatabase()
     {
         //TODO
@@ -133,9 +166,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         int id = i_View.getId();
 
         if(id == m_BtnSubjects.getId()){
-            Intent IntentHome = new Intent
-                    (ActivityExpertSettings.this, ActivitySubjectPicker.class);
-            startActivity(IntentHome);
+            showDialogSubjList();
         }else if(id == m_BtnNext.getId()) {
             populateDatabase();
             startHomeActivity();
@@ -155,8 +186,335 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
             setSaturdayClick();
         }
 
-        setStartTimeClicks(id);
-        setEndTimeClicks(id);
+        menageStartTimeClicks(id);
+        menageEndTimeClicks(id);
+    }
+
+    private void showDialogSubjList()
+    {
+        buildSubjectsOptions();
+        populateSubjectsView();
+
+        m_DialogSubjList.findViewById(R.id.fab_create_a_subject_of_dialog_subjects_list)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View i_View) {
+                        showDialogCreateSubj();
+                    }
+                });
+
+        m_DialogSubjList.findViewById(R.id.fab_next_of_dialog_subjects_list)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View i_View) {
+                        m_DialogSubjList.dismiss();
+                    }
+                });
+
+        m_DialogSubjList.show();
+    }
+
+    private void buildSubjectsOptions()
+    {
+        DatabaseReference subjectRef = m_Database.getReference().child("Subjects");
+        m_Options = new FirebaseRecyclerOptions.Builder<Subject>()
+                .setQuery(subjectRef, Subject.class)
+                .build();
+    }
+
+    private void populateSubjectsView()
+    {
+        m_Adapter = new FirebaseRecyclerAdapter<Subject, ViewHolderSubject>(m_Options) {
+            @NonNull
+            @Override
+            public ViewHolderSubject onCreateViewHolder(@NonNull ViewGroup i_ViewGroup, int i_Position) {
+                //Create a new instance of the ViewHolder and use R.layout.item_dish for each item
+                View view = LayoutInflater
+                        .from(i_ViewGroup.getContext())
+                        .inflate(R.layout.item_subject, i_ViewGroup, false);
+
+                return new ViewHolderSubject(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
+                                            @NonNull final Subject i_Subject)
+            {
+                i_ViewHolder.getCheckBox().setVisibility(View.VISIBLE);
+                i_ViewHolder.getArrowRightIcon().setVisibility(View.INVISIBLE);
+                i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
+                Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
+
+                i_ViewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+
+                    }
+                });
+            }
+        };
+
+        m_Adapter.startListening();
+        m_DialogRecyclerView.setAdapter(m_Adapter);
+    }
+
+    private void showDialogCreateSubj()
+    {
+        m_DialogImgView.setImageURI(m_DialogImgURI);
+
+        m_DialogCreateSubj.findViewById(R.id.btn_add_a_photo_of_dialog_create_a_subj)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addProfileImage();
+                    }
+                });
+        m_DialogCreateSubj.findViewById(R.id.btn_create_of_dialog_create_a_subj)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(m_FieldSubjName.getText() == null
+                                || m_FieldSubjName.getText().toString().isEmpty())
+                        {
+                            m_FieldSubjName.setError("The field is required");
+                        }
+                        else {
+                            if(m_IsImgPicked){
+                                uploadImgToStorage( m_FieldSubjName.getText().toString());
+                            }else{
+                                uploadImgToStorage(ADVISOS);
+                            }
+
+                            m_DialogCreateSubj.dismiss();
+                        }
+                    }
+                });
+        m_DialogCreateSubj.findViewById(R.id.btn_cancel_of_dialog_create_a_subj)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setDefaultDialogCreateSubj();
+                        m_DialogCreateSubj.dismiss();
+                    }
+                });
+
+        m_DialogCreateSubj.show();
+    }
+
+    private void addProfileImage()
+    {
+        if(Build.VERSION.SDK_INT >= 24)
+        {
+            requestPermission();
+        }
+        else
+        {
+            openGallery();
+        }
+    }
+
+    private void requestPermission()
+    {
+        if(ContextCompat.checkSelfPermission(ActivityExpertSettings.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED)
+        {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(
+                    ActivityExpertSettings.this, Manifest.permission.READ_EXTERNAL_STORAGE))
+            {
+                Toast.makeText(ActivityExpertSettings.this,
+                        "Please accept for required permission ", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(ActivityExpertSettings.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQ_CODE);
+            }
+        }
+        else
+        {
+            openGallery();
+        }
+    }
+
+    private void openGallery()
+    {
+        Intent IntentGallery = new Intent(Intent.ACTION_GET_CONTENT);
+        IntentGallery.setType("image/*");
+        startActivityForResult(IntentGallery,IMG_REQ);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
+        {
+            m_DialogImgURI = data.getData();
+            m_DialogImgView.setImageURI(m_DialogImgURI);
+            m_IsImgPicked = true;
+        }
+    }
+
+    private void uploadImgToStorage(String i_Image)
+    {
+        StorageReference imagePath = m_Storage.getReference().child("Images/Subjects");
+        if(m_DialogImgURI != null)
+        {
+            final StorageReference imageRef = imagePath.child(i_Image);
+            imageRef.putFile(m_DialogImgURI)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri)
+                                {
+                                    m_DialogImgURI = uri;
+                                    pushNewSubjToDatabase();
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(ActivityExpertSettings.this,
+                            "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void pushNewSubjToDatabase()
+    {
+        final Subject subject = new Subject();
+        DatabaseReference databaseRef = m_Database.getReference("Subjects");
+        String subjName = m_FieldSubjName.getText().toString();
+
+        if(!isSubjectAlreadyExist(subjName)) {
+            subject.setSubjectName(subjName);
+            subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
+            subject.setImgLink(m_DialogImgURI.toString());
+//            databaseRef.child(subjName).setValue(subject)
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> i_Task) {
+//                            if (i_Task.isSuccessful()) {
+//                                Toast.makeText(ActivitySubjectPicker.this,
+//                                        "The subject is created.", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(ActivitySubjectPicker.this,
+//                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            setDefaultPopupDialog();
+//                        }
+//                    });
+            databaseRef.push().setValue(subject)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> i_Task) {
+                            if (i_Task.isSuccessful()) {
+                                Toast.makeText(ActivityExpertSettings.this,
+                                        "The subject is created.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ActivityExpertSettings.this,
+                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            setDefaultDialogCreateSubj();
+                        }
+                    });
+        }
+
+    }
+
+    private void setDefaultDialogCreateSubj()
+    {
+        m_DialogImgURI = Uri.parse(RES + getApplicationContext()
+                .getPackageName() + DRAWABLE_DEFAULT);
+        m_FieldSubjDescription.getText().clear();
+        m_FieldSubjName.getText().clear();
+    }
+
+    private boolean isSubjectAlreadyExist(String i_SubjName)
+    {
+        boolean result = false;
+        //TODO
+
+        return result;
+    }
+
+
+
+    private void setFirebaseData()
+    {
+        m_Auth = FirebaseAuth.getInstance();
+        m_CurrentUser = m_Auth.getCurrentUser();
+        m_Database = FirebaseDatabase.getInstance();
+        m_Storage = FirebaseStorage.getInstance();
+    }
+
+    private void setDialogSubjectList()
+    {
+        m_DialogSubjList = new Dialog(ActivityExpertSettings.this);
+        m_DialogSubjList.setContentView(R.layout.dialog_subjects_list);
+        m_DialogSubjList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        m_SuggestionsList = new ArrayList<>();
+//        m_SearchBar = findViewById(R.id.search_bar_of_dialog_subjects_list);
+//
+//        m_SearchBar.setCardViewElevation(10);
+//        m_SearchBar.setMaxSuggestionCount(5);
+//        m_SearchBar.addTextChangeListener(this);
+//        m_SearchBar.setOnSearchActionListener(this);
+
+        m_DialogRecyclerView = m_DialogSubjList.findViewById(R.id.recycler_view_of_dialog_subjects_list);
+        m_DialogRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        m_DialogRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    private void setDialogCreateSubj()
+    {
+        m_DialogCreateSubj = new Dialog(ActivityExpertSettings.this);
+        m_DialogCreateSubj.setContentView(R.layout.dialog_create_a_subject);
+        m_DialogCreateSubj.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        m_DialogImgView = m_DialogCreateSubj.findViewById(R.id.img_of_dialog_create_a_subj);
+        m_DialogImgURI = Uri.parse(RES + getApplicationContext()
+                .getPackageName() + DRAWABLE_DEFAULT);
+        m_FieldSubjName = m_DialogCreateSubj.findViewById(R.id.field_subject_name_of_dialog_create_a_subj);
+        m_FieldSubjDescription = m_DialogCreateSubj.findViewById(R.id.field_subject_description_of_dialog_create_a_subj);
+
+    }
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+
     }
 
     private void populateDatabase()
@@ -529,7 +887,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         }
     }
 
-    private void setStartTimeClicks(int i_ViewId) {
+    private void menageStartTimeClicks(int i_ViewId) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
@@ -601,7 +959,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         }
     }
 
-    private void setEndTimeClicks(int i_ViewId) {
+    private void menageEndTimeClicks(int i_ViewId) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
@@ -951,13 +1309,6 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
         setTimePickTexts();
     }
 
-    private void setFirebaseData()
-    {
-        m_Auth = FirebaseAuth.getInstance();
-        m_CurrentUser = m_Auth.getCurrentUser();
-        m_Database = FirebaseDatabase.getInstance();
-    }
-
     private void setSwitchesOfWeekDays()
     {
         m_SwitchSunday = findViewById(R.id.switch_sunday);
@@ -1048,4 +1399,5 @@ public class ActivityExpertSettings extends AppCompatActivity implements View.On
                 (ActivityExpertSettings.this, ActivityHomeScreen.class);
         startActivity(IntentHome);
     }
+
 }
