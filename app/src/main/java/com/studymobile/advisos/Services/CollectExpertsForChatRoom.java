@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.studymobile.advisos.Models.SubjectUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class CollectExpertsForChatRoom implements Runnable{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    boolean isAvailableToChat = checkIfAvailabilityFitsToChat(ds.getValue(String.class));
+                    boolean isAvailableToChat = checkIfAvailabilityFitsToChat(ds.getValue(SubjectUser.class));
                     if(isAvailableToChat) {
-                        mExpertUserOfSubjectSelectedId.add(ds.getValue(String.class));
+                        mExpertUserOfSubjectSelectedId.add(ds.getValue(SubjectUser.class).getUserId());
                         if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
                             break;
                     }
@@ -43,6 +44,7 @@ public class CollectExpertsForChatRoom implements Runnable{
                     }
 
                 }
+                notifyAll();
             }
 
             @Override
@@ -52,11 +54,13 @@ public class CollectExpertsForChatRoom implements Runnable{
         });
     }
 
-    private boolean checkIfAvailabilityFitsToChat(String i_userUid) {
+    private boolean checkIfAvailabilityFitsToChat(SubjectUser i_userUid) {
         //TODO implement this method to find the users that could be added to the chat
         //TODO according to their availability.
         return true;
     }
 
-
+    public List<String> getmExpertUserOfSubjectSelectedId() {
+        return mExpertUserOfSubjectSelectedId;
+    }
 }

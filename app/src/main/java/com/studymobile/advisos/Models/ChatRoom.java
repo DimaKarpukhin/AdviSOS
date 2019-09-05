@@ -8,20 +8,19 @@ public class ChatRoom
     private String mCreationDate;
     private String mCreationTime;
     private String mSubjectName;
-    private String mSubjectId;
+
 
     public ChatRoom(){}
 
     public ChatRoom(String i_RoomId, String i_RoomName, String i_CreationDate,
                     String i_CreationTime, String i_SubjectName,
-                    String i_SubjectId, String i_creator)
+                     String i_creator)
     {
         this.setRoomId(i_RoomId);
         this.setRoomName(i_RoomName);
         this.setCreationDate(i_CreationDate);
         this.setCreationTime(i_CreationTime);
         this.setSubjectName(i_SubjectName);
-        this.setSubjectId(i_SubjectId);
         this.mChatRoomCreatorUid = i_creator;
 
     }
@@ -51,11 +50,6 @@ public class ChatRoom
         return mSubjectName;
     }
 
-    public String getSubjectId()
-    {
-        return mSubjectId;
-    }
-
     public void setRoomId(String i_RoomId)
     {
         this.mRoomId = i_RoomId;
@@ -79,11 +73,6 @@ public class ChatRoom
     public void setSubjectName(String i_SubjectName)
     {
         this.mSubjectName = i_SubjectName;
-    }
-
-    public void setSubjectId(String i_SubjectId)
-    {
-        this.mSubjectId = i_SubjectId;
     }
 
     public String getCreatorId(){return this.mChatRoomCreatorUid;}
