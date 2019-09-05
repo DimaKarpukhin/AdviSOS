@@ -23,13 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
 
 public class ActivityCreateChatRoom extends AppCompatActivity {
 
     private TextView mTextViewCreateChatRoomInfo;
     private Button mButtonCreateChatRoom;
     private EditText mEditTextRoomName;
-
+    private  String mSubjectUid;
     private FirebaseUser m_CurrentUser;
     private FirebaseAuth m_Auth;
     private FirebaseDatabase m_Database;
@@ -40,6 +41,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chat_room);
+
         init();
         setFirebaseData();
         setTextViewInformation();
@@ -71,6 +73,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         mTextViewCreateChatRoomInfo = findViewById(R.id.textView_room_name_information);
         mEditTextRoomName = findViewById(R.id.edittext_enter_room_name);
         mButtonCreateChatRoom = findViewById(R.id.button_create_chat_room);
+        mSubjectUid = getIntent().getStringExtra("subject_id"); //TODO deliver to me the subject Uid that the user creating the chat with from the activity
         mButtonCreateChatRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +125,11 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
     private void createChatRoomActivity()
     {
+       Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectUid);
+       new Thread(collectChatUser).start();
+
+       
+
 
     }
 

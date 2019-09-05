@@ -1,11 +1,9 @@
 package com.studymobile.advisos.Models;
 
-import java.util.ArrayList;
-
 public class ChatRoom
 {
-    private int mRoomId;
-    private String mChatRoomCreator;
+    private String mRoomId;
+    private String mChatRoomCreatorUid;
     private String mRoomName;
     private String mCreationDate;
     private String mCreationTime;
@@ -14,7 +12,7 @@ public class ChatRoom
 
     public ChatRoom(){}
 
-    public ChatRoom(int i_RoomId, String i_RoomName, String i_CreationDate,
+    public ChatRoom(String i_RoomId, String i_RoomName, String i_CreationDate,
                     String i_CreationTime, String i_SubjectName,
                     String i_SubjectId, String i_creator)
     {
@@ -24,11 +22,11 @@ public class ChatRoom
         this.setCreationTime(i_CreationTime);
         this.setSubjectName(i_SubjectName);
         this.setSubjectId(i_SubjectId);
-        this.mChatRoomCreator = i_creator;
+        this.mChatRoomCreatorUid = i_creator;
 
     }
 
-    public int getRoomId()
+    public String getRoomId()
     {
         return mRoomId;
     }
@@ -58,7 +56,7 @@ public class ChatRoom
         return mSubjectId;
     }
 
-    public void setRoomId(int i_RoomId)
+    public void setRoomId(String i_RoomId)
     {
         this.mRoomId = i_RoomId;
     }
@@ -88,7 +86,7 @@ public class ChatRoom
         this.mSubjectId = i_SubjectId;
     }
 
-    public String getCreatorId(){return this.mChatRoomCreator;}
+    public String getCreatorId(){return this.mChatRoomCreatorUid;}
 
 
 }
