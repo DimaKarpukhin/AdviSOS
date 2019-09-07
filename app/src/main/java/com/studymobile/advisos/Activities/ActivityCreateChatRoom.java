@@ -3,10 +3,14 @@ package com.studymobile.advisos.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -22,15 +26,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
+
+import java.util.Date;
 
 public class ActivityCreateChatRoom extends AppCompatActivity {
 
     private TextView mTextViewCreateChatRoomInfo;
     private Button mButtonCreateChatRoom;
     private EditText mEditTextRoomName;
-    private  String mSubjectUid;
+    private String mSubjectName;
     private FirebaseUser m_CurrentUser;
     private FirebaseAuth m_Auth;
     private FirebaseDatabase m_Database;
@@ -73,7 +80,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         mTextViewCreateChatRoomInfo = findViewById(R.id.textView_room_name_information);
         mEditTextRoomName = findViewById(R.id.edittext_enter_room_name);
         mButtonCreateChatRoom = findViewById(R.id.button_create_chat_room);
-        mSubjectUid = getIntent().getStringExtra("subject_id"); //TODO deliver to me the subject Uid that the user creating the chat with from the activity
+        mSubjectName = getIntent().getStringExtra("subject_name"); //TODO deliver to me the subject Uid that the user creating the chat with from the activity
         mButtonCreateChatRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,14 +112,14 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
             showConfirmationDialodForRoomName(roomName);
         }
     }
-    private void showConfirmationDialodForRoomName(String i_roomName)
+    private void showConfirmationDialodForRoomName(final String i_roomName)
     {
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.hello) + mUserFirstName +",");
         builder.setMessage(getResources().getString(R.string.confirm_room_name) +i_roomName + "?/n");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                createChatRoomActivity();
+                createChatRoomActivity(i_roomName);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -123,19 +130,40 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         });
 
     }
-    private void createChatRoomActivity()
+    private void createChatRoomActivity(String i_roomName)
     {
-       Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectUid);
+       Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
        new Thread(collectChatUser).start();
+       DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
+       String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
+       Pair<String, String> date = getCreationDateAndTime();
+       String userID = m_CurrentUser.getUid();
+       ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
+       ,userID);
+       chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
+       m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
+       m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
+       m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
+        try{
+       this.wait();}
+        catch (InterruptedException e){
 
-       
-
-
+        }
+        Intent intent = new Intent(this, ActivityChatRoom.class);
+        intent.putExtra("chat_room_id", chatRoomUId);
+        Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
+        this.startActivity(intent);
     }
 
-
-
-
+    private Pair<String,String> getCreationDateAndTime() {
+        Calendar calendar = Calendar.getInstance();
+        Date currentLocalDateTime = calendar.getTime();
+        DateFormat time = new SimpleDateFormat("HH:mm");
+        String localTime = time.format(currentLocalDateTime);
+        DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = date.format(currentLocalDateTime);
+        return new Pair<>(currentDate,localTime);
+    }
 
 
 }
