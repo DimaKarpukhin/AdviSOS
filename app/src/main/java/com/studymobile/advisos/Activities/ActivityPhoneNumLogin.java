@@ -3,6 +3,8 @@ package com.studymobile.advisos.Activities;
 import android.content.Intent;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -38,7 +41,7 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
     private static final String AUTH_CONTEXT = "auth_context";
     private static final String PHONE_AUTH = "phone";
 
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private EditText m_FieldPhoneNumber;
     private CountryCodePicker m_CountryCodePicker;
 
@@ -86,7 +89,7 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
     {
         int id = i_View.getId();
 
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             m_InternationalPhoneNumber = m_CountryCodePicker.getFullNumberWithPlus();
             if (isValidPhoneNumber())
@@ -197,8 +200,8 @@ public class ActivityPhoneNumLogin extends AppCompatActivity implements View.OnC
         m_FieldPhoneNumber = findViewById(R.id.field_phone_of_phone_num_login);
         m_CountryCodePicker =  findViewById(R.id.picker_of_country_code_num_login);
         m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
-        m_BtnNext = findViewById(R.id.btn_next_of_phone_num_login);
-        m_BtnNext.setOnClickListener(ActivityPhoneNumLogin.this);
+        m_FabNext = findViewById(R.id.fab_next_of_phone_num_login);
+        m_FabNext.setOnClickListener(ActivityPhoneNumLogin.this);
     }
 
     private void setFirebaseData()

@@ -3,12 +3,18 @@ package com.studymobile.advisos.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -30,7 +36,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
     private static final String AUTH_CONTEXT = "auth_context";
     private static final String PASSWORD_AUTH = "password";
 
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private TextView m_LinkLogin;
     private EditText m_FieldEmail;
     private EditText m_FieldPassword;
@@ -65,7 +71,7 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
     {
         int id = i_View.getId();
 
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             if(isValidEmail() && isValidPassword() && isPasswordConfirmed())
             {
@@ -159,8 +165,9 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
                         else {
                             Log.e(TAG, "createUserWithEmail:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Toast.makeText(ActivityPasswordSignUp.this,
-                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+                            m_FieldEmail.setError(msg);
+//                            Toast.makeText(ActivityPasswordSignUp.this,
+//                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
 //                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
 //                                    Snackbar.LENGTH_SHORT).show();
                         }
@@ -178,8 +185,8 @@ public class ActivityPasswordSignUp extends AppCompatActivity implements View.On
         m_FieldEmail = findViewById(R.id.field_email_of_password_sign_up);
         m_FieldPassword = findViewById(R.id.field_password_of_password_sign_up);
         m_FieldConfirmPassword = findViewById(R.id.field_confirm_password_of_password_sign_up);
-        m_BtnNext = findViewById(R.id.btn_next_of_password_sign_up);
-        m_BtnNext.setOnClickListener(ActivityPasswordSignUp.this);
+        m_FabNext = findViewById(R.id.fab_next_of_password_sign_up);
+        m_FabNext.setOnClickListener(ActivityPasswordSignUp.this);
         m_LinkLogin = findViewById(R.id.link_already_have_an_account);
         m_LinkLogin.setOnClickListener(ActivityPasswordSignUp.this);
     }

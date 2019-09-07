@@ -15,7 +15,7 @@
         android:id="@+id/search_bar_of_dialog_subjects_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mt_searchBarColor="@color/greenTransparent"
+        app:mt_searchBarColor="@color/blueTransparent"
         app:mt_textColor="@color/blueLight"
         app:mt_highlightedTextColor="@color/blue"
         app:mt_placeholder="Choose subjects"
@@ -34,40 +34,52 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_of_dialog_subjects_list"
         android:layout_below="@+id/search_bar_of_dialog_subjects_list"
+        android:layout_above="@+id/layout_bottom_of_subjects_lis"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/layout_bottom_of_subjects_lis"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true">
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/blueLight"
+        android:weightSum="2">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_create_a_subject_of_dialog_subjects_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="65dp"
-            android:backgroundTint="@color/greenTransparent"
-            android:src="@drawable/ic_add"
-            app:elevation="0dp"
-            app:borderWidth="1dp"/>
+        <TextView
+            android:id="@+id/btn_new_of_dialog_subjects_list"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="2dp"
+            android:gravity="center"
+            android:text="New"
+            android:textSize="22sp"
+            android:textColor="@color/blue"
+            android:background="@drawable/btn_rect_transparent_pressed_white">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_next_of_dialog_subjects_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/greenTransparent"
-            android:src="@drawable/ic_arrow_forward_blue"
-            app:elevation="0dp"
-            app:borderWidth="1dp"/>
+        </TextView>
 
+        <TextView
+            android:id="@+id/btn_done_of_dialog_subjects_list"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:text="Done"
+            android:textSize="22sp"
+            android:textColor="@color/blue"
+            android:background="@drawable/btn_rect_transparent_pressed_white">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </TextView>
+
+    </LinearLayout>
+
 </RelativeLayout>

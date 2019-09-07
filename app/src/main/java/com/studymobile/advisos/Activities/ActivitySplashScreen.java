@@ -24,7 +24,7 @@ public class ActivitySplashScreen extends AppCompatActivity
             @Override
             public void run() {
                 Intent IntentRegistration = new Intent
-                        (ActivitySplashScreen.this, ActivityExpertSettings.class);
+                        (ActivitySplashScreen.this, ActivityRegistration.class);
                 startActivity(IntentRegistration);
                 finish();
             }

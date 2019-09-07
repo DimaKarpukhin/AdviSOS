@@ -27,12 +27,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_logo_sign_up"
-        android:layout_marginTop="40dp">
+        android:layout_marginBottom="80dp">
 
         <TextView
             android:id="@+id/txt_connect_with"
+            android:layout_above="@+id/btn_phone_num_connection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
             android:text="@string/txt_view_connect_with"
             android:layout_centerHorizontal="true"
             android:textSize="24sp"
@@ -41,48 +44,53 @@
 
         <Button
             android:id="@+id/btn_phone_num_connection"
-            android:layout_below="@+id/txt_connect_with"
-            android:layout_width="300dp"
-            android:layout_height="72dp"
+            android:layout_above="@+id/btn_email_password_connection"
+            android:layout_width="285dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_phone_android_black"
             android:drawablePadding="20dp"
-            android:padding="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:textSize="16sp"
             android:text="@string/btn_phone_number"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/btn_rect_white_pressed_blue_transparent"
             android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btn_email_password_connection"
-            android:layout_below="@+id/btn_phone_num_connection"
-            android:layout_width="300dp"
-            android:layout_height="72dp"
+            android:layout_above="@+id/btn_social_connection"
+            android:layout_width="285dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_email_black"
             android:drawablePadding="20dp"
-            android:padding="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:textSize="16sp"
             android:text="@string/btn_email_and_password"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/btn_rect_white_pressed_blue_transparent"
             android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btn_social_connection"
-            android:layout_below="@+id/btn_email_password_connection"
-            android:layout_width="300dp"
-            android:layout_height="72dp"
+            android:layout_width="285dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:drawableStart="@drawable/ic_social_network_black"
             android:drawablePadding="20dp"
-            android:padding="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:textSize="16sp"
             android:text="@string/btn_social_networks"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/btn_rect_white_pressed_blue_transparent"
             android:textColor="@color/black"/>
     </RelativeLayout>
 

@@ -98,7 +98,7 @@ public class ActivitySubjectPicker extends AppCompatActivity implements
 //        buildSubjectsOptions();
 //        populateSubjectsView();
 
-        m_DialogSubjList.findViewById(R.id.fab_create_a_subject_of_dialog_subjects_list)
+        m_DialogSubjList.findViewById(R.id.btn_new_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
@@ -106,7 +106,7 @@ public class ActivitySubjectPicker extends AppCompatActivity implements
                     }
                 });
 
-        m_DialogSubjList.findViewById(R.id.fab_next_of_dialog_subjects_list)
+        m_DialogSubjList.findViewById(R.id.btn_done_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
