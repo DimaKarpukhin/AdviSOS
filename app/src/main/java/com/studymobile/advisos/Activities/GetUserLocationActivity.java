@@ -135,16 +135,10 @@ public class GetUserLocationActivity extends AppCompatActivity {
                             final DatabaseReference reference = m_Database.getReference("Users");
                             reference.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.exists())
-                                    {
-                                        reference.child(m_CurrentUser.getUid()).setValue(location);
-                                    }
-                                    else
-                                    {
-                                        reference.push().setValue(location);
-                                    }
-
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                                {
+                                        reference.child(m_CurrentUser.getUid())
+                                                .child("userLocation").setValue(location);
                                 }
 
                                 @Override
