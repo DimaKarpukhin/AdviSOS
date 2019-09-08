@@ -1,7 +1,5 @@
 package com.studymobile.advisos.Models;
 
-import android.net.Uri;
-
 import java.util.LinkedList;
 import java.util.List;
 

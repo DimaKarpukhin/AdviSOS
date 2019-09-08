@@ -17,41 +17,26 @@
         android:layout_marginRight="10dp">
 
         <TextView
-            android:id="@+id/txt_choose_a_subject"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="Choose subjects you're an expert on"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="center_horizontal"
-            android:textSize="22sp"
-            android:textColor="@color/black"
-            android:textStyle="italic"/>
-
-        <Button
-            android:id="@+id/btn_subjects_expert_settings"
-            android:layout_below="@+id/txt_choose_a_subject"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:id="@+id/txt_subjects_expert_settings"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+            android:layout_width="280dp"
             android:layout_height="55dp"
             android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:textSize="18sp"
-            android:text="Subjects"
-            android:paddingEnd="30dp"
-            android:paddingStart="30dp"
-            android:drawableEnd="@drawable/ic_arrow_forward_black"
+            android:text="Subjects you're an expert on"
+            android:textStyle="bold"
+            android:paddingEnd="8dp"
+            android:paddingStart="16dp"
+            android:drawableEnd="@drawable/ic_navigate_next_black"
             android:background="@drawable/btn_rect_white_pressed_blue_transparent"
             android:textColor="@color/black"
             android:longClickable="true"/>
 
         <TextView
             android:id="@+id/txt_choose_a_time"
-            android:layout_below="@+id/btn_subjects_expert_settings"
+            android:layout_below="@+id/txt_subjects_expert_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tell us when you free to advice"
@@ -900,14 +885,15 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-        <ImageButton
-            android:id="@+id/btn_next_of_expert_settings"
-            android:layout_below="@+id/layout_week_availability"
-            android:layout_alignEnd="@+id/layout_week_availability"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:background="@drawable/btn_circl_blue_pressed_blue_transparent"
-            android:src="@drawable/ic_arrow_forward_white" />
     </RelativeLayout>
-</RelativeLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_next_of_expert_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_arrow_forward_white"
+        app:elevation="0dp"/>
+</RelativeLayout>

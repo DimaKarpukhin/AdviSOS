@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -20,10 +21,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,6 +48,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static java.lang.System.exit;
 
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener
 {
@@ -63,7 +72,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private Uri m_ProfileImgURI;
     private String m_ProfileImgLink;
     private CircleImageView m_ProfileImgView;
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private EditText m_FieldPhoneNumber;
     private EditText m_FieldEmail;
     private EditText m_FieldFirstName;
@@ -85,8 +94,11 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private FirebaseDatabase m_Database;
     private FirebaseStorage m_Storage;
 
+    private boolean m_IsImgStored = false;
     private boolean m_IsImgPicked = false;
     private boolean m_IsSocialAvatarPicked = false;
+
+    private String m_DeviceToken;
 
 
     @Override
@@ -96,23 +108,22 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
+        getDeviceToken();
+        getIntentExtras();
+        getUserPersonalDetailsFromDB();
         setPopupDialog();
 
-        if(isUserExistsInDatabase())
-        {
-            getUserPersonalDetailsFromDB();
-        }
     }
 
-    private boolean isUserExistsInDatabase()
+    private void getDeviceToken()
     {
-        //TODO
-        return true;
-    }
-
-    private void getUserPersonalDetailsFromDB()
-    {
-        //TODO
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult i_InstanceIdResult) {
+                m_DeviceToken = i_InstanceIdResult.getToken();
+            }
+        });
     }
 
     @Override
@@ -134,20 +145,20 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     public void onClick(View i_View)
     {
         int id = i_View.getId();
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             if(isUserDetailsCompleted())
             {
                 if (m_IsImgPicked)
                 {
                     uploadImgToStorage(m_FamilyName + m_FirstName);
-                }else if (m_AuthContext.equals(PHONE_AUTH)
-                        || m_AuthContext.equals(PASSWORD_AUTH)) {
+                }else if (!m_IsImgStored &&
+                        (m_AuthContext.equals(PHONE_AUTH) || m_AuthContext.equals(PASSWORD_AUTH))) {
                     uploadImgToStorage(DEFAULT);
                 }
 
                 populateDatabase();
-                startExpertConfigActivity();
+                startExpertSettingsActivity();
             }
         }
         else if (id == m_ProfileImgView.getId())
@@ -159,58 +170,65 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void populateDatabase()
     {
-        final User user = new User();
         DatabaseReference databaseRef = m_Database.getReference("Users");
 
         if(m_CurrentUser != null)
         {
-            user.setAuthContext(m_AuthContext);
-            user.setFirstName(m_FirstName);
-            user.setFamilyName(m_FamilyName);
-            user.setEmail(m_Email);
-            user.setPhone(m_InternationalPhoneNumber);
-            user.setImgLink(m_ProfileImgLink);
-            databaseRef.child(m_CurrentUser.getUid()).setValue(user)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> i_Task) {
-                    if(i_Task.isSuccessful()){ }
-                    else{
-                        Toast.makeText(ActivityUserDetails.this,
-                                "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("authContext").setValue(m_AuthContext);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("firstName").setValue(m_FirstName);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("familyName").setValue(m_FamilyName);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("email").setValue(m_Email);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("phone").setValue(m_InternationalPhoneNumber);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("imgLink").setValue(m_ProfileImgLink);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("deviceToken").setValue(m_DeviceToken);
         }
     }
 
     private void uploadImgToStorage(String i_Image)
     {
-        StorageReference imagePath = m_Storage.getReference().child("Images/Profiles");
+        StorageReference imagePath = m_Storage.getReference().child("Images/Profile pictures");
         if(m_ProfileImgURI != null)
         {
             final StorageReference imageRef = imagePath.child(i_Image);
             imageRef.putFile(m_ProfileImgURI)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onSuccess(Uri uri)
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                         {
-                            m_ProfileImgLink = String.valueOf(uri);
-                            populateDatabase();
+                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    m_ProfileImgLink = String.valueOf(uri);
+                                    populateDatabase();
+                                }
+                            });
                         }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+                    }).addOnFailureListener(new OnFailureListener()
+            {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(ActivityUserDetails.this,
-                            "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            "ERROR$:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
+    }
+
+    private void setPopupDialog()
+    {
+        m_PopupDialog = new Dialog(ActivityUserDetails.this);
+        m_PopupDialog.setContentView(R.layout.dialog_profile_picture);
+        m_PopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_profile_picture);
+        m_DialogImgURI = m_ProfileImgURI;
     }
 
     private void showPopupDialog()
@@ -392,6 +410,41 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         return true;
     }
 
+    private void getUserPersonalDetailsFromDB()
+    {
+        DatabaseReference userId = m_Database.getReference("Users");
+        userId.child(m_CurrentUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
+                        if (i_DataSnapshot.exists())
+                        {
+                            User currentUser = i_DataSnapshot.getValue(User.class);
+                            m_ProfileImgLink = currentUser.getImgLink();
+                            m_IsImgStored = true;
+                            m_AuthContext = currentUser.getAuthContext();
+                            m_FirstName = currentUser.getFirstName();
+                            m_FamilyName = currentUser.getFamilyName();
+                            m_Email = currentUser.getEmail();
+                            m_InternationalPhoneNumber = currentUser.getPhone();
+                            updateUI();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
+                });
+    }
+
+
+    private void updateUI()
+    {
+        Picasso.get().load(m_ProfileImgLink).into(m_ProfileImgView);
+        m_FieldFirstName.setText(m_FirstName);
+        m_FieldFamilyName.setText(m_FamilyName);
+        m_FieldEmail.setText(m_Email);
+        m_FieldPhoneNumber.setText(m_InternationalPhoneNumber);
+    }
+
     private void setActivityContent()
     {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -399,8 +452,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
         m_ProfileImgView = findViewById(R.id.img_profile_photo_of_user_details);
         m_ProfileImgView.setOnClickListener(ActivityUserDetails.this);
-        m_BtnNext = findViewById(R.id.btn_next_of_user_details);
-        m_BtnNext.setOnClickListener(ActivityUserDetails.this);
+        m_FabNext = findViewById(R.id.fab_next_of_user_details);
+        m_FabNext.setOnClickListener(ActivityUserDetails.this);
         m_FieldFirstName = findViewById(R.id.field_first_name_of_user_details);
         m_FieldFamilyName = findViewById(R.id.field_last_name_of_user_details);
         m_FieldEmail = findViewById(R.id.field_email_of_user_details);
@@ -408,7 +461,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         m_CountryCodePicker =  findViewById(R.id.picker_of_country_code_user_details);
         m_CountryCodePicker.registerCarrierNumberEditText(m_FieldPhoneNumber);
 
-        getIntentExtras();
+        m_ProfileImgURI = Uri.parse(RES + getApplicationContext().getPackageName()
+                + DRAWABLE_DEFAULT);
     }
 
     @SuppressLint("ResourceType")
@@ -426,30 +480,18 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_InternationalPhoneNumber = intent.getStringExtra(EXTRA_PHONE_STR);
             m_ProfileImgLink = intent.getStringExtra(EXTRA_PHOTO_URI_STR);
 
-            m_ProfileImgURI = Uri.parse(RES +
-                    getApplicationContext().getPackageName() + DRAWABLE_DEFAULT);
             if(m_ProfileImgLink != null && !m_ProfileImgLink.isEmpty())
             {
                 m_ProfileImgLink = m_ProfileImgLink + improveQuality;
-                Picasso.get().load(m_ProfileImgLink).into(m_ProfileImgView);
-                m_ProfileImgURI = Uri.parse(m_ProfileImgLink);
                 m_IsSocialAvatarPicked = true;
             }
+            else{
+                m_ProfileImgLink = RES + getApplicationContext().getPackageName()
+                        + DRAWABLE_DEFAULT;
+            }
 
-            m_FieldFirstName.setText(m_FirstName);
-            m_FieldFamilyName.setText(m_FamilyName);
-            m_FieldEmail.setText(m_Email);
-            m_FieldPhoneNumber.setText(m_InternationalPhoneNumber);
+            updateUI();
         }
-    }
-
-    private void setPopupDialog()
-    {
-        m_PopupDialog = new Dialog(ActivityUserDetails.this);
-        m_PopupDialog.setContentView(R.layout.dialog_profile_picture);
-        m_PopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_profile_picture);
-        m_DialogImgURI = m_ProfileImgURI;
     }
 
     private void setFirebaseData()
@@ -467,7 +509,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         startActivity(IntentHome);
     }
 
-    private void startExpertConfigActivity()
+    private void startExpertSettingsActivity()
     {
         Intent IntentExpertConfig = new Intent
                 (ActivityUserDetails.this, ActivityExpertSettings.class);

@@ -3,6 +3,8 @@ package com.studymobile.advisos.Activities;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +40,7 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
     private static final String PHONE_AUTH = "phone";
 
 
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private TextView m_LinkResendCode;
     private Pinview m_VerificationCodePicker;
 
@@ -75,7 +77,7 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
         int id = i_View.getId();
         String code = m_VerificationCodePicker.getValue();
 
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             if (isCodeLengthValid(code))
             {
@@ -199,8 +201,8 @@ public class ActivityCodeVerification extends AppCompatActivity implements View.
         }
 
         m_VerificationCodePicker = findViewById(R.id.picker_of_code_verification);
-        m_BtnNext = findViewById(R.id.btn_next_of_code_verification);
-        m_BtnNext.setOnClickListener(ActivityCodeVerification.this);
+        m_FabNext = findViewById(R.id.fab_next_of_code_verification);
+        m_FabNext.setOnClickListener(ActivityCodeVerification.this);
         m_LinkResendCode = findViewById(R.id.link_resend_code);
         m_LinkResendCode.setOnClickListener(ActivityCodeVerification.this);
     }

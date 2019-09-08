@@ -7,7 +7,7 @@ import java.util.List;
 
 public class User
 {
-    private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext;
+    private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext, mDeviceToken;
     private UserLocation mLocation;
     private UserAvailability mAvailability;
     private List<String> mChatRoomsImPartOf = new ArrayList<>();
@@ -20,6 +20,11 @@ public class User
         this.setFamilyName(i_FamilyName);
         this.setEmail(i_Email);
         this.setPhone(i_Phone);
+    }
+
+    public String getDeviceToken()
+    {
+        return mDeviceToken;
     }
 
     public String getFirstName()
@@ -60,6 +65,11 @@ public class User
     public UserAvailability getUserAvailability()
     {
         return mAvailability;
+    }
+
+    public void setDeviceToken(String i_DeviceToken)
+    {
+        this.mDeviceToken = i_DeviceToken;
     }
 
     public void setFirstName(String i_FirstName)

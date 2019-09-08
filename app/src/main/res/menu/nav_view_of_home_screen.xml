@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_do_not_disturb"
+            android:icon="@drawable/ic_do_not_disturb_white"
+            android:iconTint="@color/white"
+            android:title="Don't disturb" />
+        <item
+            android:id="@+id/nav_availability"
+            android:icon="@drawable/ic_settings_white"
+            android:iconTint="@color/white"
+            android:title="Availability" />
+        <item
+            android:id="@+id/nav_my_profile"
+            android:icon="@drawable/ic_person_black"
+            android:iconTint="@color/white"
+            android:title="My profile" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:iconTint="@color/white"
+            android:title="Share" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout_white"
+            android:iconTint="@color/white"
+            android:title="Logout" />
+
+    </group>
+
+</menu>

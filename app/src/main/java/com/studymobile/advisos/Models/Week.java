@@ -4,13 +4,13 @@ import com.studymobile.advisos.Enums.eWeekDay;
 
 public class Week
 {
-    private Day mSunday;
-    private Day mMonday;
-    private Day mTuesday;
-    private Day mWednesday;
-    private Day mThursday;
-    private Day mFriday;
-    private Day mSaturday;
+    private Day mSunday = null;
+    private Day mMonday = null;
+    private Day mTuesday = null;
+    private Day mWednesday = null;
+    private Day mThursday = null;
+    private Day mFriday = null;
+    private Day mSaturday = null;
 
     public Week(){}
 
