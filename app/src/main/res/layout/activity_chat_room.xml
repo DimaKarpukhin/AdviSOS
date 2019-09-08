@@ -18,20 +18,21 @@
             android:background="@color/blue"
             app:layout_scrollFlags="scroll|enterAlways" >
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="The room Name"
             android:textSize="14sp"
             />
-        <Button
+        <ImageButton
             android:id="@+id/button_close_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/btn_circl_white_pressed_blue_transparent"
             android:text="@string/close_chat_room"
             android:textSize="14sp"
             android:visibility="invisible"
             android:clickable="false"
+            android:layout_marginStart="250dp"
             />
 
         </androidx.appcompat.widget.Toolbar>
