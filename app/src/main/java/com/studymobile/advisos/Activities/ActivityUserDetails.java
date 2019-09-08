@@ -106,72 +106,20 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
-//        if(isUserExistsInDatabase())
-//        {
-//           // getUserPersonalDetailsFromDB();
-//        }
+
     }
 
-//    private boolean isUserExistsInDatabase()
-//    {
-//        //TODO check if this implementation suffice.
-//        DatabaseReference ref = m_Database.getReference("Users");
-//        ref.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if(dataSnapshot.exists())
-//                    m_IsUserExists = true;
-//                else
-//                    m_IsUserExists = false;
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return m_IsUserExists;
-//    }
 
-//    private void getUserPersonalDetailsFromDB()
-//    {
-//        //TODO dont know how much data we have at this point, but location is must at this point
-//       DatabaseReference reference =m_Database.getReference("Users").child(m_CurrentUser.getUid());
-//       reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//           @Override
-//           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//               m_UserLocation =(dataSnapshot.child("Location").getValue(UserLocation.class));
-//           }
-//
-//           @Override
-//           public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//           }
-//       });
-//    }
+
+
 
     @Override
     protected void onStart()
     {
         super.onStart();
 
-        //fillCountryCode(m_UserLocation.getLangtitude(),m_UserLocation.getLongtitude());
     }
 
-   /* private void fillCountryCode(double lat, double lng) {
-        Geocoder geocoder = new Geocoder(this.getApplicationContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            m_CountryCodePicker.setCountryForPhoneCode(Integer.parseInt(obj.getCountryCode()));
-
-
-        }
-        catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
