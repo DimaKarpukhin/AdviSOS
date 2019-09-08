@@ -117,6 +117,8 @@ public class ActivityChatRoom extends AppCompatActivity {
         //TODO need to check how closinf the chat affects other user since the chat is not active
         //how do we notify other participents that the chat is closed to not load it again next time?
         //maybe need to set an childevent listener on chatRooms? or active chats?
+
+
     }
 
     private void sendMessage() {
@@ -226,9 +228,6 @@ public class ActivityChatRoom extends AppCompatActivity {
                         }
                     });
                     Picasso.get().load(link).into(((ViewHolderRecievedMessageHolder) viewHolder).getProfileImage());
-
-
-
                 }
             }
         };

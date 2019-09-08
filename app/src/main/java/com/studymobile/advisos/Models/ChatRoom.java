@@ -8,6 +8,7 @@ public class ChatRoom
     private String mCreationDate;
     private String mCreationTime;
     private String mSubjectName;
+    private Boolean mIsChatClosed = false;
 
 
     public ChatRoom(){}
@@ -77,5 +78,11 @@ public class ChatRoom
 
     public String getCreatorId(){return this.mChatRoomCreatorUid;}
 
+    public void setmIsChatClosed(Boolean mIsChatClosed) {
+        this.mIsChatClosed = mIsChatClosed;
+    }
 
+    public Boolean getmIsChatClosed() {
+        return mIsChatClosed;
+    }
 }

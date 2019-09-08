@@ -155,10 +155,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     {
         super.onStart();
 
-        fillCountryCode(m_UserLocation.getLangtitude(),m_UserLocation.getLongtitude());
+        //fillCountryCode(m_UserLocation.getLangtitude(),m_UserLocation.getLongtitude());
     }
 
-    private void fillCountryCode(double lat, double lng) {
+   /* private void fillCountryCode(double lat, double lng) {
         Geocoder geocoder = new Geocoder(this.getApplicationContext(), Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
@@ -171,7 +171,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
