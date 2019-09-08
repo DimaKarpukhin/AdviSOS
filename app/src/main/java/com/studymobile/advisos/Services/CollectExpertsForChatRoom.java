@@ -17,10 +17,10 @@ public class CollectExpertsForChatRoom implements Runnable{
     private List<String> mExpertUserOfSubjectSelectedId = new ArrayList<>(NUM_OF_EXPERTS);
     private FirebaseDatabase mDatabase;
     private DatabaseReference mSubjectUsersReference;
-    private String mSubjectId;
+    private String mSubjectName;
 
-    public CollectExpertsForChatRoom(String i_subjcetId){
-        mSubjectId = i_subjcetId;
+    public CollectExpertsForChatRoom(String i_subjcetName){
+        mSubjectName = i_subjcetName;
         mDatabase = FirebaseDatabase.getInstance();
         mSubjectUsersReference = mDatabase.getReference("SubjectUsers");
 
@@ -28,20 +28,39 @@ public class CollectExpertsForChatRoom implements Runnable{
 
     @Override
     public void run() {
-        mSubjectUsersReference.child(mSubjectId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                String lastEnteredUserID = null;
+                float minAvgRating = -1;
+                SubjectUser su;
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    boolean isAvailableToChat = checkIfAvailabilityFitsToChat(ds.getValue(SubjectUser.class));
-                    if(isAvailableToChat) {
-                        mExpertUserOfSubjectSelectedId.add(ds.getValue(SubjectUser.class).getUserId());
-                        if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
-                            break;
+                    su = ds.getValue(SubjectUser.class);
+                    if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
+                    {
+                        if(su.getIsValid() && ds.child("Rating").exists())
+                        {
+                            if(isAvailable(su.getUserId()) && su.getRating().getAvgRating() > minAvgRating)
+                            {
+                                mExpertUserOfSubjectSelectedId.remove(lastEnteredUserID);
+                                mExpertUserOfSubjectSelectedId.add(su.getUserId());
+                            }
+                        }
                     }
-                    else{
+                    else if(isAvailable(su.getUserId()))
+                    {
+                        if(su.getIsValid())
+                            mExpertUserOfSubjectSelectedId.add(su.getUserId());
+                    }
+                    else
+                    {
                         continue;
                     }
+
+                    updateMinAvgRating();
+                    lastEnteredUserID = su.getUserId();
 
                 }
                 notifyAll();
@@ -52,13 +71,31 @@ public class CollectExpertsForChatRoom implements Runnable{
 
             }
         });
+
+        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
+        {
+            // collect randomally/by location
+        }
+
+        if(mExpertUserOfSubjectSelectedId.isEmpty())
+        {
+            // sending proper message to user - NOBODY IS  AVAILABLE
+            return;
+        }
+
     }
 
-    private boolean checkIfAvailabilityFitsToChat(SubjectUser i_userUid) {
-        //TODO implement this method to find the users that could be added to the chat
-        //TODO according to their availability.
+    private void updateMinAvgRating()
+    {
+        //TODO
+    }
+
+    private boolean isAvailable(String i_userID)
+    {
+        //TODO
         return true;
     }
+
 
     public List<String> getmExpertUserOfSubjectSelectedId() {
         return mExpertUserOfSubjectSelectedId;
