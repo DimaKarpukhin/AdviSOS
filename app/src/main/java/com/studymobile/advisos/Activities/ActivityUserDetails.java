@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +48,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static java.lang.System.exit;
 
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener
 {
@@ -93,6 +98,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private boolean m_IsImgPicked = false;
     private boolean m_IsSocialAvatarPicked = false;
 
+    private String m_DeviceToken;
+
 
     @Override
     protected void onCreate(Bundle i_SavedInstanceState)
@@ -101,10 +108,22 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
+        getDeviceToken();
         getIntentExtras();
         getUserPersonalDetailsFromDB();
         setPopupDialog();
 
+    }
+
+    private void getDeviceToken()
+    {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult i_InstanceIdResult) {
+                m_DeviceToken = i_InstanceIdResult.getToken();
+            }
+        });
     }
 
     @Override
@@ -167,6 +186,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                     .child("phone").setValue(m_InternationalPhoneNumber);
             databaseRef.child(m_CurrentUser.getUid())
                     .child("imgLink").setValue(m_ProfileImgLink);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("deviceToken").setValue(m_DeviceToken);
         }
     }
 
