@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,17 +31,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+<<<<<<< HEAD
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+=======
+>>>>>>> aa3c21d6de70070f5418613f96b9ef108e1d3ac0
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.User;
+import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -78,6 +87,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private EditText m_FieldFirstName;
     private EditText m_FieldFamilyName;
     private CountryCodePicker m_CountryCodePicker;
+    private boolean m_IsUserExists;
 
     private Dialog m_PopupDialog;
     private Uri m_DialogImgURI;
@@ -88,7 +98,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private String m_FirstName = null;
     private String m_FamilyName = null;
     private String m_AuthContext = null;
-
+    private UserLocation m_UserLocation;
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
     private FirebaseDatabase m_Database;
@@ -108,6 +118,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
+<<<<<<< HEAD
         getDeviceToken();
         getIntentExtras();
         getUserPersonalDetailsFromDB();
@@ -125,12 +136,22 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             }
         });
     }
+=======
+
+    }
+
+
+
+
+>>>>>>> aa3c21d6de70070f5418613f96b9ef108e1d3ac0
 
     @Override
     protected void onStart()
     {
         super.onStart();
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

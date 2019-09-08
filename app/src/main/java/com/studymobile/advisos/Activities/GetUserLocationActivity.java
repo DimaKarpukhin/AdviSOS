@@ -19,7 +19,15 @@ import android.view.View;
 import android.widget.TextView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.studymobile.advisos.BuildConfig;
+import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
 
 import java.util.Locale;
@@ -27,12 +35,10 @@ import java.util.Locale;
 public class GetUserLocationActivity extends AppCompatActivity {
 
     protected Location mLastLocation;
-
-    private String mLatitudeLabel;
-    private String mLongitudeLabel;
-    private TextView mLatitudeText;
-    private TextView mLongitudeText;
     private FusedLocationProviderClient mFusedLocationClient;
+    private FirebaseUser m_CurrentUser;
+    private FirebaseAuth m_Auth;
+    private FirebaseDatabase m_Database;
 
     private static final String TAG = GetUserLocationActivity.class.getSimpleName();
 
@@ -42,14 +48,12 @@ public class GetUserLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_user_location);
-
-        mLatitudeLabel = "latitude";
-        mLongitudeLabel = "longitude";
-        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
-        mLongitudeText = (TextView) findViewById((R.id.longitude_text));
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         this.onStart();
+
+        m_Auth = FirebaseAuth.getInstance();
+        m_CurrentUser = m_Auth.getCurrentUser();
+        m_Database = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -127,16 +131,31 @@ public class GetUserLocationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
+                            final UserLocation location = new UserLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                            final DatabaseReference reference = m_Database.getReference("Users");
+                            reference.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists())
+                                    {
+                                        reference.child(m_CurrentUser.getUid()).setValue(location);
+                                    }
+                                    else
+                                    {
+                                        reference.push().setValue(location);
+                                    }
 
-                            mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                    mLatitudeLabel,
-                                    mLastLocation.getLatitude()));
-                            mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                    mLongitudeLabel,
-                                    mLastLocation.getLongitude()));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                         } else {
                             Log.w(TAG, "getLastLocation:exception", task.getException());
-                            //getLastLocation();
+                            getLastLocation();
 
                         }
                     }
@@ -184,6 +203,12 @@ public class GetUserLocationActivity extends AppCompatActivity {
         //from sign up, we will ask to provide the location permission
         //and then, from every boot of the application we will update
         //TODO
+
+
+
+
+
+
     }
 
 }

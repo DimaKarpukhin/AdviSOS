@@ -42,6 +42,7 @@
         The room name will be the display name of the current chat room.
         Make the name count.
     </string>
+    <string name="close_chat_room">Close Chat</string>
     <string name="hello">Hello</string>
     <string name="confirm_room_name">Are you sure regarding the room name</string>
     <string name="empty_room_name">Room name cant be empty, please enter name</string>

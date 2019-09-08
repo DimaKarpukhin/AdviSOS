@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.ChatMessage;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.ViewHolders.ViewHolderRecievedMessageHolder;
 import com.studymobile.advisos.ViewHolders.ViewHolderSentMessageHolder;
@@ -45,6 +47,7 @@ public class ActivityChatRoom extends AppCompatActivity {
     private Button mSendMessageButton;
     private EditText mMessageBodyText;
     private String senderName;
+    private Button mCloseChatButton;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mChatRoonIdRefMessages;
     private FirebaseAuth mAuth;
@@ -61,21 +64,61 @@ public class ActivityChatRoom extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
         init();
         setFirebaseReferences();
-
+        showButtonCloseChatForChatRoomCreator();
 
     }
+
+    private void showButtonCloseChatForChatRoomCreator() {
+        DatabaseReference reference = mDatabase.getReference("ChatRooms").child(mChatRoomId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    if(dataSnapshot.child("mChatRoomCreatorUid").getValue(String.class).equals(mCurrentUser.getUid()))
+                    {
+                        mCloseChatButton.setCursorVisible(true);
+                        mCloseChatButton.setClickable(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void init() {
         mChatRoomId = getIntent().getStringExtra("chat_room_id");
+        mCloseChatButton = findViewById(R.id.button_close_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mCloseChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeChatButtonPressed();
+            }
+        });
         mSendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage();
             }
         });
+    }
+
+    private void closeChatButtonPressed() {
+        //TODO do the logic of closing the chat and rate the users,
+        //TODO need to check how closinf the chat affects other user since the chat is not active
+        //how do we notify other participents that the chat is closed to not load it again next time?
+        //maybe need to set an childevent listener on chatRooms? or active chats?
+
+
     }
 
     private void sendMessage() {
@@ -185,9 +228,6 @@ public class ActivityChatRoom extends AppCompatActivity {
                         }
                     });
                     Picasso.get().load(link).into(((ViewHolderRecievedMessageHolder) viewHolder).getProfileImage());
-
-
-
                 }
             }
         };
