@@ -1,14 +1,11 @@
 package com.studymobile.advisos.Activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TableLayout;
-
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.studymobile.advisos.Adapters.AdapterTabsAccessor;
 import com.studymobile.advisos.R;
