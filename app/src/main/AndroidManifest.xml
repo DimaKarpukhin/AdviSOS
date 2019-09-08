@@ -20,10 +20,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.ActivitySubjectPicker"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Activities.ActivityExpertSettings"
             android:parentActivityName=".Activities.ActivityUserDetails"
             android:screenOrientation="portrait" />
