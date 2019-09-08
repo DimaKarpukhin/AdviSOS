@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,17 +24,24 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.User;
+import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -69,6 +78,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private EditText m_FieldFirstName;
     private EditText m_FieldFamilyName;
     private CountryCodePicker m_CountryCodePicker;
+    private boolean m_IsUserExists;
 
     private Dialog m_PopupDialog;
     private Uri m_DialogImgURI;
@@ -79,7 +89,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private String m_FirstName = null;
     private String m_FamilyName = null;
     private String m_AuthContext = null;
-
+    private UserLocation m_UserLocation;
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
     private FirebaseDatabase m_Database;
@@ -104,19 +114,63 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private boolean isUserExistsInDatabase()
     {
-        //TODO
-        return true;
+        //TODO check if this implementation suffice.
+        DatabaseReference ref = m_Database.getReference("Users");
+        ref.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                    m_IsUserExists = true;
+                else
+                    m_IsUserExists = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return m_IsUserExists;
     }
 
     private void getUserPersonalDetailsFromDB()
     {
-        //TODO
+        //TODO dont know how much data we have at this point, but location is must at this point
+       DatabaseReference reference =m_Database.getReference("Users").child(m_CurrentUser.getUid());
+       reference.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               m_UserLocation =(dataSnapshot.child("Location").getValue(UserLocation.class));
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
+
+        fillCountryCode(m_UserLocation.getLangtitude(),m_UserLocation.getLongtitude());
+    }
+
+    private void fillCountryCode(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            m_CountryCodePicker.setCountryForPhoneCode(Integer.parseInt(obj.getCountryCode()));
+
+
+        }
+        catch (IOException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

@@ -10,7 +10,6 @@ public class User
     private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext;
     private UserLocation mLocation;
     private UserAvailability mAvailability;
-    private List<String> mChatRoomsImPartOf = new ArrayList<>();
 
     public User(){}
 
@@ -102,15 +101,15 @@ public class User
         this.mAvailability = i_Availability;
     }
 
-    public void UpdateLocation(Location i_location, float i_lang, float i_long) {
+    public void UpdateLocation( double i_lang, double i_long) {
         if (mLocation == null) {
-            mLocation = new UserLocation(i_location, i_lang, i_long);
+            mLocation = new UserLocation( i_lang, i_long);
         } else {
-            updateUserLocation(i_location, i_lang, i_long);
+            updateUserLocation( i_lang, i_long);
         }
     }
 
-    private void updateUserLocation(Location i_location, float i_lang, float i_long){
+    private void updateUserLocation( double i_lang, double i_long){
         //TODO
     }
 

@@ -3,40 +3,34 @@ package com.studymobile.advisos.Models;
 import android.location.Location;
 
 public class UserLocation {
-    private Location location;
-    private float langtitude;
-    private float longtitude;
+    private double langtitude;
+    private double longtitude;
 
-    public UserLocation(Location i_location, float i_lang, float i_long){
-        this.location =i_location;
+    public UserLocation(){}
+
+    public UserLocation( double i_lang, double i_long){
         this.langtitude = i_lang;
         this.longtitude = i_long;
     }
 
-    public float getLangtitude() {
+    public double getLangtitude() {
         return langtitude;
     }
 
-    public float getLongtitude() {
+    public double getLongtitude() {
         return longtitude;
     }
 
-    public Location getLocation() {
-        return location;
-    }
 
-    public void setLangtitude(float langtitude) {
+
+    public void setLangtitude(double langtitude) {
         this.langtitude = langtitude;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setLongtitude(float longtitude) {
+    public void setLongtitude(double longtitude) {
         this.longtitude = longtitude;
     }
-    public float CalculateUsersDistance(UserLocation i_user1, UserLocation i_user2){
+    public double CalculateUsersDistance(UserLocation i_user1, UserLocation i_user2){
         //TODO
         return 0.0f;
     }

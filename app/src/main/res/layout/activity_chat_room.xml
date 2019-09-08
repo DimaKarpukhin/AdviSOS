@@ -6,12 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityChatRoom">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_of_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/reyclerview_chat_messages"
-        android:layout_above="@id/layout_chatbox"
-        ></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_of_homes_screen"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue"
+            app:layout_scrollFlags="scroll|enterAlways" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The room Name"
+            android:textSize="14sp"
+            />
+        <Button
+            android:id="@+id/button_close_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_circl_white_pressed_blue_transparent"
+            android:text="@string/close_chat_room"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            android:clickable="false"
+            />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:id="@+id/reyclerview_chat_messages"
+                 android:layout_above="@id/layout_chatbox"
+                 android:layout_below="@id/app_bar_layout_of_chat"/>
 
     <!--<View
         android:layout_width="match_parent"
