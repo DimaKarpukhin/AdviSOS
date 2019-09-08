@@ -8,18 +8,21 @@ import java.util.ArrayList;
 
 public class UserAvailability
 {
-    private boolean mIsAlwaysAvailable;
-    private boolean mIsNotDisturb;
-    private Week mWeekAvailability;
+    private boolean mIsAlwaysAvailable = false;
+    private boolean mIsNeverAvailable = false;
+    private boolean mIsNotDisturb = false;
+    private Week mWeekAvailability = null;
     private int mMaxConcurrentChats;
     private boolean mIsNoNumChatsLimit;
 
     public UserAvailability(){}
 
-    public UserAvailability(boolean i_IsAlwaysAvailable, boolean i_IsNotDisturb, Week i_Week,
+    public UserAvailability(boolean i_IsAlwaysAvailable, boolean i_IsNeverAvailable,
+                            boolean i_IsNotDisturb, Week i_Week,
                             int i_MaxConcurrentChats, boolean i_IsNoNumChatsLimit)
     {
         this.setIsAlwaysAvailable(i_IsAlwaysAvailable);
+        this.setIsNeverAvailable(i_IsNeverAvailable);
         this.setIsNotDisturb(i_IsNotDisturb);
         this.setWeekAvailability(i_Week);
         this.setMaxConcurrentChats(i_MaxConcurrentChats);
@@ -29,6 +32,11 @@ public class UserAvailability
     public boolean getIsAlwaysAvailable()
     {
         return mIsAlwaysAvailable;
+    }
+
+    public boolean getIsNeverAvailable()
+    {
+        return mIsNeverAvailable;
     }
 
     public boolean getIsNotDisturb()
@@ -54,6 +62,11 @@ public class UserAvailability
     public void setIsAlwaysAvailable(boolean i_IsAlwaysAvailable)
     {
         this.mIsAlwaysAvailable = i_IsAlwaysAvailable;
+    }
+
+    public void setIsNeverAvailable(boolean i_IsNeverAvailable)
+    {
+        this.mIsNeverAvailable = i_IsNeverAvailable;
     }
 
     public void setIsNotDisturb(boolean i_IsNotDisturb)

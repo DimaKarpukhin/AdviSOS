@@ -2,6 +2,7 @@ package com.studymobile.advisos.Adapters;
 
 import com.studymobile.advisos.Fragments.FragmentAdviceMe;
 import com.studymobile.advisos.Fragments.FragmentAdviceOthers;
+import com.studymobile.advisos.Fragments.FragmentChatRequests;
 import com.studymobile.advisos.Fragments.FragmentSubjects;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ public class AdapterTabsAccessor extends FragmentPagerAdapter
                 return new FragmentAdviceMe();
             case 2:
                 return new FragmentAdviceOthers();
+            case 3:
+                return new FragmentChatRequests();
             default:
                 return null;
         }
@@ -35,7 +38,7 @@ public class AdapterTabsAccessor extends FragmentPagerAdapter
     @Override
     public int getCount()
     {
-        return 3;
+        return 4;
     }
 
     @Nullable
@@ -48,7 +51,9 @@ public class AdapterTabsAccessor extends FragmentPagerAdapter
             case 1:
                 return "Advice me";
             case 2:
-                return "Advice you";
+                return "Advice others";
+            case 3:
+                return "Chat requests";
             default:
                 return null;
         }

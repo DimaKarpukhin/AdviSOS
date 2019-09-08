@@ -5,16 +5,16 @@ import com.studymobile.advisos.Enums.eWeekDay;
 public class Day
 {
     private eWeekDay mDay;
-    private String mStartTime;
-    private String mEndTime;
-    private boolean mIsAvailable;
+    private String mStartTime = "00:00";
+    private String mEndTime = "23:59";
+    private boolean mIsAvailable = false;
 
     public Day(){}
     public Day(eWeekDay i_Day, String i_StartTime, String i_EndTime, boolean i_IsAvailable)
     {
         this.setDay(i_Day);
-        this.setTimeFrom(i_StartTime);
-        this.setTimeTo(i_EndTime);
+        this.setStartTime(i_StartTime);
+        this.setEndTime(i_EndTime);
         this.setIsAvailable(i_IsAvailable);
     }
 
@@ -23,12 +23,12 @@ public class Day
         return mDay;
     }
 
-    public String getTimeFrom()
+    public String getStartTime()
     {
         return mStartTime;
     }
 
-    public String getTimeTo()
+    public String getEndTime()
     {
         return mEndTime;
     }
@@ -43,12 +43,12 @@ public class Day
         this.mDay = i_Day;
     }
 
-    public void setTimeFrom(String i_StartTime)
+    public void setStartTime(String i_StartTime)
     {
         this.mStartTime = i_StartTime;
     }
 
-    public void setTimeTo(String i_EndTime)
+    public void setEndTime(String i_EndTime)
     {
         this.mEndTime = i_EndTime;
     }

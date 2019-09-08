@@ -3,6 +3,8 @@ package com.studymobile.advisos.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +32,7 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
     private static final String AUTH_CONTEXT = "auth_context";
     private static final String PASSWORD_AUTH = "password";
 
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private TextView m_LinkSignUp;
     private TextView m_LinkResetPassword;
     private EditText m_FieldEmail;
@@ -65,7 +67,7 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
     {
         int id = i_View.getId();
 
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             if(isValidEmail() && isValidPassword())
             {
@@ -149,8 +151,9 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
                         }  else {
                             Log.e(TAG, "sigInWithEmail:failure", i_Task.getException());
                             String msg = Objects.requireNonNull(i_Task.getException()).getLocalizedMessage();
-                            Toast.makeText(ActivityPasswordLogin.this,
-                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
+                            m_FieldPassword.setError(msg);
+//                            Toast.makeText(ActivityPasswordLogin.this,
+//                                    "Authentication failed:\n" + msg, Toast.LENGTH_SHORT).show();
 //                            Snackbar.make(findViewById(android.R.id.content), "Authentication failed:\n" + msg,
 //                                    Snackbar.LENGTH_LONG).show();
                         }
@@ -167,8 +170,8 @@ public class ActivityPasswordLogin extends AppCompatActivity implements View.OnC
 
         m_FieldEmail = findViewById(R.id.field_email_of_password_login);
         m_FieldPassword = findViewById(R.id.field_password_of_password_login);
-        m_BtnNext = findViewById(R.id.btn_next_of_password_login);
-        m_BtnNext.setOnClickListener(ActivityPasswordLogin.this);
+        m_FabNext = findViewById(R.id.fab_next_of_password_login);
+        m_FabNext.setOnClickListener(ActivityPasswordLogin.this);
         m_LinkSignUp = findViewById(R.id.link_create_new_account);
         m_LinkSignUp.setOnClickListener(ActivityPasswordLogin.this);
         m_LinkResetPassword = findViewById(R.id.link_forgot_password);

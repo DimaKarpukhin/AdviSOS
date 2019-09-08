@@ -2,6 +2,8 @@ package com.studymobile.advisos.Activities;
 
 import android.content.Intent;
 import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +29,7 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
     private static final String AUTH_CONTEXT = "auth_context";
     private static final String PASSWORD_AUTH = "password";
 
-    private ImageButton m_BtnNext;
+    private FloatingActionButton m_FabNext;
     private EditText m_FieldEmail;
     private String m_Email;
 
@@ -56,7 +58,7 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
     {
         int id = i_View.getId();
 
-        if(id == m_BtnNext.getId())
+        if(id == m_FabNext.getId())
         {
             if(isValidEmail())
             {
@@ -120,8 +122,8 @@ public class ActivityResetPassword extends AppCompatActivity implements View.OnC
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
-        m_BtnNext = findViewById(R.id.btn_next_of_reset_password);
-        m_BtnNext.setOnClickListener(ActivityResetPassword.this);
+        m_FabNext = findViewById(R.id.fab_next_of_reset_password);
+        m_FabNext.setOnClickListener(ActivityResetPassword.this);
         m_FieldEmail = findViewById(R.id.field_email_of_reset_password);
     }
 

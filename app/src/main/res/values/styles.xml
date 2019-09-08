@@ -10,7 +10,7 @@
 
     <style name="SwitchBlueLight" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/blueLight</item>
+        <item name="colorControlActivated">@color/blackLight</item>
 
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/grey</item>

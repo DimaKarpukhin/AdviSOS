@@ -61,4 +61,9 @@ public class ViewHolderSubject extends RecyclerView.ViewHolder implements View.O
     {
         m_ItemClickListener.onClick(i_View, getAdapterPosition(), false);
     }
+
+    public void performClick(View i_View)
+    {
+        onClick(i_View);
+    }
 }

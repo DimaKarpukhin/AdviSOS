@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="270dp"
+    android:layout_width="290dp"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
@@ -40,7 +40,7 @@
                         android:id="@+id/layout_name"
                         android:layout_above="@+id/layout_description"
                         android:layout_width="match_parent"
-                        android:layout_height="46dp"
+                        android:layout_height="48dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
                         app:errorEnabled="true">
@@ -48,11 +48,11 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/field_subject_name_of_dialog_create_a_subj"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="33dp"
                             android:gravity="top"
                             android:hint="Subject name"
                             android:padding="5dp"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:background="@drawable/btn_rect_white_pressed_blue_transparent"
                             android:textColor="@color/black"
                             android:inputType="textMultiLine" />
@@ -131,7 +131,7 @@
                         android:gravity="center"
                         android:text="Cancel"
                         android:textColor="@color/blue"
-                        android:textSize="20sp">
+                        android:textSize="22sp">
 
                     </TextView>
                     <TextView
@@ -142,7 +142,7 @@
                         android:layout_margin="4dp"
                         android:gravity="center"
                         android:text="Create"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:textColor="@color/blue"
                         android:background="@drawable/btn_rect_transparent_pressed_blue_transparent">
 

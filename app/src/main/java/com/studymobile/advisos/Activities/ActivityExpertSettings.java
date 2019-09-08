@@ -12,11 +12,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,10 +33,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,7 +50,10 @@ import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Enums.eWeekDay;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.Models.Day;
+import com.studymobile.advisos.Models.Rating;
 import com.studymobile.advisos.Models.Subject;
+import com.studymobile.advisos.Models.SubjectUser;
+import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
@@ -52,8 +62,11 @@ import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,7 +83,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 {
     private static final String RES = "android.resource://";
     private static final String DRAWABLE_DEFAULT = "/drawable/img_advisos";
-    private static final String ADVISOS = "Advisos";
+    private static final String DEFAULT = "Default";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
 
@@ -89,13 +102,16 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private boolean m_IsImgPicked = false;
 
     private Dialog m_DialogSubjList;
-    private ImageButton m_FabCreateSubj;
-    private ImageButton m_FabNext;
-    private List<String> m_SuggestionsList;
-    private MaterialSearchBar m_SearchBar;
     private RecyclerView m_DialogRecyclerView;
-    private Button m_BtnSubjects;
-    private ImageButton m_BtnNext;
+    private ImageButton m_FabCreateSubj;
+    private List<String> m_SuggestionsList;
+    private HashMap<String, Boolean> m_SubjStateMap = new HashMap<>();
+    private Set<String> m_SubjNamesSet = new HashSet<String>();
+    private SparseBooleanArray m_SubjStateArray = new SparseBooleanArray();
+    private MaterialSearchBar m_SearchBar;
+
+    private TextView m_BtnSubjects;
+    private FloatingActionButton m_FabNext;
     private Switch m_SwitchAlwaysAvailable,m_SwitchNotDisturb;
 
     private Button m_SwitchSunday, m_SwitchMonday, m_SwitchTuesday,
@@ -113,18 +129,21 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private TextView m_TxtEndTimeSunday, m_TxtEndTimeMonday, m_TxtEndTimeTuesday,
             m_TxtEndTimeWednesday, m_TxtEndTimeThursday, m_TxtEndTimeFriday, m_TxtEndTimeSaturday;
 
+    private UserAvailability m_Availability = null;
     private short m_AvailableDays = 0;
-    private boolean m_IsNoNumChatsLimit = true;
     private boolean m_IsDisableAllDays = true;
-    private boolean m_IsNotDisturb = false;
-    private boolean m_IsAlwaysAvailable = false;
-    private boolean m_IsSundayAvailable = false;
-    private boolean m_IsMondayAvailable = false;
-    private boolean m_IsTuesdayAvailable = false;
-    private boolean m_IsWednesdayAvailable = false;
-    private boolean m_IsThursdayAvailable = false;
-    private boolean m_IsFridayAvailable = false;
-    private boolean m_IsSaturdayAvailable = false;
+    private boolean m_IsNoNumChatsLimit;
+    private boolean m_IsNeverAvailable;
+    private boolean m_IsAlwaysAvailable;
+    private boolean m_IsSundayAvailable;
+    private boolean m_IsMondayAvailable;
+    private boolean m_IsTuesdayAvailable;
+    private boolean m_IsWednesdayAvailable;
+    private boolean m_IsThursdayAvailable;
+    private boolean m_IsFridayAvailable;
+    private boolean m_IsSaturdayAvailable;
+
+    private boolean m_IsImgStored = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,23 +151,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         setContentView(R.layout.activity_expert_settings);
         setActivityContent();
         setFirebaseData();
-        setDialogSubjectList();
-        setDialogCreateSubj();
-
-        if(isUserExistsInDatabase())
-        {
-            getUserExpertDetailsFromDB();
-        }
-    }
-    private boolean isUserExistsInDatabase()
-    {
-        //TODO
-        return true;
-    }
-
-    private void getUserExpertDetailsFromDB()
-    {
-        //TODO
+        getUserSubjectsFromDB();
+        getUserAvailabilityFromDB();
+        setDialogSubjectsList();
+        setDialogCreateSubject();
     }
 
     @Override
@@ -166,10 +172,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         int id = i_View.getId();
 
         if(id == m_BtnSubjects.getId()){
-            showDialogSubjList();
-        }else if(id == m_BtnNext.getId()) {
-            populateDatabase();
-            startHomeActivity();
+            showDialogSubjectsList();
+        }else if(id == m_FabNext.getId()) {
+            populateDatabaseWithExpertSettings();
+            startHomeScreenActivity();
         }else if(id == m_SwitchSunday.getId()) {
             setSundayClick();
         }else if(id == m_SwitchMonday.getId()) {
@@ -190,20 +196,254 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         menageEndTimeClicks(id);
     }
 
-    private void showDialogSubjList()
+    private void getUserSubjectsFromDB()
     {
-        buildSubjectsOptions();
-        populateSubjectsView();
+        Query subjUsersRef = m_Database.getReference("SubjectUsers")
+                .orderByChild(m_CurrentUser.getUid());
+        subjUsersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    SubjectUser user = (snapshot.child(m_CurrentUser.getUid())).getValue(SubjectUser.class);
+                    if(user != null) {
+                        m_SubjNamesSet.add(user.getSubjectName());
+                        m_SubjStateMap.put(user.getSubjectName(), user.getIsValid());
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
 
-        m_DialogSubjList.findViewById(R.id.fab_create_a_subject_of_dialog_subjects_list)
+    private void getUserAvailabilityFromDB()
+    {
+        DatabaseReference userId = m_Database.getReference("Users");
+        userId.child(m_CurrentUser.getUid()).child("userAvailability")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
+                        if (i_DataSnapshot.exists() )
+                        {
+                            m_Availability = i_DataSnapshot.getValue(UserAvailability.class);
+
+                            updateUI();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
+                });
+    }
+
+    private void updateUI()
+    {
+        m_IsAlwaysAvailable = m_Availability.getIsAlwaysAvailable();
+        m_IsNeverAvailable = m_Availability.getIsNeverAvailable();
+        m_IsNoNumChatsLimit = m_Availability.getIsNoNumChatsLimit();
+
+        Week weekAvailability = m_Availability.getWeekAvailability();
+        if(weekAvailability != null)
+        {
+            Day sunday = weekAvailability.getSunday();
+            Day monday = weekAvailability.getMonday();
+            Day tuesday = weekAvailability.getTuesday();
+            Day wednesday = weekAvailability.getWednesday();
+            Day thursday = weekAvailability.getThursday();
+            Day friday = weekAvailability.getFriday();
+            Day saturday = weekAvailability.getSaturday();
+
+            if (m_IsNeverAvailable) {
+                m_IsDisableAllDays = true;
+                switchOffAllDays();
+            }
+            else {
+                if (m_IsAlwaysAvailable) {
+                    m_IsDisableAllDays = false;
+                    switchOnAllDays();
+                }
+                if (sunday != null && sunday.getIsAvailable()) {
+                    m_IsSundayAvailable = true;
+                    m_AvailableDays++;
+                    updateSundayUI(sunday);
+                }
+                if (monday != null && monday.getIsAvailable()) {
+                    m_IsMondayAvailable = true;
+                    m_AvailableDays++;
+                    updateMondayUI(monday);
+                }
+                if (tuesday != null && tuesday.getIsAvailable()) {
+                    m_IsTuesdayAvailable = true;
+                    m_AvailableDays++;
+                    updateTuesdayUI(tuesday);
+                }
+                if (wednesday != null && wednesday.getIsAvailable()) {
+                    m_IsWednesdayAvailable = true;
+                    m_AvailableDays++;
+                    updateWednesdayUI(wednesday);
+                }
+                if (thursday != null && thursday.getIsAvailable()) {
+                    m_IsThursdayAvailable = true;
+                    m_AvailableDays++;
+                    updateThursdayUI(thursday);
+                }
+                if (friday != null && friday.getIsAvailable()) {
+                    m_IsFridayAvailable = true;
+                    m_AvailableDays++;
+                    updateFridayUI(friday);
+                }
+                if (saturday != null && saturday.getIsAvailable()) {
+                    m_IsSaturdayAvailable = true;
+                    m_AvailableDays++;
+                    updateSaturdayUI(saturday);
+                }
+            }
+        }
+    }
+
+    private void updateSundayUI(Day i_Sunday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchSunday, m_BtnStartTimeSunday, m_BtnEndTimeSunday);
+        hours = Integer.parseInt(i_Sunday.getStartTime()
+                .substring(0, i_Sunday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Sunday.getStartTime()
+                .substring(i_Sunday.getStartTime().indexOf(":") + 1));
+        setSundayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Sunday.getEndTime()
+                .substring(0, i_Sunday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Sunday.getEndTime()
+                .substring(i_Sunday.getEndTime().indexOf(":") + 1));
+        setSundayTime(hours, minutes, false);
+    }
+
+    private void updateMondayUI(Day i_Monday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchMonday, m_BtnStartTimeMonday, m_BtnEndTimeMonday);
+        hours = Integer.parseInt(i_Monday.getStartTime()
+                .substring(0, i_Monday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Monday.getStartTime()
+                .substring(i_Monday.getStartTime().indexOf(":") + 1));
+        setMondayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Monday.getEndTime()
+                .substring(0, i_Monday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Monday.getEndTime()
+                .substring(i_Monday.getEndTime().indexOf(":") + 1));
+        setMondayTime(hours, minutes, false);
+    }
+
+    private void updateTuesdayUI(Day i_Tuesday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchTuesday, m_BtnStartTimeTuesday, m_BtnEndTimeTuesday);
+        hours = Integer.parseInt(i_Tuesday.getStartTime()
+                .substring(0, i_Tuesday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Tuesday.getStartTime()
+                .substring(i_Tuesday.getStartTime().indexOf(":") + 1));
+        setTuesdayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Tuesday.getEndTime()
+                .substring(0, i_Tuesday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Tuesday.getEndTime()
+                .substring(i_Tuesday.getEndTime().indexOf(":") + 1));
+        setTuesdayTime(hours, minutes, false);
+    }
+
+    private void updateWednesdayUI(Day i_Wednesday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchWednesday, m_BtnStartTimeWednesday, m_BtnEndTimeWednesday);
+        hours = Integer.parseInt(i_Wednesday.getStartTime()
+                .substring(0, i_Wednesday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Wednesday.getStartTime()
+                .substring(i_Wednesday.getStartTime().indexOf(":") + 1));
+        setWednesdayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Wednesday.getEndTime()
+                .substring(0, i_Wednesday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Wednesday.getEndTime()
+                .substring(i_Wednesday.getEndTime().indexOf(":") + 1));
+        setWednesdayTime(hours, minutes, false);
+
+    }
+
+    private void updateThursdayUI(Day i_Thursday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchThursday, m_BtnStartTimeThursday, m_BtnEndTimeThursday);
+        hours = Integer.parseInt(i_Thursday.getStartTime()
+                .substring(0, i_Thursday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Thursday.getStartTime()
+                .substring(i_Thursday.getStartTime().indexOf(":") + 1));
+        setThursdayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Thursday.getEndTime()
+                .substring(0, i_Thursday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Thursday.getEndTime()
+                .substring(i_Thursday.getEndTime().indexOf(":") + 1));
+        setThursdayTime(hours, minutes, false);
+    }
+
+    private void updateFridayUI(Day i_Friday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchFriday, m_BtnStartTimeFriday, m_BtnEndTimeFriday);
+        hours = Integer.parseInt(i_Friday.getStartTime()
+                .substring(0, i_Friday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Friday.getStartTime()
+                .substring(i_Friday.getStartTime().indexOf(":") + 1));
+        setFridayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Friday.getEndTime()
+                .substring(0, i_Friday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Friday.getEndTime()
+                .substring(i_Friday.getEndTime().indexOf(":") + 1));
+        setFridayTime(hours, minutes, false);
+    }
+
+    private void updateSaturdayUI(Day i_Saturday)
+    {
+        int hours, minutes;
+
+        switchOn(m_SwitchSaturday, m_BtnStartTimeSaturday, m_BtnEndTimeSaturday);
+        hours = Integer.parseInt(i_Saturday.getStartTime()
+                .substring(0, i_Saturday.getStartTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Saturday.getStartTime()
+                .substring(i_Saturday.getStartTime().indexOf(":") + 1));
+        setSaturdayTime(hours, minutes, true);
+
+        hours = Integer.parseInt(i_Saturday.getEndTime()
+                .substring(0, i_Saturday.getEndTime().indexOf(":")));
+        minutes = Integer.parseInt(i_Saturday.getEndTime()
+                .substring(i_Saturday.getEndTime().indexOf(":") + 1));
+        setSaturdayTime(hours, minutes, false);
+    }
+
+    private void showDialogSubjectsList()
+    {
+        buildSubjectsListOptions();
+        populateSubjectsListView();
+
+        m_DialogSubjList.findViewById(R.id.btn_new_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
-                        showDialogCreateSubj();
+                        showDialogCreateSubject();
                     }
                 });
 
-        m_DialogSubjList.findViewById(R.id.fab_next_of_dialog_subjects_list)
+        m_DialogSubjList.findViewById(R.id.btn_done_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
@@ -214,7 +454,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_DialogSubjList.show();
     }
 
-    private void buildSubjectsOptions()
+    private void buildSubjectsListOptions()
     {
         DatabaseReference subjectRef = m_Database.getReference().child("Subjects");
         m_Options = new FirebaseRecyclerOptions.Builder<Subject>()
@@ -222,7 +462,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 .build();
     }
 
-    private void populateSubjectsView()
+    private void populateSubjectsListView()
     {
         m_Adapter = new FirebaseRecyclerAdapter<Subject, ViewHolderSubject>(m_Options) {
             @NonNull
@@ -237,18 +477,49 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
+            protected void onBindViewHolder(@NonNull final ViewHolderSubject i_ViewHolder, int i_Position,
                                             @NonNull final Subject i_Subject)
             {
                 i_ViewHolder.getCheckBox().setVisibility(View.VISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.INVISIBLE);
-                i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
+                i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
+
+                i_ViewHolder.getCheckBox()
+                        .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        m_SubjStateMap.put(i_Subject.getSubjectName(), isChecked);
+                        m_SubjNamesSet.add(i_Subject.getSubjectName());
+                    }
+                });
+
+                if( m_SubjStateMap.get(i_Subject.getSubjectName()) != null)
+                {
+                    i_ViewHolder.getCheckBox()
+                            .setChecked(m_SubjStateMap.get(i_Subject.getSubjectName()));
+                }
+                else {
+                    i_ViewHolder.getCheckBox().setChecked(false);
+                }
 
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-
+                    public void onClick(View i_View, int i_Position, boolean i_IsLongClick) {
+                        if ( m_SubjStateMap.get(i_Subject.getSubjectName()) != null)
+                        {
+                            boolean state = !m_SubjStateMap.get(i_Subject.getSubjectName());
+                            i_ViewHolder.getCheckBox().setChecked(state);
+                            m_SubjStateMap.put(i_Subject.getSubjectName(), state);
+                            m_SubjNamesSet.add(i_Subject.getSubjectName());
+                        }
+                        else  {
+                            i_ViewHolder.getCheckBox().setChecked(true);
+                            m_SubjStateMap.put(i_Subject.getSubjectName(), true);
+                            m_SubjNamesSet.add(i_Subject.getSubjectName());
+                        }
                     }
                 });
             }
@@ -258,7 +529,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_DialogRecyclerView.setAdapter(m_Adapter);
     }
 
-    private void showDialogCreateSubj()
+    private void showDialogCreateSubject()
     {
         m_DialogImgView.setImageURI(m_DialogImgURI);
 
@@ -280,12 +551,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                         }
                         else {
                             if(m_IsImgPicked){
-                                uploadImgToStorage( m_FieldSubjName.getText().toString());
+                                uploadImageToStorage( m_FieldSubjName.getText().toString());
                             }else{
-                                uploadImgToStorage(ADVISOS);
+                                uploadImageToStorage(DEFAULT);
                             }
-
-                            m_DialogCreateSubj.dismiss();
                         }
                     }
                 });
@@ -293,12 +562,20 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setDefaultDialogCreateSubj();
+                        setDefaultDialogCreateSubject();
                         m_DialogCreateSubj.dismiss();
                     }
                 });
 
         m_DialogCreateSubj.show();
+    }
+
+    private void setDefaultDialogCreateSubject()
+    {
+        m_DialogImgURI = Uri.parse(RES + getApplicationContext()
+                .getPackageName() + DRAWABLE_DEFAULT);
+        m_FieldSubjDescription.getText().clear();
+        m_FieldSubjName.getText().clear();
     }
 
     private void addProfileImage()
@@ -354,10 +631,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         }
     }
 
-    private void uploadImgToStorage(String i_Image)
+    private void uploadImageToStorage(String i_Image)
     {
         StorageReference imagePath = m_Storage.getReference().child("Images/Subjects");
-        if(m_DialogImgURI != null)
+        if(m_DialogImgURI != null && !m_IsImgStored)
         {
             final StorageReference imageRef = imagePath.child(i_Image);
             imageRef.putFile(m_DialogImgURI)
@@ -368,8 +645,9 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                                 @Override
                                 public void onSuccess(Uri uri)
                                 {
+                                    m_IsImgStored = true;
                                     m_DialogImgURI = uri;
-                                    pushNewSubjToDatabase();
+                                    pushNewSubjectToDatabase();
                                 }
                             });
                         }
@@ -381,69 +659,55 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 }
             });
         }
+        else {
+            pushNewSubjectToDatabase();
+        }
     }
 
-    private void pushNewSubjToDatabase()
+    private void pushNewSubjectToDatabase()
     {
         final Subject subject = new Subject();
-        DatabaseReference databaseRef = m_Database.getReference("Subjects");
-        String subjName = m_FieldSubjName.getText().toString();
+        final DatabaseReference subjectsRef = m_Database.getReference("Subjects");
+        final String subjName = m_FieldSubjName.getText().toString().toUpperCase();
 
-        if(!isSubjectAlreadyExist(subjName)) {
-            subject.setSubjectName(subjName);
-            subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
-            subject.setImgLink(m_DialogImgURI.toString());
-//            databaseRef.child(subjName).setValue(subject)
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> i_Task) {
-//                            if (i_Task.isSuccessful()) {
-//                                Toast.makeText(ActivitySubjectPicker.this,
-//                                        "The subject is created.", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(ActivitySubjectPicker.this,
-//                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            setDefaultPopupDialog();
-//                        }
-//                    });
-            databaseRef.push().setValue(subject)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> i_Task) {
-                            if (i_Task.isSuccessful()) {
-                                Toast.makeText(ActivityExpertSettings.this,
-                                        "The subject is created.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(ActivityExpertSettings.this,
-                                        "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
-                            }
-
-                            setDefaultDialogCreateSubj();
+        subjectsRef.child(subjName).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                    {
+                        if (i_DataSnapshot.exists()) {
+                            m_FieldSubjName.setError("Subject already exists.");
                         }
-                    });
-        }
+                        else {
+                            subject.setSubjectName(subjName);
+                            subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
+                            subject.setImgLink(m_DialogImgURI.toString());
+                            subjectsRef.child(subjName).setValue(subject)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> i_Task)
+                                        {
+                                            if (i_Task.isSuccessful()) {
+                                                Toast.makeText(ActivityExpertSettings.this,
+                                                        "The subject is created.",
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(ActivityExpertSettings.this,
+                                                        "Failure! Something was going wrong.",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
 
+                                            setDefaultDialogCreateSubject();
+                                        }
+                                    });
+                            m_DialogCreateSubj.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
+                });
     }
-
-    private void setDefaultDialogCreateSubj()
-    {
-        m_DialogImgURI = Uri.parse(RES + getApplicationContext()
-                .getPackageName() + DRAWABLE_DEFAULT);
-        m_FieldSubjDescription.getText().clear();
-        m_FieldSubjName.getText().clear();
-    }
-
-    private boolean isSubjectAlreadyExist(String i_SubjName)
-    {
-        boolean result = false;
-        //TODO
-
-        return result;
-    }
-
-
 
     private void setFirebaseData()
     {
@@ -453,7 +717,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_Storage = FirebaseStorage.getInstance();
     }
 
-    private void setDialogSubjectList()
+    private void setDialogSubjectsList()
     {
         m_DialogSubjList = new Dialog(ActivityExpertSettings.this);
         m_DialogSubjList.setContentView(R.layout.dialog_subjects_list);
@@ -473,7 +737,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_DialogRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void setDialogCreateSubj()
+    private void setDialogCreateSubject()
     {
         m_DialogCreateSubj = new Dialog(ActivityExpertSettings.this);
         m_DialogCreateSubj.setContentView(R.layout.dialog_create_a_subject);
@@ -517,8 +781,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
     }
 
-    private void populateDatabase()
+    private void populateDatabaseWithExpertSettings()
     {
+        updateDatabaseSubjectUsers();
+
         Day sunday, monday, tuesday, wednesday, thursday, friday, saturday;
         sunday = monday = tuesday = thursday
                 = wednesday = friday = saturday = null;
@@ -567,15 +833,16 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         }
 
         Week week = new Week();
-        setWeekAvailability(week, sunday, monday, tuesday,
-                wednesday, thursday, friday, saturday);
-        UserAvailability availability = new UserAvailability();
-        availability.setWeekAvailability(week);
-        availability.setIsAlwaysAvailable(m_IsAlwaysAvailable);
-        availability.setIsNotDisturb(m_IsNotDisturb);
-        availability.setIsNoNumChatsLimit(m_IsNoNumChatsLimit);
+        if(isWeekAvailable(week, sunday, monday, tuesday, wednesday, thursday, friday, saturday))
+        {
+            m_Availability = new UserAvailability();
+            m_Availability.setWeekAvailability(week);
+            m_Availability.setIsAlwaysAvailable(m_IsAlwaysAvailable);
+            m_Availability.setIsNeverAvailable(m_IsNeverAvailable);
+            m_Availability.setIsNoNumChatsLimit(m_IsNoNumChatsLimit);
+        }
         DatabaseReference databaseRef = m_Database.getReference("Users");
-        databaseRef.child(m_CurrentUser.getUid()).child("userAvailability").setValue(availability)
+        databaseRef.child(m_CurrentUser.getUid()).child("userAvailability").setValue(m_Availability)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> i_Task) {
@@ -585,8 +852,33 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                             "Failure! Something was going wrong.", Toast.LENGTH_SHORT).show();
                 }
             }
-        });;
+        });
 
+    }
+
+    private void updateDatabaseSubjectUsers()
+    {
+        DatabaseReference subjectRef =  m_Database.getReference("SubjectUsers");
+        for (String subjectName : m_SubjNamesSet)
+        {
+            if(m_SubjStateMap.get(subjectName) != null)
+            {
+                if(m_SubjStateMap.get(subjectName))
+                {
+                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
+                            .child("isValid").setValue(true);
+                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
+                            .child("subjectName").setValue(subjectName);
+
+                }
+                else{
+                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
+                            .child("isValid").setValue(false);
+                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
+                            .child("subjectName").setValue(subjectName);
+                }
+            }
+        }
     }
 
     private void setDayAvailability(Day i_Day, eWeekDay i_WeekDay,
@@ -594,35 +886,45 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     {
         i_Day.setDay(i_WeekDay);
         i_Day.setIsAvailable(true);
-        i_Day.setTimeFrom(i_StartTime);
-        i_Day.setTimeTo(i_EndTime);
+        i_Day.setStartTime(i_StartTime);
+        i_Day.setEndTime(i_EndTime);
     }
 
 
-    private void setWeekAvailability(Week i_Week, Day i_Sun, Day i_Mon, Day i_Tue,
+    private boolean isWeekAvailable(Week i_Week, Day i_Sun, Day i_Mon, Day i_Tue,
                                      Day i_Wed, Day i_Thu, Day i_Fri, Day i_Sat)
     {
+        boolean isAvailable = false;
         if(i_Sun != null) {
             i_Week.setSunday(i_Sun);
+            isAvailable = true;
         }
         if(i_Mon != null) {
             i_Week.setMonday(i_Mon);
+            isAvailable = true;
         }
         if(i_Tue != null) {
             i_Week.setTuesday(i_Tue);
+            isAvailable = true;
         }
         if(i_Wed != null) {
             i_Week.setWednesday(i_Wed);
+            isAvailable = true;
         }
         if(i_Thu != null) {
             i_Week.setThursday(i_Thu);
+            isAvailable = true;
         }
         if(i_Fri != null) {
             i_Week.setFriday(i_Fri);
+            isAvailable = true;
         }
         if(i_Sat != null) {
             i_Week.setSaturday(i_Sat);
+            isAvailable = true;
         }
+
+        return isAvailable;
     }
 
 
@@ -637,12 +939,13 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         {
             if(i_IsChecked) {
                 m_IsAlwaysAvailable = true;
-                m_IsNotDisturb = false;
+                m_IsNeverAvailable = false;
                 m_SwitchNotDisturb.setChecked(false);
                 switchOnAllDays();
             }else{
                 if(m_IsDisableAllDays) {
                     switchOffAllDays();
+                    m_Availability = null;
                 }
                 m_IsAlwaysAvailable = false;
             }
@@ -651,10 +954,11 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         {
             if (i_IsChecked) {
                 m_IsDisableAllDays = true;
-                m_IsNotDisturb = true;
+                m_IsNeverAvailable = true;
                 m_IsAlwaysAvailable = false;
                 m_SwitchAlwaysAvailable.setChecked(false);
                 switchOffAllDays();
+                m_Availability = null;
             }else {
                 //switchOnAllDays();
             }
@@ -665,26 +969,19 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private void switchOnAllDays()
     {
         m_AvailableDays = 7;
-        switchOn(m_SwitchSunday, m_BtnStartTimeSunday, m_BtnEndTimeSunday,
-                m_TxtStartTimeSunday, m_TxtEndTimeSunday);
+        switchOn(m_SwitchSunday, m_BtnStartTimeSunday, m_BtnEndTimeSunday);
         m_IsSundayAvailable = true;
-        switchOn(m_SwitchMonday, m_BtnStartTimeMonday, m_BtnEndTimeMonday,
-                m_TxtStartTimeMonday, m_TxtEndTimeMonday);
+        switchOn(m_SwitchMonday, m_BtnStartTimeMonday, m_BtnEndTimeMonday);
         m_IsMondayAvailable = true;
-        switchOn(m_SwitchTuesday, m_BtnStartTimeTuesday, m_BtnEndTimeTuesday,
-                m_TxtStartTimeTuesday, m_TxtEndTimeTuesday);
+        switchOn(m_SwitchTuesday, m_BtnStartTimeTuesday, m_BtnEndTimeTuesday);
         m_IsTuesdayAvailable = true;
-        switchOn(m_SwitchWednesday, m_BtnStartTimeWednesday, m_BtnEndTimeWednesday,
-                m_TxtStartTimeWednesday, m_TxtEndTimeWednesday);
+        switchOn(m_SwitchWednesday, m_BtnStartTimeWednesday, m_BtnEndTimeWednesday);
         m_IsWednesdayAvailable = true;
-        switchOn(m_SwitchThursday, m_BtnStartTimeThursday, m_BtnEndTimeThursday,
-                m_TxtStartTimeThursday, m_TxtEndTimeThursday);
+        switchOn(m_SwitchThursday, m_BtnStartTimeThursday, m_BtnEndTimeThursday);
         m_IsThursdayAvailable = true;
-        switchOn(m_SwitchFriday, m_BtnStartTimeFriday, m_BtnEndTimeFriday,
-                m_TxtStartTimeFriday, m_TxtEndTimeFriday);
+        switchOn(m_SwitchFriday, m_BtnStartTimeFriday, m_BtnEndTimeFriday);
         m_IsFridayAvailable = true;
-        switchOn(m_SwitchSaturday, m_BtnStartTimeSaturday, m_BtnEndTimeSaturday,
-                m_TxtStartTimeSaturday, m_TxtEndTimeSaturday);
+        switchOn(m_SwitchSaturday, m_BtnStartTimeSaturday, m_BtnEndTimeSaturday);
         m_IsSaturdayAvailable = true;
     }
 
@@ -714,12 +1011,11 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_IsSaturdayAvailable = false;
     }
 
-    private void switchOn(Button i_WeekDay, Button i_TimeFrom, Button i_TimeTo,
-                          TextView i_TxtFrom, TextView i_TxtTo)
+    private void switchOn(Button i_WeekDay, Button i_TimeFrom, Button i_TimeTo)
     {
         if(m_SwitchNotDisturb.isChecked())
         {
-            m_IsNotDisturb = false;
+            m_IsNeverAvailable = false;
             m_SwitchNotDisturb.setChecked(false);
         }
         if(m_AvailableDays == 7)
@@ -728,8 +1024,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             m_IsAlwaysAvailable = true;
             m_SwitchAlwaysAvailable.setChecked(true);
         }
-//        i_TxtFrom.setText("00:00");
-//        i_TxtTo.setText("23:59");
+
         i_WeekDay.setBackground(getDrawable(R.drawable.btn_circl_blue_pressed_blue_transparent));
         i_WeekDay.setTextColor(getColor(R.color.white));
 
@@ -780,8 +1075,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         }else{
             m_IsSundayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchSunday, m_BtnStartTimeSunday, m_BtnEndTimeSunday,
-                    m_TxtStartTimeSunday, m_TxtEndTimeSunday);
+            switchOn(m_SwitchSunday, m_BtnStartTimeSunday, m_BtnEndTimeSunday);
         }
     }
 
@@ -797,8 +1091,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else {
             m_IsMondayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchMonday, m_BtnStartTimeMonday, m_BtnEndTimeMonday,
-                    m_TxtStartTimeMonday, m_TxtEndTimeMonday);
+            switchOn(m_SwitchMonday, m_BtnStartTimeMonday, m_BtnEndTimeMonday);
         }
     }
 
@@ -814,8 +1107,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else{
             m_IsTuesdayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchTuesday, m_BtnStartTimeTuesday, m_BtnEndTimeTuesday,
-                    m_TxtStartTimeTuesday, m_TxtEndTimeTuesday);
+            switchOn(m_SwitchTuesday, m_BtnStartTimeTuesday, m_BtnEndTimeTuesday);
         }
     }
 
@@ -831,8 +1123,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else{
             m_IsWednesdayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchWednesday, m_BtnStartTimeWednesday, m_BtnEndTimeWednesday,
-                    m_TxtStartTimeWednesday, m_TxtEndTimeWednesday);
+            switchOn(m_SwitchWednesday, m_BtnStartTimeWednesday, m_BtnEndTimeWednesday);
         }
     }
 
@@ -848,8 +1139,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else{
             m_IsThursdayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchThursday, m_BtnStartTimeThursday, m_BtnEndTimeThursday,
-                    m_TxtStartTimeThursday, m_TxtEndTimeThursday);
+            switchOn(m_SwitchThursday, m_BtnStartTimeThursday, m_BtnEndTimeThursday);
         }
     }
 
@@ -865,8 +1155,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else{
             m_IsFridayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchFriday, m_BtnStartTimeFriday, m_BtnEndTimeFriday,
-                    m_TxtStartTimeFriday, m_TxtEndTimeFriday);
+            switchOn(m_SwitchFriday, m_BtnStartTimeFriday, m_BtnEndTimeFriday);
         }
     }
 
@@ -882,8 +1171,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         else{
             m_IsSaturdayAvailable = true;
             m_AvailableDays++;
-            switchOn(m_SwitchSaturday, m_BtnStartTimeSaturday, m_BtnEndTimeSaturday,
-                    m_TxtStartTimeSaturday, m_TxtEndTimeSaturday);
+            switchOn(m_SwitchSaturday, m_BtnStartTimeSaturday, m_BtnEndTimeSaturday);
         }
     }
 
@@ -1031,7 +1319,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         }
     }
 
-    public void setSundayTime(int I_Hour, int i_Minute, boolean i_IsStartTime) 
+    private void setSundayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
         String fixer = (i_Minute < 10) ? ":0" : ":";
@@ -1159,7 +1447,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtStartTimeWednesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeWednesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1168,12 +1457,14 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             m_TxtStartTimeWednesday.setText("00:00");
             m_TxtStartTimeWednesday.setVisibility(View.VISIBLE);
 
-            if (InputValidation.IsValidTimeSpan(m_TxtStartTimeWednesday.getText().toString(), time)) {
+            if (InputValidation.IsValidTimeSpan(
+                    m_TxtStartTimeWednesday.getText().toString(), time)) {
                 m_BtnEndTimeWednesday.setVisibility(View.INVISIBLE);
                 m_TxtEndTimeWednesday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeWednesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1196,7 +1487,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtStartTimeThursday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeThursday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1210,7 +1502,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtEndTimeThursday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeThursday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1233,7 +1526,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtStartTimeFriday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeFriday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1247,7 +1541,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtEndTimeFriday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeFriday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1270,7 +1565,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtStartTimeSaturday.setText(I_Hour + fixer + i_Minute);
                 m_TxtStartTimeSaturday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1284,7 +1580,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 m_TxtEndTimeSaturday.setText(I_Hour + fixer + i_Minute);
                 m_TxtEndTimeSaturday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityExpertSettings.this,
+                        errorMessage, Toast.LENGTH_SHORT).show();
 //                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
@@ -1295,10 +1592,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
-        m_BtnSubjects = findViewById(R.id.btn_subjects_expert_settings);
+        m_BtnSubjects = findViewById(R.id.txt_subjects_expert_settings);
         m_BtnSubjects.setOnClickListener(this);
-        m_BtnNext = findViewById(R.id.btn_next_of_expert_settings);
-        m_BtnNext.setOnClickListener(this);
+        m_FabNext = findViewById(R.id.fab_next_of_expert_settings);
+        m_FabNext.setOnClickListener(this);
         m_SwitchAlwaysAvailable = findViewById(R.id.switch_always_available);
         m_SwitchAlwaysAvailable.setOnCheckedChangeListener(this);
         m_SwitchNotDisturb = findViewById(R.id.switch_never_available);
@@ -1393,11 +1690,11 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_TxtEndTimeSaturday.setOnClickListener(this);
     }
 
-    private void startHomeActivity()
+    private void startHomeScreenActivity()
     {
-        Intent IntentHome = new Intent
+        Intent IntentHomeScreen = new Intent
                 (ActivityExpertSettings.this, ActivityHomeScreen.class);
-        startActivity(IntentHome);
+        startActivity(IntentHomeScreen);
     }
 
 }
