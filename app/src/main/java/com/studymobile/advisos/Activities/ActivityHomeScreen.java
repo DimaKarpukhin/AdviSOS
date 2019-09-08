@@ -113,12 +113,12 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         {
             case MaterialSearchBar.BUTTON_NAVIGATION:
                 m_DrawerLayout.openDrawer(Gravity.LEFT);
-              //  Toast.makeText(this, "NAV", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, "NAV", Toast.LENGTH_SHORT).show();
                 break;
             case MaterialSearchBar.BUTTON_BACK:
                 m_SearchBar.hideSuggestionsList();
                 m_DrawerLayout.closeDrawer(GravityCompat.START);
-             //   Toast.makeText(this, "BACK", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(this, "BACK", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

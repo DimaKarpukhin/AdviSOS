@@ -1,10 +1,5 @@
 package com.studymobile.advisos.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.util.Pair;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,12 +7,18 @@ import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,10 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.studymobile.advisos.Models.ChatRoom;
+import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
+import com.studymobile.advisos.notification.FCMNotification;
 
 import java.util.Date;
+import java.util.List;
 
 public class ActivityCreateChatRoom extends AppCompatActivity {
 
@@ -144,8 +148,15 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
        m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
        m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
        m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
-        try{
-       this.wait();}
+        try
+        {
+            this.wait();
+            if(collectChatUser instanceof CollectExpertsForChatRoom)
+            {
+                CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
+                pushNotify(collector.getmExpertUserOfSubjectSelectedId());
+            }
+        }
         catch (InterruptedException e){
 
         }
@@ -165,5 +176,33 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         return new Pair<>(currentDate,localTime);
     }
 
+
+    void pushNotify(List<String> i_expertUserOfSubjectSelectedId)
+    {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        for (String userID : i_expertUserOfSubjectSelectedId)
+        {
+            dbRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    try
+                    {
+                        FCMNotification.pushFCMNotification(user.getDeviceToken(), "title" , "body");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("Error", "push notification error");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
 
 }
