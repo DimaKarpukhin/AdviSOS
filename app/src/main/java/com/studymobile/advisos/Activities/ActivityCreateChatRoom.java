@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.studymobile.advisos.Models.ChatRoom;
+import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
@@ -136,29 +137,30 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
     private void createChatRoomActivity(String i_roomName)
     {
-       Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
-       new Thread(collectChatUser).start();
-       DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
-       String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
-       Pair<String, String> date = getCreationDateAndTime();
-       String userID = m_CurrentUser.getUid();
-       ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
-       ,userID);
-       chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
-       m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
-       m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
-       m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
-        try
+        Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
+        new Thread(collectChatUser).start();
+        DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
+        String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
+        Pair<String, String> date = getCreationDateAndTime();
+        String userID = m_CurrentUser.getUid();
+        ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
+        ,userID);
+        chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
+        m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
+        m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
+        m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
+        try { this.wait();}
+        catch (InterruptedException e){}
+        CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
+        if( collector.getmExpertUserOfSubjectSelectedId().isEmpty() )
         {
-            this.wait();
-            if(collectChatUser instanceof CollectExpertsForChatRoom)
-            {
-                CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
-                pushNotify(collector.getmExpertUserOfSubjectSelectedId());
-            }
+            //TODO
+            // inform user that chat cannot be opened now because of no single user is available
+            // to advice now
         }
-        catch (InterruptedException e){
-
+        else
+        {
+            pushNotify(collector.getmExpertUserOfSubjectSelectedId());
         }
         Intent intent = new Intent(this, ActivityChatRoom.class);
         intent.putExtra("chat_room_id", chatRoomUId);
@@ -177,13 +179,13 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
 
 
-    void pushNotify(List<String> i_expertUserOfSubjectSelectedId)
+    void pushNotify(List<SubjectUser> i_expertUserOfSubjectSelectedId)
     {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users");
 
-        for (String userID : i_expertUserOfSubjectSelectedId)
+        for (SubjectUser su : i_expertUserOfSubjectSelectedId)
         {
-            dbRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            dbRef.child(su.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
