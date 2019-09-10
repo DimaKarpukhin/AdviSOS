@@ -171,7 +171,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                     if(res)
                     {
                         disableAndClearAllCommandViewsIfChatIsClosed();
-                        Toast.makeText(getApplicationContext(),"The chat closed by the creator",Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(),"The chat closed by the creator",Toast.LENGTH_LONG).show();
                         removeChatRoomFromActiveChats();
                     }
                 }
@@ -245,7 +245,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         String messageText = mMessageBodyText.getText().toString();
         if(TextUtils.isEmpty(messageText))
         {
-            Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT);
+            Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT).show();
         }
         else{
             Calendar cal = Calendar.getInstance();
