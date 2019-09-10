@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:id="@+id/layout_title_of_dialog_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/txt_title_of_dialog_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:text="Remove photo?"
+            android:textSize="17sp"
+            android:textColor="@color/blue"
+            android:inputType="textMultiLine">
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/btn_close_of_dialog_confirm"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:src="@drawable/ic_close_blue"
+            android:background="@drawable/btn_rect_transparent_pressed_grey_light"
+            android:visibility="invisible">
+        </ImageButton>
+
+        <LinearLayout
+            android:layout_below="@+id/txt_title_of_dialog_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
+
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/btn_left_of_dialog_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textAllCaps="true"
+                android:textSize="15sp"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:inputType="textMultiLine"
+                android:background="@drawable/btn_rect_transparent_pressed_grey_light">
+            </TextView>
+            <TextView
+                android:id="@+id/btn_right_of_dialog_confirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Remove"
+                android:textSize="15sp"
+                android:textColor="@color/blue"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:inputType="textMultiLine"
+                android:background="@drawable/btn_rect_transparent_pressed_grey_light">
+            </TextView>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

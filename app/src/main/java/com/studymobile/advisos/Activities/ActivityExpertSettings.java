@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -129,6 +130,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private TextView m_TxtEndTimeSunday, m_TxtEndTimeMonday, m_TxtEndTimeTuesday,
             m_TxtEndTimeWednesday, m_TxtEndTimeThursday, m_TxtEndTimeFriday, m_TxtEndTimeSaturday;
 
+    private User m_DatabaseUser = null;
     private UserAvailability m_Availability = null;
     private short m_AvailableDays = 0;
     private boolean m_IsDisableAllDays = true;
@@ -221,15 +223,18 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private void getUserAvailabilityFromDB()
     {
         DatabaseReference userId = m_Database.getReference("Users");
-        userId.child(m_CurrentUser.getUid()).child("userAvailability")
+        userId.child(m_CurrentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
                         if (i_DataSnapshot.exists() )
                         {
-                            m_Availability = i_DataSnapshot.getValue(UserAvailability.class);
-
-                            updateUI();
+                            m_DatabaseUser = i_DataSnapshot.getValue(User.class);
+                            if(m_DatabaseUser.getUserAvailability() != null)
+                            {
+                                m_Availability = i_DataSnapshot.getValue(UserAvailability.class);
+                                updateUI();
+                            }
                         }
                     }
 
@@ -859,23 +864,28 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private void updateDatabaseSubjectUsers()
     {
         DatabaseReference subjectRef =  m_Database.getReference("SubjectUsers");
+        String userID = m_CurrentUser.getUid();
         for (String subjectName : m_SubjNamesSet)
         {
             if(m_SubjStateMap.get(subjectName) != null)
             {
                 if(m_SubjStateMap.get(subjectName))
                 {
-                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
-                            .child("isValid").setValue(true);
-                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
-                            .child("subjectName").setValue(subjectName);
+                    subjectRef.child(subjectName).child(userID).child("isValid").setValue(true);
+                    subjectRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
+                    subjectRef.child(subjectName).child(userID).child("userName")
+                            .setValue(m_DatabaseUser.getFirstName() + " " + m_DatabaseUser.getFamilyName());
+                    subjectRef.child(subjectName).child(userID).child("userImgLink").setValue(m_DatabaseUser.getImgLink());
+                    subjectRef.child(subjectName).child(userID).child("userId").setValue(userID);
 
                 }
                 else{
-                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
-                            .child("isValid").setValue(false);
-                    subjectRef.child(subjectName).child(m_CurrentUser.getUid())
-                            .child("subjectName").setValue(subjectName);
+                    subjectRef.child(subjectName).child(userID).child("isValid").setValue(false);
+                    subjectRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
+                    subjectRef.child(subjectName).child(userID).child("userName")
+                            .setValue(m_DatabaseUser.getFirstName() + " " + m_DatabaseUser.getFamilyName());
+                    subjectRef.child(subjectName).child(userID).child("userImgLink").setValue(m_DatabaseUser.getImgLink());
+                    subjectRef.child(subjectName).child(userID).child("userId").setValue(userID);
                 }
             }
         }
@@ -1319,270 +1329,251 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         }
     }
 
-    private void setSundayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    private String convertToStringFormat(int i_Hour, int i_Minute)
+    {
+        String hourStr = (i_Hour < 10) ? "0" +  i_Hour : String.valueOf(i_Hour);
+        String minutesStr = (i_Minute < 10) ? "0" + i_Minute : String.valueOf(i_Minute);
+
+        return hourStr + ":" + minutesStr;
+    }
+
+    private void setSundayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
         
         if(i_IsStartTime)
         {
             m_BtnEndTimeSunday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeSunday.setText("23:59");
             m_TxtEndTimeSunday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeSunday.getText().toString())) {
                 m_BtnStartTimeSunday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeSunday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeSunday.setText(time);
                 m_TxtStartTimeSunday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeSunday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeSunday.setText("00:00");
             m_TxtStartTimeSunday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeSunday.getText().toString(), time)) {
                 m_BtnEndTimeSunday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeSunday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeSunday.setText(time);
                 m_TxtEndTimeSunday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void setMondayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setMondayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeMonday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeMonday.setText("23:59");
             m_TxtEndTimeMonday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeMonday.getText().toString())) {
                 m_BtnStartTimeMonday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeMonday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeMonday.setText(time);
                 m_TxtStartTimeMonday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeMonday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeMonday.setText("00:00");
             m_TxtStartTimeMonday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeMonday.getText().toString(), time)) {
                 m_BtnEndTimeMonday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeMonday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeMonday.setText(time);
                 m_TxtEndTimeMonday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void setTuesdayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setTuesdayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeTuesday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeTuesday.setText("23:59");
             m_TxtEndTimeTuesday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeTuesday.getText().toString())) {
                 m_BtnStartTimeTuesday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeTuesday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeTuesday.setText(time);
                 m_TxtStartTimeTuesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                m_TxtStartTimeTuesday.setError(errorMessage);
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeTuesday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeTuesday.setText("00:00");
             m_TxtStartTimeTuesday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeTuesday.getText().toString(), time)) {
                 m_BtnEndTimeTuesday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeTuesday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeTuesday.setText(time);
                 m_TxtEndTimeTuesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
             }
         }
     }
 
-    public void setWednesdayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setWednesdayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeWednesday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeWednesday.setText("23:59");
             m_TxtEndTimeWednesday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeWednesday.getText().toString())) {
                 m_BtnStartTimeWednesday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeWednesday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeWednesday.setText(time);
                 m_TxtStartTimeWednesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeWednesday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeWednesday.setText("00:00");
             m_TxtStartTimeWednesday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(
                     m_TxtStartTimeWednesday.getText().toString(), time)) {
                 m_BtnEndTimeWednesday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeWednesday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeWednesday.setText(time);
                 m_TxtEndTimeWednesday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void setThursdayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setThursdayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeThursday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeThursday.setText("23:59");
             m_TxtEndTimeThursday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeThursday.getText().toString())) {
                 m_BtnStartTimeThursday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeThursday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeThursday.setText(time);
                 m_TxtStartTimeThursday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeThursday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeThursday.setText("00:00");
             m_TxtStartTimeThursday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeThursday.getText().toString(), time)) {
                 m_BtnEndTimeThursday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeThursday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeThursday.setText(time);
                 m_TxtEndTimeThursday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void setFridayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setFridayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeFriday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeFriday.setText("23:59");
             m_TxtEndTimeFriday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeFriday.getText().toString())) {
                 m_BtnStartTimeFriday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeFriday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeFriday.setText(time);
                 m_TxtStartTimeFriday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeFriday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeFriday.setText("00:00");
             m_TxtStartTimeFriday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeFriday.getText().toString(), time)) {
                 m_BtnEndTimeFriday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeFriday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeFriday.setText(time);
                 m_TxtEndTimeFriday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void setSaturdayTime(int I_Hour, int i_Minute, boolean i_IsStartTime)
+    public void setSaturdayTime(int i_Hour, int i_Minute, boolean i_IsStartTime)
     {
         String errorMessage = "Invalid time span";
-        String fixer = (i_Minute < 10) ? ":0" : ":";
-        String time = I_Hour + fixer + i_Minute;
+        String time = convertToStringFormat(i_Hour, i_Minute);
 
         if(i_IsStartTime)
         {
             m_BtnEndTimeSaturday.setVisibility(View.INVISIBLE);
-            m_TxtEndTimeSaturday.setText("23:59");
             m_TxtEndTimeSaturday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(time, m_TxtEndTimeSaturday.getText().toString())) {
                 m_BtnStartTimeSaturday.setVisibility(View.INVISIBLE);
-                m_TxtStartTimeSaturday.setText(I_Hour + fixer + i_Minute);
+                m_TxtStartTimeSaturday.setText(time);
                 m_TxtStartTimeSaturday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
         else {
             m_BtnStartTimeSaturday.setVisibility(View.INVISIBLE);
-            m_TxtStartTimeSaturday.setText("00:00");
             m_TxtStartTimeSaturday.setVisibility(View.VISIBLE);
 
             if (InputValidation.IsValidTimeSpan(m_TxtStartTimeSaturday.getText().toString(), time)) {
                 m_BtnEndTimeSaturday.setVisibility(View.INVISIBLE);
-                m_TxtEndTimeSaturday.setText(I_Hour + fixer + i_Minute);
+                m_TxtEndTimeSaturday.setText(time);
                 m_TxtEndTimeSaturday.setVisibility(View.VISIBLE);
             } else {
-                Toast.makeText(ActivityExpertSettings.this,
-                        errorMessage, Toast.LENGTH_SHORT).show();
-//                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(ActivityExpertSettings.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
             }
         }
     }

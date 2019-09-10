@@ -6,30 +6,30 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_do_not_disturb"
-            android:icon="@drawable/ic_do_not_disturb_white"
-            android:iconTint="@color/white"
-            android:title="Don't disturb" />
-        <item
             android:id="@+id/nav_availability"
-            android:icon="@drawable/ic_settings_white"
-            android:iconTint="@color/white"
-            android:title="Availability" />
+            android:icon="@drawable/ic_checked_green"
+            android:button="@drawable/checkbox_blue_checked_green"
+            android:title="Online" />
         <item
             android:id="@+id/nav_my_profile"
             android:icon="@drawable/ic_person_black"
-            android:iconTint="@color/white"
             android:title="My profile" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_my_ratings"
+            android:icon="@drawable/ic_star"
+            android:title="My ratings" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
-            android:iconTint="@color/white"
-            android:title="Share" />
+            android:title="Invite friends" />
 
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout_white"
-            android:iconTint="@color/white"
             android:title="Logout" />
 
     </group>

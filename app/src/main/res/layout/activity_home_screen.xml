@@ -6,7 +6,6 @@
     android:id="@+id/drawer_layout_home_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".Activities.ActivityHomeScreen"
     tools:openDrawer="start">
 
@@ -83,9 +82,10 @@
         android:id="@+id/nav_view_home_screen"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="48dp"
         android:layout_gravity="start"
-        android:background="@color/blue"
+        android:background="@color/blueDark"
+        android:fitsSystemWindows="true"
         app:itemTextColor="@color/blueLight"
         app:itemIconTint="@color/blueLight"
         app:menu="@menu/nav_view_of_home_screen"/>

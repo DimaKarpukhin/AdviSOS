@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" >
         <shape android:shape="rectangle">
-            <solid android:color="@color/blueLightTransparent" />
+            <solid android:color="@color/greyLight" />
             <corners
-                android:topRightRadius="5dp"
-                android:topLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:bottomLeftRadius="5dp"/>
+                android:topRightRadius="12dp"
+                android:topLeftRadius="12dp"
+                android:bottomRightRadius="12dp"
+                android:bottomLeftRadius="12dp"/>
             <stroke
-                android:width="2.5dp"
+                android:width="1.5dp"
                 android:color="@color/blue"/>
 
         </shape>
@@ -18,14 +18,14 @@
     <item>
         <shape android:shape="rectangle">
             <stroke
-                android:width="2dp"
+                android:width="1dp"
                 android:color="@color/blue"/>
             <solid android:color="@color/white"/>
             <corners
-                android:topRightRadius="5dp"
-                android:topLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:bottomLeftRadius="5dp"/>
+                android:topRightRadius="12dp"
+                android:topLeftRadius="12dp"
+                android:bottomRightRadius="12dp"
+                android:bottomLeftRadius="12dp"/>
         </shape>
     </item>
 </selector>

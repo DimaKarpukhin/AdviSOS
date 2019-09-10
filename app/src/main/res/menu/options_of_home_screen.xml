@@ -4,6 +4,8 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:icon= "@drawable/ic_available"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:button="@drawable/checkbox_blue_checked_green"
+        app:showAsAction="ifRoom" />
 </menu>

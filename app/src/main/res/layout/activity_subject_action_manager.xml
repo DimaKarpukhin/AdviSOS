@@ -1,9 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Activities.ActivitySubjectActionManager">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/layout_image_of_subject_action_manager"
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+
+        <ImageView
+            android:id="@+id/img_subject_of_subject_action_manager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_advisos"/>
+
+        <ImageButton
+            android:id="@+id/btn_back_of_subject_action_manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_rect_white_pressed_grey_light"
+            android:src="@drawable/ic_arrow_back_blue"/>
+
+        <ImageButton
+            android:id="@+id/btn_restore_of_subject_action_manager"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_circle_white_pressed_grey_light"
+            android:src="@drawable/ic_replay"/>
+
+        <ImageButton
+            android:id="@+id/btn_add_a_photo_of_subject_action_manager"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_circle_white_pressed_grey_light"
+            android:src="@drawable/ic_add_a_photo_blue"/>
+
+        <TextView
+            android:id="@+id/txt_subject_name_of_subject_action_manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:text="SUBJECT NAME"
+            android:textSize="24sp"
+            android:textColor="@color/blue"
+            android:textStyle="italic"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/layout_image_of_subject_action_manager">
+
+        <TextView
+            android:id="@+id/txt_subj_description_of_subject_action_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:text="Subject description"
+            android:background="@drawable/layout_blue_light_rounded"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:id="@+id/txt_enter_a_topic_for_advice"
+            android:layout_below="@+id/txt_subj_description_of_subject_action_manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:text="Enter a topic and ask for advice"
+            android:layout_centerHorizontal="true"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_ask_for_advice"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_enter_a_topic_for_advice"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/layout_blue_light_rounded">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_the_topic_is"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/field_topic_action_manager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="The topic is:"
+                    android:padding="5dp"
+                    android:textSize="20sp"
+                    android:background="@drawable/btn_rect_white_pressed_blue_transparent"
+                    android:textColor="@color/blue"
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_ask_for_advice"
+            android:layout_below="@+id/layout_ask_for_advice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Ask"
+            android:textSize="22sp"
+            android:textColor="@color/blue"
+            android:background="@drawable/btn_rect_white_pressed_blue_transparent">
+
+        </Button>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

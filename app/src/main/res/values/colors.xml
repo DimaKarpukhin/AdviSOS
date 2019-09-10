@@ -10,11 +10,12 @@
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparent">#B3FFFFFF</color>
     <color name="blue">#E60D4FA6</color>
+    <color name="blueDark">#ED0F2646</color>
     <color name="blueLight">#BDC8DF</color>
+    <color name="blueLightTransparent">#597696C9</color>
     <color name="blueMiddle">#B30D4FA6</color>
     <color name="mediumblue">#0000CD</color>
     <color name="gainsboro">#DCDCDC</color>
-    <color name="blueTransparent">#597696C9</color>
     <color name="green">#09D261</color> 8BC14A
     <color name="greenLight">#C2E5F5</color>
     <color name="greenTransparent">#B3C2E5F5</color>
@@ -23,4 +24,7 @@
     <color name="greyLight">#DDDCDC</color>
     <color name="greyTransparent">#4D242424</color>
     <color name="transparent">#00000000</color>
+    <color name="overlayBackground">#7a333639</color>
+    <color name="red">#CCF44336</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>

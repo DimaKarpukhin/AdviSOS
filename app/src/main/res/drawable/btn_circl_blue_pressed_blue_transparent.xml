@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" >
         <shape android:shape="oval">
-            <solid android:color="@color/blueTransparent" />
+            <solid android:color="@color/blueLightTransparent" />
             <stroke
                 android:width="2.5dp"
                 android:color="@color/blue"/>

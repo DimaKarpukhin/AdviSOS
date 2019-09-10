@@ -53,8 +53,7 @@
         <Button
             android:id="@+id/button_create_chat_room"
             android:textSize="14dp"
-            android:background="@drawable/ic_menu_send"
-            android:clickable="true"
+            android:text="Send"
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:gravity="center"

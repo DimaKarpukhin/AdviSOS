@@ -31,10 +31,10 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
   {
     super.onStart();
 
-    if(FirebaseAuth.getInstance().getCurrentUser() != null)
-    {
-      startHomeActivity();
-    }
+//    if(FirebaseAuth.getInstance().getCurrentUser() != null)
+//    {
+//      startHomeScreenActivity();
+//    }
   }
 
   @Override
@@ -87,10 +87,10 @@ public class ActivityRegistration extends AppCompatActivity implements View.OnCl
     startActivity(IntentPhoneNumLogin);
   }
 
-  private void startHomeActivity()
+  private void startHomeScreenActivity()
   {
-    Intent IntentHome = new Intent
-            (ActivityRegistration.this, HomeActivity.class);
-    startActivity(IntentHome);
+    Intent IntentHomeScreen = new Intent
+            (ActivityRegistration.this, ActivityHomeScreen.class);
+    startActivity(IntentHomeScreen);
   }
 }

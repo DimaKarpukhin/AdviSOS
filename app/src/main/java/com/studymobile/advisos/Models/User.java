@@ -9,6 +9,7 @@ public class User
 {
     private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext, mDeviceToken;
     private UserLocation mLocation;
+    private boolean mIsDoNotDisturb;
     private UserAvailability mAvailability;
 
     public User(){}
@@ -20,6 +21,8 @@ public class User
         this.setEmail(i_Email);
         this.setPhone(i_Phone);
     }
+
+    public boolean getIsDoNotDisturb(){return mIsDoNotDisturb;}
 
     public String getDeviceToken()
     {
@@ -65,6 +68,8 @@ public class User
     {
         return mAvailability;
     }
+
+    public void setIsDoNotDisturb(boolean i_IsDoNotDisturb){ this.mIsDoNotDisturb = i_IsDoNotDisturb;}
 
     public void setDeviceToken(String i_DeviceToken)
     {

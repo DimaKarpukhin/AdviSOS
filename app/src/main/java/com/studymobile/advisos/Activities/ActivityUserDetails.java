@@ -7,22 +7,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,11 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-<<<<<<< HEAD
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-=======
->>>>>>> aa3c21d6de70070f5418613f96b9ef108e1d3ac0
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,9 +39,6 @@ import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -57,8 +47,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static java.lang.System.exit;
 
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener
 {
@@ -99,6 +87,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private String m_FamilyName = null;
     private String m_AuthContext = null;
     private UserLocation m_UserLocation;
+
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
     private FirebaseDatabase m_Database;
@@ -107,6 +96,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private boolean m_IsImgStored = false;
     private boolean m_IsImgPicked = false;
     private boolean m_IsSocialAvatarPicked = false;
+    private boolean m_IsDoNotDisturb = false;
 
     private String m_DeviceToken;
 
@@ -118,7 +108,6 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_user_details);
         setFirebaseData();
         setActivityContent();
-<<<<<<< HEAD
         getDeviceToken();
         getIntentExtras();
         getUserPersonalDetailsFromDB();
@@ -136,14 +125,6 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             }
         });
     }
-=======
-
-    }
-
-
-
-
->>>>>>> aa3c21d6de70070f5418613f96b9ef108e1d3ac0
 
     @Override
     protected void onStart()
@@ -209,6 +190,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                     .child("imgLink").setValue(m_ProfileImgLink);
             databaseRef.child(m_CurrentUser.getUid())
                     .child("deviceToken").setValue(m_DeviceToken);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("isDoNotDisturb").setValue(m_IsDoNotDisturb);
         }
     }
 
@@ -246,7 +229,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private void setPopupDialog()
     {
         m_PopupDialog = new Dialog(ActivityUserDetails.this);
-        m_PopupDialog.setContentView(R.layout.dialog_profile_picture);
+        m_PopupDialog.setContentView(R.layout.dialog_image);
         m_PopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_profile_picture);
         m_DialogImgURI = m_ProfileImgURI;
@@ -314,11 +297,22 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void confirmRemoving()
     {
-        final Dialog removeDialog = new Dialog(ActivityUserDetails.this);
-        removeDialog.setContentView(R.layout.dialog_confirm_remove);
+        final Dialog confirmDialog = new Dialog(ActivityUserDetails.this);
+        confirmDialog.setContentView(R.layout.dialog_confirm);
+        String title = "Remove photo?";
+        String rightBtnTxt = "Remove";
+        String leftBtnTxt = "Cancel";
+        ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
+        TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
+        TextView rightBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
+        TextView leftBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
 
-        removeDialog.findViewById(R.id.btn_remove_of_dialog_confirm_remove)
-                .setOnClickListener(new View.OnClickListener() {
+        closeBtn.setVisibility(View.INVISIBLE);
+        fieldTitle.setText(title);
+        rightBtn.setText(rightBtnTxt);
+        leftBtn.setText(leftBtnTxt);
+
+        rightBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         m_DialogImgURI = Uri.parse(RES + getApplicationContext()
@@ -326,19 +320,18 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                         m_DialogImgView.setImageURI(m_DialogImgURI);
                         m_ProfileImgURI = m_DialogImgURI;
                         m_ProfileImgView.setImageURI(m_ProfileImgURI);
-                        removeDialog.dismiss();
+                        confirmDialog.dismiss();
                         m_IsImgPicked = false;
                     }
                 });
-        removeDialog.findViewById(R.id.btn_cancel_of_dialog_confirm_remove)
-                .setOnClickListener(new View.OnClickListener() {
+        leftBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeDialog.dismiss();
+                        confirmDialog.dismiss();
                     }
                 });
 
-        removeDialog.show();
+        confirmDialog.show();
     }
 
     private void addProfileImage()
@@ -448,6 +441,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                             m_FamilyName = currentUser.getFamilyName();
                             m_Email = currentUser.getEmail();
                             m_InternationalPhoneNumber = currentUser.getPhone();
+                            m_IsDoNotDisturb = currentUser.getIsDoNotDisturb();
                             updateUI();
                         }
                     }
@@ -463,7 +457,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         m_FieldFirstName.setText(m_FirstName);
         m_FieldFamilyName.setText(m_FamilyName);
         m_FieldEmail.setText(m_Email);
-        m_FieldPhoneNumber.setText(m_InternationalPhoneNumber);
+
+        if(m_InternationalPhoneNumber != null && !m_InternationalPhoneNumber.isEmpty()) {
+            m_FieldPhoneNumber.setText(m_InternationalPhoneNumber.substring(4));
+        }
     }
 
     private void setActivityContent()

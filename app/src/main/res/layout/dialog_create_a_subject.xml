@@ -105,7 +105,7 @@
                         android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:background="@drawable/btn_circl_white_pressed_blue_transparent"
+                        android:background="@drawable/btn_circle_white_pressed_grey_light"
                         android:src="@drawable/ic_add_a_photo_blue">
                     </ImageButton>
 
@@ -123,11 +123,10 @@
 
                     <TextView
                         android:id="@+id/btn_cancel_of_dialog_create_a_subj"
-                        android:layout_width="40dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="4dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_rect_transparent_pressed_blue_transparent"
+                        android:background="@drawable/btn_rect_transparent_pressed_grey_light"
                         android:gravity="center"
                         android:text="Cancel"
                         android:textColor="@color/blue"
@@ -136,15 +135,14 @@
                     </TextView>
                     <TextView
                         android:id="@+id/btn_create_of_dialog_create_a_subj"
-                        android:layout_width="40dp"
-                        android:layout_height="36dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_margin="4dp"
                         android:gravity="center"
                         android:text="Create"
                         android:textSize="22sp"
                         android:textColor="@color/blue"
-                        android:background="@drawable/btn_rect_transparent_pressed_blue_transparent">
+                        android:background="@drawable/btn_rect_transparent_pressed_grey_light">
 
                     </TextView>
 

@@ -6,7 +6,7 @@
             <stroke
                 android:width="1dp"
                 android:color="@color/blue"/>
-            <solid android:color="@color/blueTransparent" />
+            <solid android:color="@color/blueLightTransparent" />
             <size
                 android:width="120dp"
                 android:height="120dp"/>

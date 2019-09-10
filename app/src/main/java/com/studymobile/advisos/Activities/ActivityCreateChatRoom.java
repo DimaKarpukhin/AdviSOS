@@ -88,6 +88,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         mButtonCreateChatRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(ActivityCreateChatRoom.this, "GOOD", Toast.LENGTH_SHORT).show();
                 onClickOperation();
             }
         });
@@ -132,6 +133,8 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
 
             }
         });
+
+        builder.show();
 
     }
     private void createChatRoomActivity(String i_roomName)

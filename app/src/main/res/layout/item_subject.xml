@@ -67,6 +67,36 @@
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_keyboard_arrow_right_blue"/>
 
+            <LinearLayout
+                android:id="@+id/layout_rating_of_item_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/img_star_of_item_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/checkbox_blue_checked_green"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/ic_star"/>
+
+                <TextView
+                    android:id="@+id/txt_rate_mark_of_item_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/blue"
+                    android:textSize="18sp"
+                    android:layout_marginEnd="5dp"
+                    android:text="4.8"
+                    android:textStyle="italic"/>
+
+            </LinearLayout>
         </RelativeLayout>
 
     </RelativeLayout>

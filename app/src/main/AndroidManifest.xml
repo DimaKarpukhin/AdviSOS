@@ -11,9 +11,15 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.ActivitySubjectActionManager"
+            android:parentActivityName=".Activities.ActivityHomeScreen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Activities.ActivityHomeScreen"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity android:name=".Activities.ActivityCreateChatRoom" />
         <activity
             android:name=".Activities.ActivityChatRoom"

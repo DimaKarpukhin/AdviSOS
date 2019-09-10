@@ -8,7 +8,7 @@
                 android:topLeftRadius="8dp"
                 android:bottomRightRadius="4dp"
                 android:topRightRadius="4dp"/>
-            <solid android:color="@color/blueTransparent"/>
+            <solid android:color="@color/blueLightTransparent"/>
 
         </shape>
     </item>

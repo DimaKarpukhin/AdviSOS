@@ -15,7 +15,7 @@
         android:id="@+id/search_bar_of_dialog_subjects_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mt_searchBarColor="@color/blueTransparent"
+        app:mt_searchBarColor="@color/blueLightTransparent"
         app:mt_textColor="@color/blueLight"
         app:mt_highlightedTextColor="@color/blue"
         app:mt_placeholder="Choose subjects"
@@ -43,7 +43,7 @@
     <LinearLayout
         android:id="@+id/layout_bottom_of_subjects_lis"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="42dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -53,30 +53,26 @@
         <TextView
             android:id="@+id/btn_new_of_dialog_subjects_list"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="2dp"
             android:gravity="center"
             android:text="New"
             android:textSize="22sp"
             android:textColor="@color/blue"
-            android:background="@drawable/btn_rect_transparent_pressed_white">
+            android:background="@drawable/btn_rect_transparent_pressed_grey_light">
 
         </TextView>
 
         <TextView
             android:id="@+id/btn_done_of_dialog_subjects_list"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="4dp"
             android:gravity="center"
             android:text="Done"
             android:textSize="22sp"
             android:textColor="@color/blue"
-            android:background="@drawable/btn_rect_transparent_pressed_white">
+            android:background="@drawable/btn_rect_transparent_pressed_grey_light">
 
         </TextView>
 

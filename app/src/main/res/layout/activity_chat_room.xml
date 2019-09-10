@@ -27,7 +27,7 @@
             android:id="@+id/button_close_chat"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/btn_circl_white_pressed_blue_transparent"
+            android:background="@drawable/btn_circle_white_pressed_grey_light"
             android:text="@string/close_chat_room"
             android:textSize="14sp"
             android:visibility="invisible"

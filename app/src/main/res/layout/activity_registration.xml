@@ -45,7 +45,7 @@
         <Button
             android:id="@+id/btn_phone_num_connection"
             android:layout_above="@+id/btn_email_password_connection"
-            android:layout_width="285dp"
+            android:layout_width="290dp"
             android:layout_height="58dp"
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
@@ -62,7 +62,7 @@
         <Button
             android:id="@+id/btn_email_password_connection"
             android:layout_above="@+id/btn_social_connection"
-            android:layout_width="285dp"
+            android:layout_width="290dp"
             android:layout_height="58dp"
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
@@ -78,7 +78,7 @@
 
         <Button
             android:id="@+id/btn_social_connection"
-            android:layout_width="285dp"
+            android:layout_width="290dp"
             android:layout_height="58dp"
             android:layout_marginTop="8dp"
             android:layout_alignParentBottom="true"

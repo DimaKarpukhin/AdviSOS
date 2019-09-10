@@ -1,6 +1,7 @@
 package com.studymobile.advisos.Fragments;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Activities.ActivitySubjectActionManager;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.R;
@@ -29,10 +31,12 @@ import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentSubjects extends Fragment {
+public class FragmentSubjects extends Fragment
+{
+    private static final String SUBJECT_NAME = "subject_name";
+
     private View mSubjectsView;
     private RecyclerView mSubjectsList;
-
     private FirebaseDatabase mDatabase;
     private DatabaseReference mSubjectRef;
     private FirebaseAuth mAuth;
@@ -130,8 +134,8 @@ public class FragmentSubjects extends Fragment {
 
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-
+                    public void onClick(View i_View, int i_Position, boolean i_IsLongClick) {
+                        startSubjectActionManagerActivity(i_Position);
                     }
                 });
             }
@@ -139,5 +143,12 @@ public class FragmentSubjects extends Fragment {
 
         mAdapter.startListening();
         mSubjectsList.setAdapter(mAdapter);
+    }
+
+    private void startSubjectActionManagerActivity(int i_Position)
+    {
+        Intent IntentSubjectActionManager = new Intent(getActivity(), ActivitySubjectActionManager.class);
+        IntentSubjectActionManager.putExtra(SUBJECT_NAME, mAdapter.getRef(i_Position).getKey());
+        startActivity(IntentSubjectActionManager);
     }
 }
