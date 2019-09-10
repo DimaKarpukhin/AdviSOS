@@ -230,12 +230,42 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                         if (i_DataSnapshot.exists() )
                         {
                             m_DatabaseUser = i_DataSnapshot.getValue(User.class);
-                            if(m_DatabaseUser.getUserAvailability() != null)
+                            if (i_DataSnapshot.child("userAvailability").exists())
                             {
-                                m_Availability = i_DataSnapshot.getValue(UserAvailability.class);
+                                m_Availability = i_DataSnapshot.child("userAvailability").getValue(UserAvailability.class);
+                                String path = "userAvailability/weekAvailability/";
+                                if (i_DataSnapshot.child(path).exists())
+                                {
+                                    Week week = i_DataSnapshot.getValue(Week.class);
+                                    if (i_DataSnapshot.child(path + "sunday").exists()) {
+                                        week.setSunday(i_DataSnapshot.child(path + "sunday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "monday").exists()) {
+                                        week.setMonday(i_DataSnapshot.child(path + "monday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "tuesday").exists()) {
+                                        week.setTuesday(i_DataSnapshot.child(path + "tuesday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "wednesday").exists()) {
+                                        week.setWednesday(i_DataSnapshot.child(path + "wednesday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "thursday").exists()) {
+                                        week.setThursday(i_DataSnapshot.child(path + "thursday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "friday").exists()) {
+                                        week.setFriday(i_DataSnapshot.child(path + "friday").getValue(Day.class));
+                                    }
+                                    if (i_DataSnapshot.child(path + "saturday").exists()) {
+                                        week.setSaturday(i_DataSnapshot.child(path + "saturday").getValue(Day.class));
+                                    }
+
+                                    m_Availability.setWeekAvailability(week);
+                                }
+
                                 updateUI();
                             }
                         }
+
                     }
 
                     @Override
