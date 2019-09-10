@@ -145,9 +145,8 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
        ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
        ,userID);
        chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
-       m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
-       m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
-       m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
+       m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
+       m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
         try
         {
             this.wait();

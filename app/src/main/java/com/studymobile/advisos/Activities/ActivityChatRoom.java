@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -55,6 +56,7 @@ public class ActivityChatRoom extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mChatRoonIdRefMessages;
     private FirebaseAuth mAuth;
+    private TextView mRoomNameTextView;
     private String mChatRoomId;
     private FirebaseUser mCurrentUser;
     private FirebaseStorage mStorage;
@@ -131,9 +133,16 @@ public class ActivityChatRoom extends AppCompatActivity {
         mCloseChatButton = findViewById(R.id.button_close_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
+        mRoomNameTextView = findViewById(R.id.textView_room_name_information_open);
         mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRoomNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayChatRoomParticipants();
+            }
+        });
         mCloseChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +183,14 @@ public class ActivityChatRoom extends AppCompatActivity {
             }
         });
     }
+
+    private void displayChatRoomParticipants() {
+        Intent intent = new Intent(this, ActivityParticipatedUsers.class);
+        intent.putExtra("user_id",mCurrentUser.getUid());
+        intent.putExtra("chat_room_id", mChatRoomId);
+        this.startActivity(intent);
+    }
+
     //this method will be executed only for the users that not created the chat
     private void removeChatRoomFromActiveChats() {
         //DatabaseReference usersRef = mDatabase.getReference("Users");

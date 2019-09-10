@@ -23,4 +23,5 @@
     <color name="greyLight">#DDDCDC</color>
     <color name="greyTransparent">#4D242424</color>
     <color name="transparent">#00000000</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>
