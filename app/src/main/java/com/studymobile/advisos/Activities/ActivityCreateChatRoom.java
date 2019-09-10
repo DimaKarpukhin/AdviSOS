@@ -154,18 +154,18 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
         if( collector.getmExpertUserOfSubjectSelectedId().isEmpty() )
         {
-            //TODO
-            // inform user that chat cannot be opened now because of no single user is available
-            // to advice now
+            Toast.makeText(ActivityCreateChatRoom.this,
+                    "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
         }
         else
         {
             pushNotify(collector.getmExpertUserOfSubjectSelectedId());
+            Intent intent = new Intent(this, ActivityChatRoom.class);
+            intent.putExtra("chat_room_id", chatRoomUId);
+            Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
+            this.startActivity(intent);
         }
-        Intent intent = new Intent(this, ActivityChatRoom.class);
-        intent.putExtra("chat_room_id", chatRoomUId);
-        Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
-        this.startActivity(intent);
+
     }
 
     private Pair<String,String> getCreationDateAndTime() {

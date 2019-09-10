@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.Models.UserAvailability;
+import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.Models.Week;
 
 import java.text.DateFormat;
@@ -27,7 +28,44 @@ public class CollectExpertsForChatRoom implements Runnable{
     private DatabaseReference mSubjectUsersReference;
     private String mSubjectName;
     private UserAvailability mUserAvailability;
-    ArrayList<String> mUserIDs = new ArrayList<>();
+    private ArrayList<String> mUserIDs = new ArrayList<>();
+    private UserLocation mOpenerLoc = null;
+
+
+    private class PairUserIdAndDistance implements Comparable
+    {
+        private String mUserID;
+        private double mDistance;
+
+        public String getUserID() {
+            return mUserID;
+        }
+
+        public void setUserID(String i_userID) {
+            this.mUserID = i_userID;
+        }
+
+        public double getDistance() {
+            return mDistance;
+        }
+
+        public void setDistance(double i_distance) {
+            this.mDistance = i_distance;
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            PairUserIdAndDistance pair = (PairUserIdAndDistance)o;
+            if(mDistance < pair.mDistance)
+                return (-1);
+            if(mDistance > pair.mDistance)
+                return 1;
+            return 0;
+        }
+    }
+
+    private ArrayList<PairUserIdAndDistance> mPairsUserIdAndDistance = new ArrayList<>();
+
 
     public CollectExpertsForChatRoom(String i_subjcetName){
         mSubjectName = i_subjcetName;
@@ -75,10 +113,42 @@ public class CollectExpertsForChatRoom implements Runnable{
             }
         });
 
-        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
+        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && mOpenerLoc != null)
         {
-            //TODO
-            // try to collect by location until the list is full
+            ////collect by location
+            FirebaseDatabase.getInstance().getReference("Users")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    UserLocation peerLoc;
+                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                        if(isAvailable(ds.getKey()) && ds.child("userLocation").exists())
+                        {
+                            PairUserIdAndDistance pair = new PairUserIdAndDistance();
+                            pair.setUserID(ds.getKey());
+                            peerLoc = ds.child("userLocation").getValue(UserLocation.class);
+                            pair.setDistance(mOpenerLoc.distanceBetween(peerLoc));
+                            mPairsUserIdAndDistance.add(pair);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            Collections.sort(mPairsUserIdAndDistance);
+            SubjectUser su = new SubjectUser();
+            for (PairUserIdAndDistance pair : mPairsUserIdAndDistance)
+            {
+                su.setUserId(pair.getUserID());
+                mExpertUserOfSubjectSelectedId.add(su);
+                if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
+                    break;
+            }
         }
 
         if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
