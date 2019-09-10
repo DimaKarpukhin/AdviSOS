@@ -21,7 +21,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class CollectExpertsForChatRoom implements Runnable{
+public class CollectExpertsForChatRoom
+{
     private final static int NUM_OF_EXPERTS = 5;
     private List<SubjectUser> mExpertUserOfSubjectSelectedId = new ArrayList<>(NUM_OF_EXPERTS);
     private FirebaseDatabase mDatabase;
@@ -74,7 +75,6 @@ public class CollectExpertsForChatRoom implements Runnable{
 
     }
 
-    @Override
     public void run() {
         mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,7 +104,6 @@ public class CollectExpertsForChatRoom implements Runnable{
                         mExpertUserOfSubjectSelectedId.add(su);
                     }
                 }
-                notifyAll();
             }
 
             @Override
@@ -275,7 +274,7 @@ public class CollectExpertsForChatRoom implements Runnable{
     }
 
 
-    public List<SubjectUser> getmExpertUserOfSubjectSelectedId() {
+    public List<SubjectUser> getExpertUserOfSubjectSelectedId() {
         return mExpertUserOfSubjectSelectedId;
     }
 

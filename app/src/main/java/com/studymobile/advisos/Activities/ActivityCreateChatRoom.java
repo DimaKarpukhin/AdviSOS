@@ -140,8 +140,8 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
     private void createChatRoomActivity(String i_roomName)
     {
-        Runnable collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
-        new Thread(collectChatUser).start();
+        CollectExpertsForChatRoom collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
+        collectChatUser.run();
         DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
         String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
         Pair<String, String> date = getCreationDateAndTime();
@@ -149,20 +149,19 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
         ,userID);
         chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
-        m_Database.getReference("ActiveChats").child(userID).setValue(chatRoomUId);//add the room id to users active chats
-        m_Database.getReference("Participants").setValue(chatRoomUId); // add  the room id to chat participants node
-        m_Database.getReference("Participants").child(chatRoomUId).setValue(userID); // add the user as a participant as he created it
+       m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
+       m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
         try { this.wait();}
         catch (InterruptedException e){}
         CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
-        if( collector.getmExpertUserOfSubjectSelectedId().isEmpty() )
+        if( collector.getExpertUserOfSubjectSelectedId().isEmpty() )
         {
             Toast.makeText(ActivityCreateChatRoom.this,
                     "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            pushNotify(collector.getmExpertUserOfSubjectSelectedId());
+            pushNotify(collector.getExpertUserOfSubjectSelectedId());
             Intent intent = new Intent(this, ActivityChatRoom.class);
             intent.putExtra("chat_room_id", chatRoomUId);
             Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);

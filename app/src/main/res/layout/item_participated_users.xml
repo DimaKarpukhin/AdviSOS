@@ -14,7 +14,7 @@
         android:background="@color/blueLight">
 
         <RelativeLayout
-            android:id="@+id/layout_image"
+            android:id="@+id/layout_image_user"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingStart="15dp"
@@ -23,7 +23,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_subject_of_item_subject"
+                android:id="@+id/img_participated_user"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_centerVertical="true"
@@ -31,63 +31,42 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_toEndOf="@+id/layout_image"
+            android:layout_toEndOf="@+id/layout_image_user"
             android:layout_width="match_parent"
             android:layout_height="74.5dp"
             android:layout_alignParentEnd="true"
             android:background="@color/white">
 
             <TextView
-                android:id="@+id/txt_subject_name_of_item_subject"
+                android:id="@+id/txt_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textColor="@color/blue"
                 android:textSize="18sp"
                 android:layout_marginEnd="5dp"
-                android:text="Subject name"
+                android:text="User name"
                 android:textStyle="italic"/>
 
-            <CheckBox
-                android:id="@+id/checkBox_of_item_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_blue_checked_green"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:visibility="invisible"/>
-
-            <ImageView
-                android:id="@+id/img_arrow_right_of_item_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_blue_checked_green"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_keyboard_arrow_right_blue"
-                android:visibility="invisible"/>
-
             <LinearLayout
-                android:id="@+id/layout_rating_of_item_subject"
+                android:id="@+id/layout_rating_of_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:visibility="invisible">
+                >
 
                 <ImageView
-                    android:id="@+id/img_star_of_item_subject"
+                    android:id="@+id/img_star_of_item_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/checkbox_blue_checked_green"
                     android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_star"/>
 
                 <TextView
-                    android:id="@+id/txt_rate_mark_of_item_subject"
+                    android:id="@+id/txt_rate_mark_of_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

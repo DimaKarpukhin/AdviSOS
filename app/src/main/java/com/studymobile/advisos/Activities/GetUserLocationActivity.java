@@ -81,31 +81,8 @@ public class GetUserLocationActivity extends AppCompatActivity {
                 getCurrentUserLocationOnGrantedAccess();
             } else {
                 // Permission denied.
-
-                // Notify the user via a SnackBar that they have rejected a core permission for the
-                // app, which makes the Activity useless. In a real app, core permissions would
-                // typically be best requested during a welcome-screen flow.
-
-                // Additionally, it is important to remember that a permission might have been
-                // rejected without asking the user for permission (device policy or "Never ask
-                // again" prompts). Therefore, a user interface affordance is typically implemented
-                // when permissions are denied. Otherwise, your app could appear unresponsive to
-                // touches or interactions which have required permissions.
-                showSnackbar(R.string.textwarn, R.string.settings,
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        });
+                Intent intent = new Intent(this, ActivityHomeScreen.class);
+                startActivity(intent);
             }
         }
     }
@@ -131,7 +108,7 @@ public class GetUserLocationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
-                            final UserLocation location = new UserLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                            final UserLocation location = new UserLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude(), 0);
                             final DatabaseReference reference = m_Database.getReference("Users");
                             reference.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -147,13 +124,16 @@ public class GetUserLocationActivity extends AppCompatActivity {
                                 }
                             });
 
+
                         } else {
                             Log.w(TAG, "getLastLocation:exception", task.getException());
-                            getLastLocation();
+                            //getLastLocation();
 
                         }
                     }
                 });
+        Intent intent = new Intent(this, ActivityHomeScreen.class);
+        startActivity(intent);
     }
 
     private void startLocationPermissionRequest() {

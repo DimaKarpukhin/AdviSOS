@@ -116,9 +116,9 @@ public class User
         this.mAvailability = i_Availability;
     }
 
-    public void UpdateLocation( double i_lang, double i_long) {
+    public void UpdateLocation( double i_lang, double i_long, double i_altitude) {
         if (mLocation == null) {
-            mLocation = new UserLocation( i_lang, i_long);
+            mLocation = new UserLocation( i_lang, i_long, i_altitude);
         } else {
             updateUserLocation( i_lang, i_long);
         }

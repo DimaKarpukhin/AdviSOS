@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -16,10 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,12 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.ChatMessage;
-import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.ViewHolders.ViewHolderRecievedMessageHolder;
 import com.studymobile.advisos.ViewHolders.ViewHolderSentMessageHolder;
 
 import java.util.Date;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ActivityChatRoom extends AppCompatActivity {
@@ -47,10 +51,12 @@ public class ActivityChatRoom extends AppCompatActivity {
     private Button mSendMessageButton;
     private EditText mMessageBodyText;
     private String senderName;
+    private CircleImageView mBackToHomeImageView;
     private Button mCloseChatButton;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mChatRoonIdRefMessages;
     private FirebaseAuth mAuth;
+    private TextView mRoomNameTextView;
     private String mChatRoomId;
     private FirebaseUser mCurrentUser;
     private FirebaseStorage mStorage;
@@ -65,7 +71,37 @@ public class ActivityChatRoom extends AppCompatActivity {
         init();
         setFirebaseReferences();
         showButtonCloseChatForChatRoomCreator();
+        disableAndClearAllCommandViewsIfChatIsClosed();
 
+    }
+
+    private void disableAndClearAllCommandViewsIfChatIsClosed() {
+        DatabaseReference reference = mDatabase.getReference("ChatRooms");
+        reference.child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                  Boolean res = dataSnapshot.child("isChatClosed").getValue(Boolean.class);
+                  if(res != null)
+                  {
+                     if(res)
+                     {
+                         mMessageBodyText.setVisibility(View.INVISIBLE);
+                         mMessageBodyText.setClickable(false);
+                         mSendMessageButton.setVisibility(View.INVISIBLE);
+                         mSendMessageButton.setClickable(false);
+                         mSendMessageButton.setCursorVisible(false);
+                         mCloseChatButton.setVisibility(View.INVISIBLE);
+                         mCloseChatButton.setCursorVisible(false);
+                         mCloseChatButton.setClickable(false);
+                     }
+                  }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showButtonCloseChatForChatRoomCreator() {
@@ -79,6 +115,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                     {
                         mCloseChatButton.setCursorVisible(true);
                         mCloseChatButton.setClickable(true);
+                        mCloseChatButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -96,8 +133,16 @@ public class ActivityChatRoom extends AppCompatActivity {
         mCloseChatButton = findViewById(R.id.button_close_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
+        mRoomNameTextView = findViewById(R.id.textView_room_name_information_open);
+        mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRoomNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayChatRoomParticipants();
+            }
+        });
         mCloseChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,13 +155,88 @@ public class ActivityChatRoom extends AppCompatActivity {
                 sendMessage();
             }
         });
+        mBackToHomeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backToHomeActivity();
+            }
+        });
+        DatabaseReference chatRoomReference = mDatabase.getReference("ChatRooms");
+        chatRoomReference.child(mChatRoomId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean res = dataSnapshot.child("isChatClosed").getValue(Boolean.class);
+                if(res != null)
+                {
+                    if(res)
+                    {
+                        disableAndClearAllCommandViewsIfChatIsClosed();
+                        Toast.makeText(getApplicationContext(),"The chat closed by the creator",Toast.LENGTH_LONG).show();
+                        removeChatRoomFromActiveChats();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void displayChatRoomParticipants() {
+        Intent intent = new Intent(this, ActivityParticipatedUsers.class);
+        intent.putExtra("user_id",mCurrentUser.getUid());
+        intent.putExtra("chat_room_id", mChatRoomId);
+        this.startActivity(intent);
+    }
+
+    //this method will be executed only for the users that not created the chat
+    private void removeChatRoomFromActiveChats() {
+        //DatabaseReference usersRef = mDatabase.getReference("Users");
+        DatabaseReference chatRoomRef = mDatabase.getReference("ChatRooms");
+        final DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
+        chatRoomRef.child(mChatRoomId).child("chatRoomCreatorUid").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!mCurrentUser.getUid().equals(dataSnapshot.getValue(String.class))){
+
+                    activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void backToHomeActivity() {
+        Intent intent = new Intent(this, ActivityHomeScreen.class);
+        this.startActivity(intent);
     }
 
     private void closeChatButtonPressed() {
         //TODO do the logic of closing the chat and rate the users,
-        //TODO need to check how closinf the chat affects other user since the chat is not active
-        //how do we notify other participents that the chat is closed to not load it again next time?
-        //maybe need to set an childevent listener on chatRooms? or active chats?
+        //TODO need to check how closing the chat affects other user since the chat is not active
+        disableAndClearAllCommandViewsIfChatIsClosed();
+        DatabaseReference reference = mDatabase.getReference("ChatRooms");
+        reference.child(mChatRoomId).child("isChatClosed").setValue(Boolean.TRUE);
+        DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
+        //Do we want that the creator of the chat will not be able to load the chat room directly anymore?
+        /*activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(getApplicationContext(),"Chat room closed successfully", Toast.LENGTH_SHORT);
+            }
+        });*/
+        Intent intent = new Intent(this,ActivityGiveRatingToUsers.class);
+        this.startActivity(intent);
+
+
 
 
     }
@@ -125,7 +245,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         String messageText = mMessageBodyText.getText().toString();
         if(TextUtils.isEmpty(messageText))
         {
-            Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT);
+            Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT).show();
         }
         else{
             Calendar cal = Calendar.getInstance();
@@ -167,6 +287,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         buildMessagesList();
         populateMessagesOnREcyclerView();
 
+
     }
 
     private void populateMessagesOnREcyclerView() {
@@ -199,7 +320,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                      view = LayoutInflater
                             .from(parent.getContext())
                             .inflate(R.layout.item_message_recived, parent, false);
-                    return new ViewHolderSentMessageHolder(view);
+                    return new ViewHolderRecievedMessageHolder(view);
                 }
             }
 
