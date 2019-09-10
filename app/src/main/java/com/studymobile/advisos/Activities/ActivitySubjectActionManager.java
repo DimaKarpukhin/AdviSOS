@@ -202,7 +202,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     {
         Intent IntentCreateChatRoom = new Intent
                 (ActivitySubjectActionManager.this, ActivityCreateChatRoom.class);
-        IntentCreateChatRoom.putExtra(m_SubjectName , SUBJECT_NAME);
+        IntentCreateChatRoom.putExtra(SUBJECT_NAME, m_SubjectName);
         startActivity(IntentCreateChatRoom);
     }
 

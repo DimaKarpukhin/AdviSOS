@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.studymobile.advisos.Models.Day;
 import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.UserLocation;
@@ -20,6 +21,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.lang.System.exit;
 
 public class CollectExpertsForChatRoom
 {
@@ -76,97 +79,102 @@ public class CollectExpertsForChatRoom
     }
 
     public void run() {
-        mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                SubjectUser su;
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    su = ds.getValue(SubjectUser.class);
-
-                    if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS &&
-                            su.getIsValid() && ds.child("Rating").exists() &&
-                            isAvailable(su.getUserId()))
-                    {
-                        for(SubjectUser x : mExpertUserOfSubjectSelectedId)
-                        {
-                            if(su.getRating().getAvgRating() > x.getRating().getAvgRating())
-                            {
-                                mExpertUserOfSubjectSelectedId.remove(x);
-                                mExpertUserOfSubjectSelectedId.add(su);
-                                break;
-                            }
-                        }
-                    }
-                    else if(su.getIsValid() && isAvailable(su.getUserId()))
-                    {
-                        mExpertUserOfSubjectSelectedId.add(su);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && mOpenerLoc != null)
-        {
-            ////collect by location
-            FirebaseDatabase.getInstance().getReference("Users")
-            .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    UserLocation peerLoc;
-                    for (DataSnapshot ds : dataSnapshot.getChildren())
-                    {
-                        if(isAvailable(ds.getKey()) && ds.child("userLocation").exists())
-                        {
-                            PairUserIdAndDistance pair = new PairUserIdAndDistance();
-                            pair.setUserID(ds.getKey());
-                            peerLoc = ds.child("userLocation").getValue(UserLocation.class);
-                            pair.setDistance(mOpenerLoc.distanceBetween(peerLoc));
-                            mPairsUserIdAndDistance.add(pair);
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            Collections.sort(mPairsUserIdAndDistance);
-            SubjectUser su = new SubjectUser();
-            for (PairUserIdAndDistance pair : mPairsUserIdAndDistance)
-            {
-                su.setUserId(pair.getUserID());
-                mExpertUserOfSubjectSelectedId.add(su);
-                if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
-                    break;
-            }
+        if(isAvailable("H1pM0hYrerZ77JX5oXx2IEsiB6I3")) {
+            SubjectUser user = new SubjectUser();
+            user.setUserId("H1pM0hYrerZ77JX5oXx2IEsiB6I3");
+            mExpertUserOfSubjectSelectedId.add(user);
         }
-
-        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
-        {   //collect randomly
-            getAllUserIds();
-            Collections.shuffle(mUserIDs);
-            String userID;
-            Iterator<String> itr = mUserIDs.iterator();
-            while (mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && itr.hasNext())
-            {
-                userID = itr.next();
-                if( isAvailable(userID) && !containsUserID(mExpertUserOfSubjectSelectedId, userID) )
-                {
-                    SubjectUser su = new SubjectUser();
-                    su.setUserId(userID);
-                    mExpertUserOfSubjectSelectedId.add(su);
-                }
-            }
-        }
+//        mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                SubjectUser su;
+//                for(DataSnapshot ds : dataSnapshot.getChildren())
+//                {
+//                    su = ds.getValue(SubjectUser.class);
+//
+//                    if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS &&
+//                            su.getIsValid() && ds.child("Rating").exists() &&
+//                            isAvailable(su.getUserId()))
+//                    {
+//                        for(SubjectUser x : mExpertUserOfSubjectSelectedId)
+//                        {
+//                            if(su.getRating().getAvgRating() > x.getRating().getAvgRating())
+//                            {
+//                                mExpertUserOfSubjectSelectedId.remove(x);
+//                                mExpertUserOfSubjectSelectedId.add(su);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    else if(su.getIsValid() && isAvailable(su.getUserId()))
+//                    {
+//                        mExpertUserOfSubjectSelectedId.add(su);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && mOpenerLoc != null)
+//        {
+//            ////collect by location
+//            FirebaseDatabase.getInstance().getReference("Users")
+//            .addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    UserLocation peerLoc;
+//                    for (DataSnapshot ds : dataSnapshot.getChildren())
+//                    {
+//                        if(isAvailable(ds.getKey()) && ds.child("userLocation").exists())
+//                        {
+//                            PairUserIdAndDistance pair = new PairUserIdAndDistance();
+//                            pair.setUserID(ds.getKey());
+//                            peerLoc = ds.child("userLocation").getValue(UserLocation.class);
+//                            pair.setDistance(mOpenerLoc.distanceBetween(peerLoc));
+//                            mPairsUserIdAndDistance.add(pair);
+//                        }
+//                    }
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+//
+//            Collections.sort(mPairsUserIdAndDistance);
+//            SubjectUser su = new SubjectUser();
+//            for (PairUserIdAndDistance pair : mPairsUserIdAndDistance)
+//            {
+//                su.setUserId(pair.getUserID());
+//                mExpertUserOfSubjectSelectedId.add(su);
+//                if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
+//                    break;
+//            }
+//        }
+//
+//        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
+//        {   //collect randomly
+//            getAllUserIds();
+//            Collections.shuffle(mUserIDs);
+//            String userID;
+//            Iterator<String> itr = mUserIDs.iterator();
+//            while (mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && itr.hasNext())
+//            {
+//                userID = itr.next();
+//                if( isAvailable(userID) && !containsUserID(mExpertUserOfSubjectSelectedId, userID) )
+//                {
+//                    SubjectUser su = new SubjectUser();
+//                    su.setUserId(userID);
+//                    mExpertUserOfSubjectSelectedId.add(su);
+//                }
+//            }
+//        }
     }
 
     private boolean isAvailable(String i_userID)
@@ -175,8 +183,39 @@ public class CollectExpertsForChatRoom
                 .child(i_userID).child("userAvailability");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUserAvailability = dataSnapshot.getValue(UserAvailability.class);
+            public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
+                if (i_DataSnapshot.exists())
+                {
+                    mUserAvailability = i_DataSnapshot.getValue(UserAvailability.class);
+                    String path = "weekAvailability/";
+                    if (i_DataSnapshot.child(path).exists())
+                    {
+                        Week week = i_DataSnapshot.getValue(Week.class);
+                        if (i_DataSnapshot.child(path + "sunday").exists()) {
+                            week.setSunday(i_DataSnapshot.child(path + "sunday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "monday").exists()) {
+                            week.setMonday(i_DataSnapshot.child(path + "monday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "tuesday").exists()) {
+                            week.setTuesday(i_DataSnapshot.child(path + "tuesday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "wednesday").exists()) {
+                            week.setWednesday(i_DataSnapshot.child(path + "wednesday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "thursday").exists()) {
+                            week.setThursday(i_DataSnapshot.child(path + "thursday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "friday").exists()) {
+                            week.setFriday(i_DataSnapshot.child(path + "friday").getValue(Day.class));
+                        }
+                        if (i_DataSnapshot.child(path + "saturday").exists()) {
+                            week.setSaturday(i_DataSnapshot.child(path + "saturday").getValue(Day.class));
+                        }
+
+                        mUserAvailability.setWeekAvailability(week);
+                    }
+                }
             }
 
             @Override
@@ -185,12 +224,18 @@ public class CollectExpertsForChatRoom
             }
         });
 
+        if(mUserAvailability == null)
+            return false;
+
         if(mUserAvailability.getIsAlwaysAvailable())
             return true;
         if(mUserAvailability.getIsNeverAvailable())
             return false;
 
+
         Week weekAvailability = mUserAvailability.getWeekAvailability();
+        if(weekAvailability == null)
+            return false;
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -286,7 +331,7 @@ public class CollectExpertsForChatRoom
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    mUserIDs.add(ds.getValue(String.class));
+                    mUserIDs.add(ds.getKey());
                 }
             }
 

@@ -265,7 +265,6 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                                 updateUI();
                             }
                         }
-
                     }
 
                     @Override

@@ -149,19 +149,16 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
         ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
         ,userID);
         chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
-       m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
-       m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
-        try { this.wait();}
-        catch (InterruptedException e){}
-        CollectExpertsForChatRoom collector = (CollectExpertsForChatRoom)collectChatUser;
-        if( collector.getExpertUserOfSubjectSelectedId().isEmpty() )
+        m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
+        m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
+        if( collectChatUser.getExpertUserOfSubjectSelectedId().isEmpty() )
         {
             Toast.makeText(ActivityCreateChatRoom.this,
                     "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            pushNotify(collector.getExpertUserOfSubjectSelectedId());
+            pushNotify(collectChatUser.getExpertUserOfSubjectSelectedId());
             Intent intent = new Intent(this, ActivityChatRoom.class);
             intent.putExtra("chat_room_id", chatRoomUId);
             Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
