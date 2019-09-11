@@ -176,30 +176,6 @@ public class CollectExpertsForChatRoom
 
                     }
                 });
-//                SubjectUser su;
-//                for(DataSnapshot ds : dataSnapshot.getChildren())
-//                {
-//                    su = ds.getValue(SubjectUser.class);
-//
-//                    if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS &&
-//                            su.getIsValid() && ds.child("Rating").exists() &&
-//                            isAvailable(su.getUserId()))
-//                    {
-//                        for(SubjectUser x : mExpertUserOfSubjectSelectedId)
-//                        {
-//                            if(su.getRating().getAvgRating() > x.getRating().getAvgRating())
-//                            {
-//                                mExpertUserOfSubjectSelectedId.remove(x);
-//                                mExpertUserOfSubjectSelectedId.add(su);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    else if(su.getIsValid() && isAvailable(su.getUserId()))
-//                    {
-//                        mExpertUserOfSubjectSelectedId.add(su);
-//                    }
-//                }
             }
 
             @Override
