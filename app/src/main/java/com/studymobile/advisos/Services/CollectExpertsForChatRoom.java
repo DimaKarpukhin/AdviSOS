@@ -35,6 +35,8 @@ public class CollectExpertsForChatRoom
     private ArrayList<String> mUserIDs = new ArrayList<>();
     private UserLocation mOpenerLoc = null;
 
+    private boolean m_isUserAvailable;
+
 
     private class PairUserIdAndDistance implements Comparable
     {
@@ -75,112 +77,97 @@ public class CollectExpertsForChatRoom
         mSubjectName = i_subjcetName;
         mDatabase = FirebaseDatabase.getInstance();
         mSubjectUsersReference = mDatabase.getReference("SubjectUsers");
-
     }
 
     public void run() {
-        if(isAvailable("H1pM0hYrerZ77JX5oXx2IEsiB6I3")) {
-            SubjectUser user = new SubjectUser();
-            user.setUserId("H1pM0hYrerZ77JX5oXx2IEsiB6I3");
-            mExpertUserOfSubjectSelectedId.add(user);
-        }
-//        mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                SubjectUser su;
-//                for(DataSnapshot ds : dataSnapshot.getChildren())
-//                {
-//                    su = ds.getValue(SubjectUser.class);
-//
-//                    if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS &&
-//                            su.getIsValid() && ds.child("Rating").exists() &&
-//                            isAvailable(su.getUserId()))
-//                    {
-//                        for(SubjectUser x : mExpertUserOfSubjectSelectedId)
-//                        {
-//                            if(su.getRating().getAvgRating() > x.getRating().getAvgRating())
-//                            {
-//                                mExpertUserOfSubjectSelectedId.remove(x);
-//                                mExpertUserOfSubjectSelectedId.add(su);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    else if(su.getIsValid() && isAvailable(su.getUserId()))
-//                    {
-//                        mExpertUserOfSubjectSelectedId.add(su);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && mOpenerLoc != null)
-//        {
-//            ////collect by location
-//            FirebaseDatabase.getInstance().getReference("Users")
-//            .addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    UserLocation peerLoc;
-//                    for (DataSnapshot ds : dataSnapshot.getChildren())
-//                    {
-//                        if(isAvailable(ds.getKey()) && ds.child("userLocation").exists())
-//                        {
-//                            PairUserIdAndDistance pair = new PairUserIdAndDistance();
-//                            pair.setUserID(ds.getKey());
-//                            peerLoc = ds.child("userLocation").getValue(UserLocation.class);
-//                            pair.setDistance(mOpenerLoc.distanceBetween(peerLoc));
-//                            mPairsUserIdAndDistance.add(pair);
-//                        }
-//                    }
-//                }
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//
-//            Collections.sort(mPairsUserIdAndDistance);
-//            SubjectUser su = new SubjectUser();
-//            for (PairUserIdAndDistance pair : mPairsUserIdAndDistance)
-//            {
-//                su.setUserId(pair.getUserID());
-//                mExpertUserOfSubjectSelectedId.add(su);
-//                if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
-//                    break;
-//            }
-//        }
-//
-//        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
-//        {   //collect randomly
-//            getAllUserIds();
-//            Collections.shuffle(mUserIDs);
-//            String userID;
-//            Iterator<String> itr = mUserIDs.iterator();
-//            while (mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && itr.hasNext())
-//            {
-//                userID = itr.next();
-//                if( isAvailable(userID) && !containsUserID(mExpertUserOfSubjectSelectedId, userID) )
-//                {
-//                    SubjectUser su = new SubjectUser();
-//                    su.setUserId(userID);
-//                    mExpertUserOfSubjectSelectedId.add(su);
-//                }
-//            }
-//        }
+        mSubjectUsersReference.child(mSubjectName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                SubjectUser su;
+                for(DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    su = ds.getValue(SubjectUser.class);
+                    checkAndSetUserAvailability(su);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
     }
 
-    private boolean isAvailable(String i_userID)
+    private void collectExpertsByLocation()
+    {
+        FirebaseDatabase.getInstance().getReference("Users")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserLocation peerLoc;
+                        for (DataSnapshot ds : dataSnapshot.getChildren())
+                        {
+                            //checkAndSetUserAvailability(ds.getKey());
+                            if(m_isUserAvailable && ds.child("userLocation").exists())
+                            {
+                                PairUserIdAndDistance pair = new PairUserIdAndDistance();
+                                pair.setUserID(ds.getKey());
+                                peerLoc = ds.child("userLocation").getValue(UserLocation.class);
+                                pair.setDistance(mOpenerLoc.distanceBetween(peerLoc));
+                                mPairsUserIdAndDistance.add(pair);
+                            }
+                        }
+
+                        Collections.sort(mPairsUserIdAndDistance);
+                        SubjectUser su = new SubjectUser();
+                        for (PairUserIdAndDistance pair : mPairsUserIdAndDistance)
+                        {
+                            su.setUserId(pair.getUserID());
+                            mExpertUserOfSubjectSelectedId.add(su);
+                            if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS)
+                                break;
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void collectExpertsRandomly()
+    {
+        FirebaseDatabase.getInstance().getReference("Users").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren())
+                        {
+                            mUserIDs.add(ds.getKey());
+                        }
+                        Collections.shuffle(mUserIDs);
+                        String userID;
+                        Iterator<String> itr = mUserIDs.iterator();
+                        while (mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && itr.hasNext())
+                        {
+                            userID = itr.next();
+                            //checkAndSetUserAvailability(userID);
+                            if( m_isUserAvailable && !containsUserID(mExpertUserOfSubjectSelectedId, userID) )
+                            {
+                                SubjectUser su = new SubjectUser();
+                                su.setUserId(userID);
+                                mExpertUserOfSubjectSelectedId.add(su);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+    }
+
+    private void checkAndSetUserAvailability(final SubjectUser i_User)
     {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users")
-                .child(i_userID).child("userAvailability");
+                .child(i_User.getUserId()).child("userAvailability");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
@@ -214,6 +201,32 @@ public class CollectExpertsForChatRoom
                         }
 
                         mUserAvailability.setWeekAvailability(week);
+                        if(mExpertUserOfSubjectSelectedId.size() == NUM_OF_EXPERTS
+                                && i_User.getIsValid() && i_User.getRating() != null && isNowAvailable())
+                        {
+                            for(SubjectUser x : mExpertUserOfSubjectSelectedId) {
+                                if(i_User.getRating().getAvgRating() > x.getRating().getAvgRating()) {
+                                    mExpertUserOfSubjectSelectedId.remove(x);
+                                    mExpertUserOfSubjectSelectedId.add(i_User);
+                                    break;
+                                }
+                            }
+                        }
+                        else if(i_User.getIsValid() && m_isUserAvailable)
+                        {
+                            mExpertUserOfSubjectSelectedId.add(i_User);
+                        }
+
+
+                        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS && mOpenerLoc != null)
+                        {
+                            ////collect by location
+                            collectExpertsByLocation();
+                        }
+                        if(mExpertUserOfSubjectSelectedId.size() < NUM_OF_EXPERTS)
+                        {   //collect randomly
+                            collectExpertsRandomly();
+                        }
                     }
                 }
             }
@@ -223,68 +236,67 @@ public class CollectExpertsForChatRoom
 
             }
         });
+    }
 
-        if(mUserAvailability == null)
-            return false;
+    private boolean isNowAvailable()
+    {
+        m_isUserAvailable = false;
 
-        if(mUserAvailability.getIsAlwaysAvailable())
-            return true;
-        if(mUserAvailability.getIsNeverAvailable())
-            return false;
+        if(mUserAvailability != null
+                && !mUserAvailability.getIsNeverAvailable()
+                && mUserAvailability.getWeekAvailability() != null)
+        {
+            Week weekAvailability = mUserAvailability.getWeekAvailability();
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
 
+            Date date = new Date();
+            DateFormat format = new SimpleDateFormat("HH:mm");
+            String currTime = format.format(date);
+            String startTime = null, endTime = null;
 
-        Week weekAvailability = mUserAvailability.getWeekAvailability();
-        if(weekAvailability == null)
-            return false;
+            switch (day) {
+                case Calendar.SUNDAY:
+                    // Current day is Sunday
+                    startTime = weekAvailability.getSunday().getStartTime();
+                    endTime = weekAvailability.getSunday().getEndTime();
+                    break;
+                case Calendar.MONDAY:
+                    // Current day is Monday
+                    startTime = weekAvailability.getMonday().getStartTime();
+                    endTime = weekAvailability.getMonday().getEndTime();
+                    break;
+                case Calendar.TUESDAY:
+                    // Current day is Tuesday
+                    startTime = weekAvailability.getTuesday().getStartTime();
+                    endTime = weekAvailability.getTuesday().getEndTime();
+                    break;
+                case Calendar.WEDNESDAY:
+                    // Current day is Wednesday
+                    startTime = weekAvailability.getWednesday().getStartTime();
+                    endTime = weekAvailability.getWednesday().getEndTime();
+                    break;
+                case Calendar.THURSDAY:
+                    // Current day is Thursday
+                    startTime = weekAvailability.getThursday().getStartTime();
+                    endTime = weekAvailability.getThursday().getEndTime();
+                    break;
+                case Calendar.FRIDAY:
+                    // Current day is Friday
+                    startTime = weekAvailability.getFriday().getStartTime();
+                    endTime = weekAvailability.getFriday().getEndTime();
+                    break;
+                case Calendar.SATURDAY:
+                    // Current day is Saturday
+                    startTime = weekAvailability.getSaturday().getStartTime();
+                    endTime = weekAvailability.getSaturday().getEndTime();
+                    break;
+            }
 
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        Date date = new Date();
-        DateFormat format = new SimpleDateFormat("HH:mm");
-        String currTime = format.format(date);
-
-        String startTime = null, endTime = null;
-
-        switch (day) {
-            case Calendar.SUNDAY:
-                // Current day is Sunday
-                startTime = weekAvailability.getSunday().getStartTime();
-                endTime = weekAvailability.getSunday().getEndTime();
-                break;
-            case Calendar.MONDAY:
-                // Current day is Monday
-                startTime = weekAvailability.getMonday().getStartTime();
-                endTime = weekAvailability.getMonday().getEndTime();
-                break;
-            case Calendar.TUESDAY:
-                // Current day is Tuesday
-                startTime = weekAvailability.getTuesday().getStartTime();
-                endTime = weekAvailability.getTuesday().getEndTime();
-                break;
-            case Calendar.WEDNESDAY:
-                // Current day is Wednesday
-                startTime = weekAvailability.getWednesday().getStartTime();
-                endTime = weekAvailability.getWednesday().getEndTime();
-                break;
-            case Calendar.THURSDAY:
-                // Current day is Thursday
-                startTime = weekAvailability.getThursday().getStartTime();
-                endTime = weekAvailability.getThursday().getEndTime();
-                break;
-            case Calendar.FRIDAY:
-                // Current day is Friday
-                startTime = weekAvailability.getFriday().getStartTime();
-                endTime = weekAvailability.getFriday().getEndTime();
-                break;
-            case Calendar.SATURDAY:
-                // Current day is Saturday
-                startTime = weekAvailability.getSaturday().getStartTime();
-                endTime = weekAvailability.getSaturday().getEndTime();
-                break;
+            return isBetween(currTime, startTime, endTime);
         }
 
-        return isBetween(currTime, startTime, endTime);
+        return true;
     }
 
 
@@ -323,24 +335,6 @@ public class CollectExpertsForChatRoom
         return mExpertUserOfSubjectSelectedId;
     }
 
-    private void getAllUserIds()
-    {
-        FirebaseDatabase.getInstance().getReference("Users").
-        addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    mUserIDs.add(ds.getKey());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private boolean containsUserID(List<SubjectUser> i_list, String i_userID)
     {

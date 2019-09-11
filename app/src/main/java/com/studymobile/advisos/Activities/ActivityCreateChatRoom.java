@@ -48,6 +48,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     private FirebaseDatabase m_Database;
     private String mUserFirstName;
 
+    CollectExpertsForChatRoom collectChatUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,10 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
 
         init();
         setFirebaseData();
+
         setTextViewInformation();
+        collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
+        collectChatUser.run();
 
 
     }
@@ -140,7 +144,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
     private void createChatRoomActivity(String i_roomName)
     {
-        CollectExpertsForChatRoom collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
+        //CollectExpertsForChatRoom collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
         collectChatUser.run();
         DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
         String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId

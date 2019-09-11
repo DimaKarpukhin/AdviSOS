@@ -27,9 +27,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Models.Day;
 import com.studymobile.advisos.Models.Subject;
+import com.studymobile.advisos.Models.SubjectUser;
+import com.studymobile.advisos.Models.UserAvailability;
+import com.studymobile.advisos.Models.UserLocation;
+import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 public class ActivitySubjectActionManager extends AppCompatActivity implements View.OnClickListener
@@ -38,7 +52,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     private static final String SUBJECT_NAME = "subject_name";
 
     private EditText m_FieldTopic;
-    private Button m_BtnAskAdvice;
+    private TextView m_BtnAskAdvice;
     private ImageButton m_BtnAddImage;
     private ImageButton m_BtnRestore;
     private ImageButton m_BtnBack;
@@ -51,6 +65,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     private FirebaseDatabase m_Database;
     private DatabaseReference m_SubjectsRef;
     private FirebaseAuth m_Auth;
+
 
     @Override
     protected void onCreate(Bundle i_SavedInstanceState)
@@ -72,6 +87,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
             Snackbar.make(findViewById(android.R.id.content),
                     "ERROR: There is no instance in database", Snackbar.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -112,28 +128,29 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         confirmDialog.setContentView(R.layout.dialog_confirm);
 
         String title = "Similar topics were discussed earlier";
-        String rightBtnTxt = "Start new";
-        String leftBtnTxt = "View similar";
+        String startNewBtnTxt = "Start new";
+        String viewSimilarBtnTxt = "View similar";
 
         ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
         TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
-        TextView rightBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
-        TextView leftBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
+        TextView startNewBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
+        TextView viewSimilarBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
 
         closeBtn.setVisibility(View.VISIBLE);
         fieldTitle.setText(title);
-        rightBtn.setText(rightBtnTxt);
-        leftBtn.setText(leftBtnTxt);
+        startNewBtn.setText(startNewBtnTxt);
+        viewSimilarBtn.setText(viewSimilarBtnTxt);
 
-        rightBtn.setOnClickListener(new View.OnClickListener() {
+        startNewBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startCreateChatRoomActivity();
                     }
                 });
-        leftBtn.setOnClickListener(new View.OnClickListener() {
+        viewSimilarBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                     }
                 });
         closeBtn.setOnClickListener(new View.OnClickListener() {

@@ -192,6 +192,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                     .child("deviceToken").setValue(m_DeviceToken);
             databaseRef.child(m_CurrentUser.getUid())
                     .child("isDoNotDisturb").setValue(m_IsDoNotDisturb);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("userId").setValue(m_CurrentUser.getUid());
         }
     }
 

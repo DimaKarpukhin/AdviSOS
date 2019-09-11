@@ -7,7 +7,7 @@ import java.util.List;
 
 public class User
 {
-    private String mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext, mDeviceToken;
+    private String mUserID, mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext, mDeviceToken;
     private UserLocation mLocation;
     private boolean mIsDoNotDisturb;
     private UserAvailability mAvailability;
@@ -20,6 +20,11 @@ public class User
         this.setFamilyName(i_FamilyName);
         this.setEmail(i_Email);
         this.setPhone(i_Phone);
+    }
+
+    public String getUserId()
+    {
+        return mUserID;
     }
 
     public boolean getIsDoNotDisturb(){return mIsDoNotDisturb;}
@@ -67,6 +72,11 @@ public class User
     public UserAvailability getUserAvailability()
     {
         return mAvailability;
+    }
+
+    public void setUserId(String i_UserId)
+    {
+        mUserID = i_UserId;
     }
 
     public void setIsDoNotDisturb(boolean i_IsDoNotDisturb){ this.mIsDoNotDisturb = i_IsDoNotDisturb;}
