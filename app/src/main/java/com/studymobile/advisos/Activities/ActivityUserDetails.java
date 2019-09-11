@@ -17,6 +17,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,11 +47,6 @@ import com.studymobile.advisos.Services.InputValidation;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener
@@ -192,6 +193,8 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                     .child("deviceToken").setValue(m_DeviceToken);
             databaseRef.child(m_CurrentUser.getUid())
                     .child("isDoNotDisturb").setValue(m_IsDoNotDisturb);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("userId").setValue(m_CurrentUser.getUid());
         }
     }
 
