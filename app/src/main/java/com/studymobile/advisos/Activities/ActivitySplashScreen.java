@@ -22,6 +22,11 @@ public class ActivitySplashScreen extends AppCompatActivity
         setContentView(R.layout.activity_splash_screen);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+
+//        Intent IntentHomeScreen = new Intent
+//                (ActivitySplashScreen.this, ActivityChatRoom.class);
+//        startActivity(IntentHomeScreen);
+
         if(mCurrentUser != null)
         {
             startHomeScreenActivity();
@@ -38,6 +43,7 @@ public class ActivitySplashScreen extends AppCompatActivity
                 }
             }, 3000);
         }
+
     }
 
     @Override

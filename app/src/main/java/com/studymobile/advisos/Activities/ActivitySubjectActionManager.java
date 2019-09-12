@@ -2,69 +2,74 @@ package com.studymobile.advisos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.Models.Day;
+import com.studymobile.advisos.Models.Rating;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.Models.SubjectUser;
+import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
-import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
+import com.studymobile.advisos.Services.DatabaseServices;
+import com.studymobile.advisos.notification.FCMNotification;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class ActivitySubjectActionManager extends AppCompatActivity implements View.OnClickListener
 {
 
     private static final String SUBJECT_NAME = "subject_name";
 
-    private EditText m_FieldTopic;
-    private TextView m_BtnAskAdvice;
-    private ImageButton m_BtnAddImage;
-    private ImageButton m_BtnRestore;
-    private ImageButton m_BtnBack;
-    private ImageView m_ImgSubject;
-    private TextView m_TxtSubjectName;
-    private TextView m_TxtSubjectDescription;
-    private Subject m_CurrentSubject;
-    private String m_SubjectName;
+    private EditText mFieldTopic;
+    private TextView mBtnAskAdvice;
+    private ImageButton mBtnAddImage;
+    private ImageButton mBtnRestore;
+    private ImageButton mBtnBack;
+    private ImageView mImgSubject;
+    private TextView mTxtSubjectName;
+    private TextView mTxtSubjectDescription;
+    private Subject mCurrentSubject;
+    private String mSubjectName;
 
-    private FirebaseDatabase m_Database;
-    private DatabaseReference m_SubjectsRef;
-    private FirebaseAuth m_Auth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mSubjectsRef;
+    private FirebaseAuth mAuth;
+
+    private FirebaseUser mCurrentUser;
+    private DatabaseServices mDatabaseServices;
+    private UserLocation mUserLocation;
 
 
     @Override
@@ -74,20 +79,39 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         setContentView(R.layout.activity_subject_action_manager);
         setFirebaseData();
         setActivityContent();
+        getUserLocation();
 
         if(getIntent() != null)
         {
-            m_SubjectName = getIntent().getStringExtra(SUBJECT_NAME);
+            mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
         }
-        if(!m_SubjectName.isEmpty())
+        if(!mSubjectName.isEmpty())
         {
-            loadSubjectDetails(m_SubjectName);
+            mDatabaseServices = new DatabaseServices(mSubjectName, mUserLocation);
+            mDatabaseServices.CollectExperts();
+            loadSubjectDetails(mSubjectName);
         }else {
             //Toast.makeText(this, "ERROR: There is no instance in database" ,Toast.LENGTH_SHORT).show();
             Snackbar.make(findViewById(android.R.id.content),
                     "ERROR: There is no instance in database", Snackbar.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void getUserLocation()
+    {
+        mDatabase.getReference("Users").child(mCurrentUser.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
+                        mUserLocation = i_DataSnapshot.getValue(UserLocation.class);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
     }
 
     @Override
@@ -104,19 +128,19 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     {
         int id = i_View.getId();
 
-        if (id == m_BtnAddImage.getId())
+        if (id == mBtnAddImage.getId())
         {
 
         }
-        else if (id == m_BtnRestore.getId())
+        else if (id == mBtnRestore.getId())
         {
 
         }
-        else if (id == m_BtnBack.getId())
+        else if (id == mBtnBack.getId())
         {
             startHomeScreenActivity();
         }
-        else if (id == m_BtnAskAdvice.getId())
+        else if (id == mBtnAskAdvice.getId())
         {
             checkIfTopicExists();
         }
@@ -144,7 +168,8 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         startNewBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startCreateChatRoomActivity();
+                        //startCreateChatRoomActivity();
+                        createChatRoomActivity(mFieldTopic.getText().toString());
                     }
                 });
         viewSimilarBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,41 +190,42 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
 
     private void setFirebaseData()
     {
-        m_Database = FirebaseDatabase.getInstance();
-        m_SubjectsRef = m_Database.getReference("Subjects");
-        m_Auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        mSubjectsRef = mDatabase.getReference("Subjects");
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
     }
 
     private void setActivityContent()
     {
-        m_FieldTopic = findViewById(R.id.field_topic_action_manager);
-        m_ImgSubject = findViewById(R.id.img_subject_of_subject_action_manager);
-        m_TxtSubjectName = findViewById(R.id.txt_subject_name_of_subject_action_manager);
-        m_TxtSubjectDescription = findViewById(R.id.txt_subj_description_of_subject_action_manager);
+        mFieldTopic = findViewById(R.id.field_topic_action_manager);
+        mImgSubject = findViewById(R.id.img_subject_of_subject_action_manager);
+        mTxtSubjectName = findViewById(R.id.txt_subject_name_of_subject_action_manager);
+        mTxtSubjectDescription = findViewById(R.id.txt_subj_description_of_subject_action_manager);
 
-        m_BtnBack = findViewById(R.id.btn_back_of_subject_action_manager);
-        m_BtnRestore = findViewById(R.id.btn_restore_of_subject_action_manager);
-        m_BtnAddImage = findViewById(R.id.btn_add_a_photo_of_subject_action_manager);
-        m_BtnAskAdvice = findViewById(R.id.btn_ask_for_advice);
+        mBtnBack = findViewById(R.id.btn_back_of_subject_action_manager);
+        mBtnRestore = findViewById(R.id.btn_restore_of_subject_action_manager);
+        mBtnAddImage = findViewById(R.id.btn_add_a_photo_of_subject_action_manager);
+        mBtnAskAdvice = findViewById(R.id.btn_ask_for_advice);
 
-        m_BtnBack.setOnClickListener(this);
-        m_BtnRestore.setOnClickListener(this);
-        m_BtnAddImage.setOnClickListener(this);
-        m_BtnAskAdvice.setOnClickListener(this);
+        mBtnBack.setOnClickListener(this);
+        mBtnRestore.setOnClickListener(this);
+        mBtnAddImage.setOnClickListener(this);
+        mBtnAskAdvice.setOnClickListener(this);
 
     }
 
     private void loadSubjectDetails(String i_SubjectName)
     {
-        m_Database.getReference("Subjects").child(i_SubjectName)
+        mDatabase.getReference("Subjects").child(i_SubjectName)
                 .addValueEventListener(new ValueEventListener() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
-                        m_CurrentSubject = i_DataSnapshot.getValue(Subject.class);
-                        Picasso.get().load(m_CurrentSubject.getImgLink()).into(m_ImgSubject);
-                        m_TxtSubjectName.setText(m_CurrentSubject.getSubjectName());
-                        m_TxtSubjectDescription.setText(m_CurrentSubject.getSubjectDescription());
+                        mCurrentSubject = i_DataSnapshot.getValue(Subject.class);
+                        Picasso.get().load(mCurrentSubject.getImgLink()).into(mImgSubject);
+                        mTxtSubjectName.setText(mCurrentSubject.getSubjectName());
+                        mTxtSubjectDescription.setText(mCurrentSubject.getSubjectDescription());
                     }
 
                     @Override
@@ -219,8 +245,82 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     {
         Intent IntentCreateChatRoom = new Intent
                 (ActivitySubjectActionManager.this, ActivityCreateChatRoom.class);
-        IntentCreateChatRoom.putExtra(SUBJECT_NAME, m_SubjectName);
+        IntentCreateChatRoom.putExtra(SUBJECT_NAME, mSubjectName);
         startActivity(IntentCreateChatRoom);
     }
+
+    //===================================================
+    private void createChatRoomActivity(String i_roomName)
+    {
+        DatabaseReference chatRoomsRef = mDatabase.getReference("ChatRooms");
+        String chatRoomUId = chatRoomsRef.push().getKey();        //push new chat room id and get UId
+        Pair<String, String> date = getCreationDateAndTime();
+        String userID = mCurrentUser.getUid();
+        ChatRoom chatRoom = new ChatRoom
+                (chatRoomUId,i_roomName,date.first,date.second,
+                        mSubjectName,userID, mCurrentSubject.getImgLink());
+        chatRoomsRef.child(chatRoomUId).setValue(chatRoom);        // add chat room information under room id
+        mDatabase.getReference("ActiveChats").child(userID)
+                .child(chatRoomUId).setValue(chatRoomUId);         //add the room id to users active chats
+        mDatabase.getReference("Participants").child(chatRoomUId)
+                .child(userID).setValue(userID);                   // add  the room id to chat participants node
+
+        List<String> expertsList =  mDatabaseServices.GetExpertsIDs();
+        if( expertsList.isEmpty() )
+        {
+            Toast.makeText(ActivitySubjectActionManager.this,
+                    "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            pushNotify(expertsList,  "Request in: " + mSubjectName, "Tap to view the details");
+//            Intent intent = new Intent(this, ActivityChatRoom.class);
+//            intent.putExtra("chat_roomid", chatRoomUId);
+//            Toast.makeText(getApplicationContext(),R.string.chat_roomcreated_success,Toast.LENGTH_SHORT);
+//            this.startActivity(intent);
+        }
+
+    }
+
+    private Pair<String,String> getCreationDateAndTime()
+    {
+        android.icu.util.Calendar calendar = Calendar.getInstance();
+        Date currentLocalDateTime = calendar.getTime();
+        android.icu.text.DateFormat time = new android.icu.text.SimpleDateFormat("HH:mm");
+        String localTime = time.format(currentLocalDateTime);
+        DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = date.format(currentLocalDateTime);
+        return new Pair<>(currentDate,localTime);
+    }
+
+
+    void pushNotify(List<String> i_ExpertsIDs,  final String i_Title, final String i_Body)
+    {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        for (String expertId : i_ExpertsIDs)
+        {
+            dbRef.child(expertId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    try
+                    {
+                        FCMNotification.pushFCMNotification(user.getDeviceToken(), i_Title , i_Body);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d("Error", "push notification error");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+    //===================================================
 
 }

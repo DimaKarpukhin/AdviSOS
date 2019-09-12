@@ -19,8 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.ViewHolders.ViewHolderAdviceGroup;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
 /**
@@ -36,8 +38,8 @@ public class FragmentAdviceMe extends Fragment
     private FirebaseAuth mAuth;
     private String mSubjectID;
 
-    private FirebaseRecyclerOptions<Subject> mOptions;
-    private FirebaseRecyclerAdapter<Subject, ViewHolderSubject> mAdapter;
+    private FirebaseRecyclerOptions<ChatRoom> mOptions;
+    private FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup> mAdapter;
 
     public FragmentAdviceMe() {
         // Required empty public constructor
@@ -53,7 +55,7 @@ public class FragmentAdviceMe extends Fragment
         mAdviceMeList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mDatabase = FirebaseDatabase.getInstance();
-        mAdviceMeRef = mDatabase.getReference().child("Active groups");
+        mAdviceMeRef = mDatabase.getReference().child("ChatRooms");
 
         return mAdviceMeView;
     }
@@ -69,32 +71,33 @@ public class FragmentAdviceMe extends Fragment
 
     private void buildAdviceMeOptions()
     {
-        mOptions = new FirebaseRecyclerOptions.Builder<Subject>()
-                .setQuery(mAdviceMeRef, Subject.class)
+        mOptions = new FirebaseRecyclerOptions.Builder<ChatRoom>()
+                .setQuery(mAdviceMeRef, ChatRoom.class)
                 .build();
     }
 
     private void populateAdviceMeView()
     {
-        mAdapter = new FirebaseRecyclerAdapter<Subject, ViewHolderSubject>(mOptions) {
+        mAdapter = new FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup>(mOptions) {
             @NonNull
             @Override
-            public ViewHolderSubject onCreateViewHolder(@NonNull ViewGroup i_ViewGroup, int i_Position) {
+            public ViewHolderAdviceGroup onCreateViewHolder(@NonNull ViewGroup i_ViewGroup, int i_Position) {
                 //Create a new instance of the ViewHolder and use R.layout.item_dish for each item
                 View view = LayoutInflater
                         .from(i_ViewGroup.getContext())
                         .inflate(R.layout.item_advice_group, i_ViewGroup, false);
 
-                return new ViewHolderSubject(view);
+                return new ViewHolderAdviceGroup(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
-                                            @NonNull final Subject i_Subject) {
-                i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
-                i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
-                i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
-                Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
+            protected void onBindViewHolder(@NonNull ViewHolderAdviceGroup i_ViewHolder, int i_Position,
+                                            @NonNull final ChatRoom i_ChatRoom) {
+                i_ViewHolder.getBtnUnreadMessages().setVisibility(View.VISIBLE);
+                i_ViewHolder.setParentSubjectName(i_ChatRoom.getSubjectName());
+                i_ViewHolder.setGroupTopic(i_ChatRoom.getRoomName());
+                i_ViewHolder.setLastMessageTime(i_ChatRoom.getCreationTime());
+                Picasso.get().load(i_ChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
 
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override

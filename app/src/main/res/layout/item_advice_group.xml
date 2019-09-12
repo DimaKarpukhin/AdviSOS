@@ -41,24 +41,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:weightSum="5">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_margin="2dp"
                     android:weightSum="5">
 
                     <TextView
-                        android:id="@+id/txt_title_of_item_advice_group"
+                        android:id="@+id/txt_parent_subject_of_item_advice_group"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:text="Title"/>
+                        android:textColor="@color/blue"
+                        android:textSize="20sp"
+                        android:textStyle="italic"
+                        android:text="Parent subject"/>
                     <TextView
                         android:id="@+id/txt_time_of_item_advice_group"
                         android:layout_width="20dp"
@@ -67,7 +68,7 @@
                         android:layout_gravity="center"
                         android:gravity="center|right"
                         android:textColor="@color/grey"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:text="00:00"/>
 
                 </LinearLayout>
@@ -76,19 +77,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="5"
-                    android:layout_margin="2dp">
+                    android:weightSum="14">
 
                     <TextView
-                        android:id="@+id/txt_last_message_of_item_advice_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:textColor="@color/blue"
+                        android:textSize="18sp"
+                        android:textStyle="italic"
+                        android:lines="2"
+                        android:text="@string/the_topic"/>
+                    <TextView
+                        android:id="@+id/txt_topic_of_item_advice_group"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_weight="12"
                         android:layout_gravity="center"
-                        android:textColor="@color/grey"
-                        android:textSize="20sp"
                         android:textStyle="italic"
-                        android:text="Last message"/>
+                        android:lines="2"
+                        android:textColor="@color/blackLight"
+                        android:textSize="18sp" />
 
                     <RelativeLayout
                         android:layout_width="20dp"
@@ -97,8 +107,8 @@
 
                         <Button
                             android:id="@+id/btn_unread_of_item_advice_group"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
                             android:text="1"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.ActivityChatRoom">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -21,70 +22,483 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_back_to_home_from_chat"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_arrow_back_black"
+                android:src="@drawable/t5"
                 />
-        <TextView
-            android:id="@+id/textView_room_name_information_open"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="The room Name"
-            android:textSize="30sp"
-            />
-        <Button
-            android:id="@+id/button_close_chat"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/btn_circle_white_pressed_grey_light"
-            android:text="@string/close_chat_room"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            android:clickable="false"
-            android:layout_marginStart="80dp"
-            />
+
+            <TextView
+                android:id="@+id/textView_room_name_information_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parenting =]"
+                android:layout_gravity="start"
+                android:layout_marginStart="25dp"
+                android:textColor="#E6FFFFFF"
+                android:textStyle="italic"
+                android:textSize="24sp"
+                />
+
+            <ImageButton
+                android:id="@+id/button_close_chat"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_circle_white_pressed_grey_light"
+                android:text="@string/close_chat_room"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+<!--    <RelativeLayout-->
+<!--        android:layout_below="@+id/app_bar_layout_of_chat"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/background_transparent">-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/r5"-->
+<!--            android:layout_width="230dp"-->
+<!--            android:layout_height="58dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/layout_green_light_rounded">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/sender_messsage_text6"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Hi, how can I explain the 'birds and bees' to my son? "-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:00"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
 
 
-    <androidx.recyclerview.widget.RecyclerView
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/message_profile_image"-->
+<!--            android:layout_below="@+id/r5"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/img_profile_picture"-->
+<!--            app:civ_border_color="@color/blue"-->
+<!--            app:civ_border_width="0.5dp"-->
+<!--            />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/l1"-->
+<!--            android:layout_below="@+id/r5"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:background="@drawable/layout_blue_light_rounded"-->
+<!--            android:layout_toEndOf="@+id/message_profile_image">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/receiver_message_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="How old is he?"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:02"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/r1"-->
+<!--            android:layout_below="@+id/l1"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/layout_green_light_rounded">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/sender_messsage_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="He is 12"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:02"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/message_profile_image2"-->
+<!--            android:layout_below="@+id/r1"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/t2"-->
+<!--            app:civ_border_color="@color/blue"-->
+<!--            app:civ_border_width="0.5dp"-->
+<!--            />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/l2"-->
+<!--            android:layout_below="@+id/r1"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="58dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:background="@drawable/layout_blue_light_rounded"-->
+<!--            android:layout_toEndOf="@+id/message_profile_image">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/receiver_message_text2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Talk to him about boundaries, love and relationships..."-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:03"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/r2"-->
+<!--            android:layout_below="@+id/l2"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/layout_green_light_rounded">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/sender_messsage_text2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="I got you"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:04"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/r3"-->
+<!--            android:layout_below="@+id/r2"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/layout_green_light_rounded">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/sender_messsage_text3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Thanks :)"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:04"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+<!--        </RelativeLayout>-->
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/message_profile_image3"-->
+<!--            android:layout_below="@+id/r3"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/t3"-->
+<!--            app:civ_border_color="@color/blue"-->
+<!--            app:civ_border_width="0.5dp"-->
+<!--            />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/l3"-->
+<!--            android:layout_below="@+id/r3"-->
+<!--            android:layout_width="248dp"-->
+<!--            android:layout_height="58dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:background="@drawable/layout_blue_light_rounded"-->
+<!--            android:layout_toEndOf="@+id/message_profile_image">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/receiver_message_text3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="keep it simple...                            Just talk to him, man to man!"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:05"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/message_profile_image4"-->
+<!--            android:layout_below="@+id/l3"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/t2"-->
+<!--            app:civ_border_color="@color/blue"-->
+<!--            app:civ_border_width="0.5dp"-->
+<!--            />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/l4"-->
+<!--            android:layout_below="@+id/l3"-->
+<!--            android:layout_width="235dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:background="@drawable/layout_blue_light_rounded"-->
+<!--            android:layout_toEndOf="@+id/message_profile_image">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/receiver_message_text4"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="I don't think it's a good idea"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:05"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/message_profile_image5"-->
+<!--            android:layout_below="@+id/l4"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/t4"-->
+<!--            app:civ_border_color="@color/blue"-->
+<!--            app:civ_border_width="0.5dp"-->
+<!--            />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/l5"-->
+<!--            android:layout_below="@+id/l4"-->
+<!--            android:layout_width="230dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:background="@drawable/layout_blue_light_rounded"-->
+<!--            android:layout_toEndOf="@+id/message_profile_image">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/receiver_message_text5"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Don't worry, I'll save you all"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:07"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/r4"-->
+<!--            android:layout_below="@+id/l5"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="38dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginEnd="3dp"-->
+<!--            android:background="@drawable/layout_green_light_rounded">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/sender_messsage_text4"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Love you Tony"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="15sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_margin="4dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:text="10:08"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/grey"-->
+<!--                />-->
+<!--        </RelativeLayout>-->
+
+<!--    </RelativeLayout>-->
+
+
+        <androidx.recyclerview.widget.RecyclerView
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:id="@+id/reyclerview_chat_messages"
                  android:layout_above="@id/layout_chatbox"
-                 android:layout_below="@id/app_bar_layout_of_chat"/>
+                 android:layout_below="@id/app_bar_layout_of_chat">
 
-    <!--<View
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#dfdfdf"
         android:layout_centerInParent="true"
         android:layout_marginBottom="0dp"
-        android:layout_above="@+id/reyclerview_chat_messages"/>-->
+        android:layout_above="@+id/reyclerview_chat_messages"/>
 
     <LinearLayout
         android:id="@+id/layout_chatbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:minHeight="48dp"
+        android:minHeight="42dp"
         android:background="#ffffff"
+        android:layout_marginBottom="8dp"
         android:layout_alignParentBottom="true"
         >
 
         <EditText
             android:id="@+id/edittext_chatbox"
             android:hint="Enter message"
-            android:background="@android:color/transparent"
+            android:background="@drawable/btn_rect_white_pressed_grey_light"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:layout_width="0dp"
+            android:paddingStart="15dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:maxLines="6"/>
 
         <Button
@@ -92,8 +506,9 @@
             android:textSize="14dp"
             android:background="@drawable/ic_menu_send"
             android:clickable="true"
-            android:layout_width="64dp"
-            android:layout_height="48dp"
+            android:layout_marginRight="12dp"
+            android:layout_width="40dp"
+            android:layout_height="42dp"
             android:gravity="center"
             android:layout_gravity="bottom" />
 

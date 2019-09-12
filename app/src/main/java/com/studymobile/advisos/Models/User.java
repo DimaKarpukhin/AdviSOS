@@ -9,7 +9,7 @@ public class User
 {
     private String mUserID, mFirstName, mFamilyName, mEmail, mPhone, mImgLink, mAuthContext, mDeviceToken;
     private UserLocation mLocation;
-    private boolean mIsDoNotDisturb;
+    private boolean mIsOnline;
     private UserAvailability mAvailability;
 
     public User(){}
@@ -27,7 +27,7 @@ public class User
         return mUserID;
     }
 
-    public boolean getIsDoNotDisturb(){return mIsDoNotDisturb;}
+    public boolean getIsOnline(){return mIsOnline;}
 
     public String getDeviceToken()
     {
@@ -79,7 +79,7 @@ public class User
         mUserID = i_UserId;
     }
 
-    public void setIsDoNotDisturb(boolean i_IsDoNotDisturb){ this.mIsDoNotDisturb = i_IsDoNotDisturb;}
+    public void setIsOnline(boolean i_IsOnline){ this.mIsOnline = i_IsOnline;}
 
     public void setDeviceToken(String i_DeviceToken)
     {

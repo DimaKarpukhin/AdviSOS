@@ -68,10 +68,10 @@ public class ActivityChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        init();
-        setFirebaseReferences();
-        showButtonCloseChatForChatRoomCreator();
-        disableAndClearAllCommandViewsIfChatIsClosed();
+//        init();
+//        setFirebaseReferences();
+//        showButtonCloseChatForChatRoomCreator();
+//        disableAndClearAllCommandViewsIfChatIsClosed();
 
     }
 
@@ -284,8 +284,8 @@ public class ActivityChatRoom extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        buildMessagesList();
-        populateMessagesOnREcyclerView();
+//        buildMessagesList();
+//        populateMessagesOnREcyclerView();
 
 
     }
