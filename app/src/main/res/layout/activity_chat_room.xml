@@ -40,7 +40,7 @@
                 android:textSize="24sp"
                 />
 
-            <ImageButton
+            <Button
                 android:id="@+id/button_close_chat"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -501,16 +501,16 @@
             android:layout_height="match_parent"
             android:maxLines="6"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/button_chatbox_send"
             android:textSize="14dp"
-            android:background="@drawable/ic_menu_send"
-            android:clickable="true"
             android:layout_marginRight="12dp"
-            android:layout_width="40dp"
-            android:layout_height="42dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:gravity="center"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_menu_send"/>
 
     </LinearLayout>
 

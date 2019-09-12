@@ -380,7 +380,8 @@ public class DatabaseServices
     private void getByLocation()
     {
         PairUserIdAndDistance pair = new PairUserIdAndDistance();
-        if(mOpenerLoc != null) {
+        if(mOpenerLoc != null)
+        {
             for (User user : mAvailableUsers) {
                 if (user.getLocation() != null) {
                     pair.setUserID(user.getUserId());

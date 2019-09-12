@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.R;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -18,16 +19,29 @@ public class ViewHolderAdviceGroup extends RecyclerView.ViewHolder implements Vi
     private TextView m_ParentSubjectName, m_GroupTopic, m_LastMessageTime;
     private Button m_BtnUnreadMessages;
     private ItemClickListener m_ItemClickListener;
+    private CardView m_CardView;
 
     public ViewHolderAdviceGroup(View i_ItemView)
     {
         super(i_ItemView);
+        m_CardView = i_ItemView.findViewById(R.id.card_advice_group);
         m_GroupProfileImg = i_ItemView.findViewById(R.id.img_subject_of_item_advice_group);
         m_ParentSubjectName = i_ItemView.findViewById(R.id.txt_parent_subject_of_item_advice_group);
         m_GroupTopic = i_ItemView.findViewById(R.id.txt_topic_of_item_advice_group);
         m_LastMessageTime = i_ItemView.findViewById(R.id.txt_time_of_item_advice_group);
         m_BtnUnreadMessages = i_ItemView.findViewById(R.id.btn_unread_of_item_advice_group);
         i_ItemView.setOnClickListener(this);
+    }
+
+    public void setVisibility(int i_Visibility)
+    {
+        m_CardView.setVisibility(i_Visibility);
+        m_GroupProfileImg.setVisibility(i_Visibility);
+        m_ParentSubjectName.setVisibility(i_Visibility);
+        m_GroupTopic.setVisibility(i_Visibility);
+        m_LastMessageTime.setVisibility(i_Visibility);
+        m_BtnUnreadMessages.setVisibility(i_Visibility);
+
     }
 
     public Button getBtnUnreadMessages()

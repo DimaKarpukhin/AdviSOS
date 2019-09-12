@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -37,6 +38,7 @@ public class FragmentAdviceOthers extends Fragment {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mAdviceOthersRef;
     private FirebaseAuth mAuth;
+    private FirebaseUser mCurrentUser;
     private String mSubjectID;
 
     private FirebaseRecyclerOptions<ChatRoom> mOptions;
@@ -55,6 +57,8 @@ public class FragmentAdviceOthers extends Fragment {
         mAdviceOthersList = mAdviceOthersView.findViewById(R.id.recycler_subjects_list_of_fragment_advice_others);
         mAdviceOthersList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
         mAdviceOthersRef = mDatabase.getReference().child("ChatRooms");
 
@@ -73,7 +77,8 @@ public class FragmentAdviceOthers extends Fragment {
     private void buildAdviceMeOptions()
     {
         mOptions = new FirebaseRecyclerOptions.Builder<ChatRoom>()
-                .setQuery(mAdviceOthersRef, ChatRoom.class)
+                .setQuery(mAdviceOthersRef.orderByChild("creatorId")
+                        .equalTo(mCurrentUser.getUid()), ChatRoom.class)
                 .build();
     }
 
@@ -94,12 +99,14 @@ public class FragmentAdviceOthers extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolderAdviceGroup i_ViewHolder, int i_Position,
                                             @NonNull final ChatRoom i_ChatRoom) {
-                i_ViewHolder.getBtnUnreadMessages().setVisibility(View.VISIBLE);
-                i_ViewHolder.setParentSubjectName(i_ChatRoom.getSubjectName());
-                i_ViewHolder.setGroupTopic(i_ChatRoom.getRoomName());
-                i_ViewHolder.setLastMessageTime(i_ChatRoom.getCreationTime());
-                Picasso.get().load(i_ChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
-
+                if(!mCurrentUser.getUid().equals(i_ChatRoom.getCreatorId()))
+                {
+                    i_ViewHolder.getBtnUnreadMessages().setVisibility(View.VISIBLE);
+                    i_ViewHolder.setParentSubjectName(i_ChatRoom.getSubjectName());
+                    i_ViewHolder.setGroupTopic(i_ChatRoom.getRoomName());
+                    i_ViewHolder.setLastMessageTime(i_ChatRoom.getCreationTime());
+                    Picasso.get().load(i_ChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
+                }
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {

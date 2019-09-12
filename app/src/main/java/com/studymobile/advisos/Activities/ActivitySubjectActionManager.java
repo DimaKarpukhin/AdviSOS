@@ -261,7 +261,9 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                         mSubjectName,userID, mCurrentSubject.getImgLink());
         chatRoomsRef.child(chatRoomUId).setValue(chatRoom);        // add chat room information under room id
         mDatabase.getReference("ActiveChats").child(userID)
-                .child(chatRoomUId).setValue(chatRoomUId);         //add the room id to users active chats
+                .child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
+        mDatabase.getReference("ActiveChats").child(userID)
+                .child(chatRoomUId).setValue(chatRoomUId);
         mDatabase.getReference("Participants").child(chatRoomUId)
                 .child(userID).setValue(userID);                   // add  the room id to chat participants node
 
@@ -274,10 +276,10 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         else
         {
             pushNotify(expertsList,  "Request in: " + mSubjectName, "Tap to view the details");
-//            Intent intent = new Intent(this, ActivityChatRoom.class);
-//            intent.putExtra("chat_roomid", chatRoomUId);
+            Intent intent = new Intent(this, ActivityChatRoom.class);
+            intent.putExtra("chat_room_id", chatRoomUId);
 //            Toast.makeText(getApplicationContext(),R.string.chat_roomcreated_success,Toast.LENGTH_SHORT);
-//            this.startActivity(intent);
+            this.startActivity(intent);
         }
 
     }
@@ -288,7 +290,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         Date currentLocalDateTime = calendar.getTime();
         android.icu.text.DateFormat time = new android.icu.text.SimpleDateFormat("HH:mm");
         String localTime = time.format(currentLocalDateTime);
-        DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         String currentDate = date.format(currentLocalDateTime);
         return new Pair<>(currentDate,localTime);
     }
