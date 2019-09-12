@@ -96,7 +96,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private boolean m_IsImgStored = false;
     private boolean m_IsImgPicked = false;
     private boolean m_IsSocialAvatarPicked = false;
-    private boolean m_IsDoNotDisturb = false;
+    private boolean m_IsOnline = true;
 
     private String m_DeviceToken;
 
@@ -191,7 +191,9 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             databaseRef.child(m_CurrentUser.getUid())
                     .child("deviceToken").setValue(m_DeviceToken);
             databaseRef.child(m_CurrentUser.getUid())
-                    .child("isDoNotDisturb").setValue(m_IsDoNotDisturb);
+                    .child("isOnline").setValue(m_IsOnline);
+            databaseRef.child(m_CurrentUser.getUid())
+                    .child("userId").setValue(m_CurrentUser.getUid());
         }
     }
 
@@ -441,7 +443,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                             m_FamilyName = currentUser.getFamilyName();
                             m_Email = currentUser.getEmail();
                             m_InternationalPhoneNumber = currentUser.getPhone();
-                            m_IsDoNotDisturb = currentUser.getIsDoNotDisturb();
+                            m_IsOnline = currentUser.getIsOnline();
                             updateUI();
                         }
                     }

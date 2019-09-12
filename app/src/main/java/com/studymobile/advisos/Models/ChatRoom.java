@@ -2,7 +2,7 @@ package com.studymobile.advisos.Models;
 
 public class ChatRoom
 {
-    private String mRoomId;
+    private String mRoomId,mImgLink;
     private String mChatRoomCreatorUid;
     private String mRoomName;
     private String mCreationDate;
@@ -11,12 +11,15 @@ public class ChatRoom
     private Boolean mIsChatClosed = false;
 
 
+
     public ChatRoom(){}
 
     public ChatRoom(String i_RoomId, String i_RoomName, String i_CreationDate,
                     String i_CreationTime, String i_SubjectName,
-                     String i_creator)
+                     String i_creator,  String i_ImgLink)
     {
+        this.mImgLink = i_ImgLink;
+
         this.setRoomId(i_RoomId);
         this.setRoomName(i_RoomName);
         this.setCreationDate(i_CreationDate);
@@ -24,6 +27,16 @@ public class ChatRoom
         this.setSubjectName(i_SubjectName);
         this.mChatRoomCreatorUid = i_creator;
 
+    }
+
+    public void setImgLink(String i_ImgLink)
+    {
+        mImgLink = i_ImgLink;
+    }
+
+    public String getImgLink()
+    {
+        return mImgLink;
     }
 
     public String getRoomId()

@@ -2,7 +2,6 @@ package com.studymobile.advisos.Activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -27,11 +26,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.R;
-import com.studymobile.advisos.Services.CollectExpertsForChatRoom;
+import com.studymobile.advisos.Services.DatabaseServices;
 import com.studymobile.advisos.notification.FCMNotification;
 
 import java.util.Date;
@@ -48,6 +46,7 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     private FirebaseDatabase m_Database;
     private String mUserFirstName;
 
+    DatabaseServices collectChatUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,10 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
 
         init();
         setFirebaseData();
+
         setTextViewInformation();
+//        collectChatUser = new DatabaseServices(mSubjectName);
+        collectChatUser.GetExpertsIDs();
 
 
     }
@@ -140,30 +142,30 @@ public class ActivityCreateChatRoom extends AppCompatActivity {
     }
     private void createChatRoomActivity(String i_roomName)
     {
-        CollectExpertsForChatRoom collectChatUser = new CollectExpertsForChatRoom(mSubjectName);
-        collectChatUser.run();
-        DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
-        String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
-        Pair<String, String> date = getCreationDateAndTime();
-        String userID = m_CurrentUser.getUid();
-        ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
-        ,userID);
-        chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
-        m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
-        m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
-        if( collectChatUser.getExpertUserOfSubjectSelectedId().isEmpty() )
-        {
-            Toast.makeText(ActivityCreateChatRoom.this,
-                    "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            pushNotify(collectChatUser.getExpertUserOfSubjectSelectedId());
-            Intent intent = new Intent(this, ActivityChatRoom.class);
-            intent.putExtra("chat_room_id", chatRoomUId);
-            Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
-            this.startActivity(intent);
-        }
+//        DatabaseServices collectChatUser = new DatabaseServices(mSubjectName);
+//        collectChatUser.run();
+//        DatabaseReference chatRoomsRef = m_Database.getReference("ChatRooms");
+//        String chatRoomUId = chatRoomsRef.push().getKey();//push new chat room id and get UId
+//        Pair<String, String> date = getCreationDateAndTime();
+//        String userID = m_CurrentUser.getUid();
+//        ChatRoom chatRoom = new ChatRoom(chatRoomUId,i_roomName,date.first,date.second,mSubjectName
+//        ,userID);
+//        chatRoomsRef.child(chatRoomUId).setValue(chatRoom);// add chat room information under room id
+//        m_Database.getReference("ActiveChats").child(userID).child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
+//        m_Database.getReference("Participants").child(chatRoomUId).child(userID).setValue(userID); // add  the room id to chat participants node
+//        if( collectChatUser.getExpertUserOfSubjectSelectedId().isEmpty() )
+//        {
+//            Toast.makeText(ActivityCreateChatRoom.this,
+//                    "Nobody is available to chat now", Toast.LENGTH_SHORT).show();
+//        }
+//        else
+//        {
+//            pushNotify(collectChatUser.getExpertUserOfSubjectSelectedId());
+//            Intent intent = new Intent(this, ActivityChatRoom.class);
+//            intent.putExtra("chat_room_id", chatRoomUId);
+//            Toast.makeText(getApplicationContext(),R.string.chat_room_created_success,Toast.LENGTH_SHORT);
+//            this.startActivity(intent);
+//        }
 
     }
 

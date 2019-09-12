@@ -3,17 +3,33 @@ package com.studymobile.advisos.Activities;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+<<<<<<< HEAD
+=======
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+>>>>>>> 853445c4b5ec52d5e264559c6f53df39c6bd9919
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+<<<<<<< HEAD
+=======
+import android.os.Environment;
+import android.provider.DocumentsContract;
+>>>>>>> 853445c4b5ec52d5e264559c6f53df39c6bd9919
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -64,6 +80,11 @@ import com.studymobile.advisos.Services.InputValidation;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
 import java.io.File;
+<<<<<<< HEAD
+=======
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+>>>>>>> 853445c4b5ec52d5e264559c6f53df39c6bd9919
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -151,6 +172,13 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private boolean m_IsSaturdayAvailable;
 
     private boolean m_IsImgStored = false;
+
+
+
+    //
+    private String path;
+    //
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -714,6 +742,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             pushNewSubjectToDatabase();
         }
     }
+
 
     private void pushNewSubjectToDatabase()
     {

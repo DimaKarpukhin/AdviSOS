@@ -16,7 +16,9 @@
             android:id="@+id/txt_title_of_dialog_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:gravity="center"
             android:text="Remove photo?"
             android:textSize="17sp"
@@ -26,12 +28,12 @@
 
         <ImageButton
             android:id="@+id/btn_close_of_dialog_confirm"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:src="@drawable/ic_close_blue"
-            android:background="@drawable/btn_rect_transparent_pressed_grey_light"
+            android:background="@drawable/btn_circ_transparent_pressed_white_transparent"
             android:visibility="invisible">
         </ImageButton>
 
@@ -39,9 +41,10 @@
             android:layout_below="@+id/txt_title_of_dialog_confirm"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:weightSum="2">

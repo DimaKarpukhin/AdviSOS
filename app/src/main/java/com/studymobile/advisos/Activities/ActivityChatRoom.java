@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ public class ActivityChatRoom extends AppCompatActivity {
     private static final int LAYOUT_SENDER = 1;
     private static final int LAYOUT_RECIEVER = 2;
     private RecyclerView mMessagesRecyclerView;
-    private Button mSendMessageButton;
+    private ImageButton mSendMessageButton;
     private EditText mMessageBodyText;
     private String senderName;
     private CircleImageView mBackToHomeImageView;
@@ -68,8 +69,8 @@ public class ActivityChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        init();
         setFirebaseReferences();
+        init();
         showButtonCloseChatForChatRoomCreator();
         disableAndClearAllCommandViewsIfChatIsClosed();
 
@@ -89,7 +90,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                          mMessageBodyText.setClickable(false);
                          mSendMessageButton.setVisibility(View.INVISIBLE);
                          mSendMessageButton.setClickable(false);
-                         mSendMessageButton.setCursorVisible(false);
+//                         mSendMessageButton.setCursorVisible(false);
                          mCloseChatButton.setVisibility(View.INVISIBLE);
                          mCloseChatButton.setCursorVisible(false);
                          mCloseChatButton.setClickable(false);
@@ -275,7 +276,7 @@ public class ActivityChatRoom extends AppCompatActivity {
 
     private void setFirebaseReferences() {
         mDatabase = FirebaseDatabase.getInstance();
-        mChatRoonIdRefMessages = mDatabase.getReference().child("Messages").child(mChatRoomId);
+        mChatRoonIdRefMessages = mDatabase.getReference("Messages").child(mChatRoomId);
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
         mStorage = FirebaseStorage.getInstance();

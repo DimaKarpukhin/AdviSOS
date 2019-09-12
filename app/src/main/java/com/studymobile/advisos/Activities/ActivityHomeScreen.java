@@ -3,21 +3,31 @@ package com.studymobile.advisos.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -31,7 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.studymobile.advisos.Adapters.AdapterTabsAccessor;
-import com.studymobile.advisos.Models.User;
+import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
 
 public class ActivityHomeScreen extends AppCompatActivity implements
@@ -51,8 +61,140 @@ public class ActivityHomeScreen extends AppCompatActivity implements
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
     private FirebaseDatabase m_Database;
+    DatabaseReference m_UsersRef;
     private FirebaseStorage m_Storage;
-    private boolean m_IsDoNotDisturb;
+    private boolean m_IsOnline;
+    private Menu m_NavigationMenu;
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    protected Location mLastLocation;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private static final String TAG = "USER LOCATION";
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!checkPermissions()) {
+            requestPermissions();
+        } else {
+            getCurrentUserLocationOnGrantedAccess();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionResult");
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length <= 0) {
+                // If user interaction was interrupted, the permission request is cancelled and you
+                // receive empty arrays.
+                Log.i(TAG, "User interaction was cancelled.");
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted.
+                getCurrentUserLocationOnGrantedAccess();
+            } else {
+                // Permission denied.
+//                Intent intent = new Intent(this, ActivityHomeScreen.class);
+//                startActivity(intent);
+            }
+        }
+    }
+
+    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        Snackbar.make(findViewById(android.R.id.content),
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener).show();
+    }
+
+    private boolean checkPermissions()
+    {
+        int permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+    private void getCurrentUserLocationOnGrantedAccess()
+    {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+                            final UserLocation location = new UserLocation
+                                    (mLastLocation.getLatitude(),mLastLocation.getLongitude(), mLastLocation.getAltitude());
+                            final DatabaseReference reference = m_Database.getReference("Users");
+                            reference.child(m_CurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                                {
+                                    reference.child(m_CurrentUser.getUid())
+                                            .child("userLocation").setValue(location);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        } else {
+                            Log.w(TAG, "getLastLocation:exception", task.getException());
+                            //getLastLocation();
+
+                        }
+                    }
+                });
+    }
+
+    private void startLocationPermissionRequest() {
+        ActivityCompat.requestPermissions(ActivityHomeScreen.this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
+    private void requestPermissions() {
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // Provide an additional rationale to the user. This would happen if the user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+
+            showSnackbar(R.string.textwarn, android.R.string.ok,
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            startLocationPermissionRequest();
+                        }
+                    });
+
+        } else {
+            Log.i(TAG, "Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            startLocationPermissionRequest();
+        }
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
 
 
     @Override
@@ -70,6 +212,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_Auth = FirebaseAuth.getInstance();
         m_CurrentUser = m_Auth.getCurrentUser();
         m_Database = FirebaseDatabase.getInstance();
+        m_UsersRef = m_Database.getReference("Users");
         m_Storage = FirebaseStorage.getInstance();
     }
 
@@ -95,6 +238,13 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_DrawerLayout = findViewById(R.id.drawer_layout_home_screen);
         m_NavigationView = findViewById(R.id.nav_view_home_screen);
         m_NavigationView.setNavigationItemSelectedListener(this);
+        m_NavigationMenu = m_NavigationView.getMenu();
+
+        setAvailability(false);
+
+        //>>
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        //<<
     }
 
     @Override
@@ -151,7 +301,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
         if (id == R.id.nav_availability)
         {
-            setAvailability();
+            setAvailability(true);
         }
         else if (id == R.id.nav_my_profile)
         {
@@ -182,37 +332,58 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         return true;
     }
 
-    private void setAvailability()
+    private void setAvailability(final boolean i_IsClicked)
     {
-        Menu menu = m_NavigationView.getMenu();
-        MenuItem availability = menu.findItem(R.id.nav_availability);
-
-        DatabaseReference userId = m_Database.getReference("Users");
-        userId.child(m_CurrentUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        m_UsersRef.child(m_CurrentUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener()
+                {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
                         if (i_DataSnapshot.exists())
                         {
-                            m_IsDoNotDisturb = i_DataSnapshot.child("isDoNotDisturb").getValue(boolean.class);
+                            m_IsOnline = i_DataSnapshot.child("isOnline").getValue(boolean.class);
+                            updateNavUI(i_IsClicked);
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
                 });
+    }
 
-        if (m_IsDoNotDisturb)
+    private void updateNavUI(final boolean i_IsClicked)
+    {
+        MenuItem availability = m_NavigationMenu.findItem(R.id.nav_availability);
+
+        if(i_IsClicked)
         {
-            availability.setTitle("Online");
-            availability.setIcon(R.drawable.ic_checked_green);
-            userId.child(m_CurrentUser.getUid())
-                    .child("isDoNotDisturb").setValue(false);
-        }else {
-            availability.setTitle("Offline");
-            availability.setIcon(R.drawable.ic_disabled_red);
-            userId.child(m_CurrentUser.getUid())
-                    .child("isDoNotDisturb").setValue(true);
+            if (m_IsOnline)
+            {
+                availability.setTitle("Offline");
+                availability.setIcon(R.drawable.ic_disabled_red);
+                m_UsersRef.child(m_CurrentUser.getUid())
+                        .child("isOnline").setValue(false);
+            }else {
+                availability.setTitle("Online");
+                availability.setIcon(R.drawable.ic_checked_green);
+                m_UsersRef.child(m_CurrentUser.getUid())
+                        .child("isOnline").setValue(true);
+            }
+        } else{
+            if (m_IsOnline)
+            {
+                availability.setTitle("Online");
+                availability.setIcon(R.drawable.ic_checked_green);
+                m_UsersRef.child(m_CurrentUser.getUid())
+                        .child("isOnline").setValue(true);
+            }else {
+                availability.setTitle("Offline");
+                availability.setIcon(R.drawable.ic_disabled_red);
+                m_UsersRef.child(m_CurrentUser.getUid())
+                        .child("isOnline").setValue(false);
+
+            }
         }
+
     }
 
     private void startExpertSettingsActivity()
