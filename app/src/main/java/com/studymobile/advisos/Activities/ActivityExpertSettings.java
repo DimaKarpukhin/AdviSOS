@@ -5,11 +5,13 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -61,6 +63,8 @@ import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.InputValidation;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -77,6 +81,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class ActivityExpertSettings extends AppCompatActivity implements
         View.OnClickListener, CompoundButton.OnCheckedChangeListener,
@@ -670,28 +675,40 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         StorageReference imagePath = m_Storage.getReference().child("Images/Subjects");
         if(m_DialogImgURI != null && !m_IsImgStored)
         {
-            final StorageReference imageRef = imagePath.child(i_Image);
-            imageRef.putFile(m_DialogImgURI)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri)
-                                {
-                                    m_IsImgStored = true;
-                                    m_DialogImgURI = uri;
-                                    pushNewSubjectToDatabase();
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ActivityExpertSettings.this,
-                            "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            try {
+                String[] projection = {MediaStore.Images.Media.DATA};
+                Cursor cur = getContentResolver().query(m_DialogImgURI, projection, null, null);
+                cur.moveToFirst();
+                String path = cur.getString(cur.getColumnIndex(MediaStore.Images.Media.DATA));
+                cur.close();
+                final StorageReference imageRef = imagePath.child(i_Image);
+                imageRef.putFile(android.net.Uri.parse(new Compressor(this).compressToFile(new File(path)).toURI().toString()))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        m_IsImgStored = true;
+                                        m_DialogImgURI = uri;
+                                        pushNewSubjectToDatabase();
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ActivityExpertSettings.this,
+                                "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (NullPointerException e){
+                e.printStackTrace();
+            }
+
         }
         else {
             pushNewSubjectToDatabase();
