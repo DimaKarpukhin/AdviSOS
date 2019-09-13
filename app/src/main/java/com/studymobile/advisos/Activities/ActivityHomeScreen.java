@@ -78,12 +78,6 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     @Override
     public void onStart() {
-        /*--------------------------- Logic to go in other Activity ---------------------------*/
-        if(getIntent().getExtras() != null)
-        {
-            Log.e("onStart, in condition", "going to switch to FragmentChatRequests");
-        }
-        /*-------------------------------------------------------------------------------------*/
         super.onStart();
 
         if (!checkPermissions()) {
@@ -211,6 +205,13 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
         setFirebaseData();
         setActivityContent();
+
+        /*--------------------------- Logic to navigate to CHAT REQUESTS ---------------------------*/
+        if(getIntent().getExtras() != null)
+        {
+            Log.e("onStart, in condition", "going to switch to FragmentChatRequests");
+        }
+        /*-------------------------------------------------------------------------------------*/
     }
 
     private void setFirebaseData()
