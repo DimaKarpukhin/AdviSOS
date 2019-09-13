@@ -338,6 +338,8 @@ public class ActivityHomeScreen extends AppCompatActivity implements
     }
 
     private void myClosedChats() {
+        Intent intent = new Intent(this,ActivityDisplayClosedChats.class);
+        this.startActivity(intent);
 
     }
 

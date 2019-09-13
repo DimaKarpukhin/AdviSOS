@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatMessage;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.ViewHolders.ViewHolderRecievedMessageHolder;
@@ -82,7 +82,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         reference.child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                  Boolean res = dataSnapshot.child("isChatClosed").getValue(Boolean.class);
+                  Boolean res = dataSnapshot.child("mIsChatClosed").getValue(Boolean.class);
                   if(res != null)
                   {
                      if(res)
@@ -169,7 +169,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         chatRoomReference.child(mChatRoomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Boolean res = dataSnapshot.child("isChatClosed").getValue(Boolean.class);
+                Boolean res = dataSnapshot.child("mIsChatClosed").getValue(Boolean.class);
                 if(res != null)
                 {
                     if(res)
@@ -200,7 +200,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         //DatabaseReference usersRef = mDatabase.getReference("Users");
         DatabaseReference chatRoomRef = mDatabase.getReference("ChatRooms");
         final DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
-        chatRoomRef.child(mChatRoomId).child("chatRoomCreatorUid").addListenerForSingleValueEvent(new ValueEventListener() {
+        chatRoomRef.child(mChatRoomId).child("creatorId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(!mCurrentUser.getUid().equals(dataSnapshot.getValue(String.class))){
@@ -228,21 +228,57 @@ public class ActivityChatRoom extends AppCompatActivity {
         //TODO need to check how closing the chat affects other user since the chat is not active
         disableAndClearAllCommandViewsIfChatIsClosed();
         DatabaseReference reference = mDatabase.getReference("ChatRooms");
-        reference.child(mChatRoomId).child("isChatClosed").setValue(Boolean.TRUE);
-        DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
-        //Do we want that the creator of the chat will not be able to load the chat room directly anymore?
-        /*activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(mChatRoomId).child("mIsChatClosed").setValue(Boolean.TRUE).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(getApplicationContext(),"Chat room closed successfully", Toast.LENGTH_SHORT);
+                if (task.isSuccessful()) {
+                    removeFromActiveChatsToClosedChats();
+                    startRateUsersActivity();
+                 //TODO   addChatRoomClosedUnderSubjectClosedChats();
+                }
+
+
             }
-        });*/
+
+        });
+    }
+
+    private void startRateUsersActivity() {
         Intent intent = new Intent(this,ActivityGiveRatingToUsers.class);
         this.startActivity(intent);
+    }
 
+    private void removeFromActiveChatsToClosedChats() {
+        final DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
+        activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    final ActiveChatRoom room = dataSnapshot.getValue(ActiveChatRoom.class);
+                       dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "delted active chat", Toast.LENGTH_LONG).show();
+                                addToClosedChats(room);
 
+                        }
+                    });
 
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addToClosedChats(ActiveChatRoom room) {
+        if(room.getUserId().equals(mCurrentUser.getUid())){
+            mDatabase.getReference("ClosedChats").child(mCurrentUser.getUid()).child(room.getChatRoomId()).setValue(room);
+        }
     }
 
     private void sendMessage() {
