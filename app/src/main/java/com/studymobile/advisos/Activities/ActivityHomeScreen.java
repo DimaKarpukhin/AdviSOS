@@ -328,8 +328,17 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             logOut();
             m_DrawerLayout.closeDrawer(GravityCompat.START);
         }
+        else if(id == R.id.nav_closed_chats)
+        {
+            myClosedChats();
+            m_DrawerLayout.closeDrawer(GravityCompat.START);
+        }
 
         return true;
+    }
+
+    private void myClosedChats() {
+
     }
 
     private void setAvailability(final boolean i_IsClicked)
