@@ -62,7 +62,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     private TextView mTxtSubjectDescription;
     private Subject mCurrentSubject;
     private String mSubjectName;
-
+    private String mImgLinkForChatIntent;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mSubjectsRef;
     private FirebaseAuth mAuth;
@@ -226,6 +226,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                         Picasso.get().load(mCurrentSubject.getImgLink()).into(mImgSubject);
                         mTxtSubjectName.setText(mCurrentSubject.getSubjectName());
                         mTxtSubjectDescription.setText(mCurrentSubject.getSubjectDescription());
+                        mImgLinkForChatIntent= mCurrentSubject.getImgLink();
                     }
 
                     @Override
@@ -262,10 +263,10 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         chatRoomsRef.child(chatRoomUId).setValue(chatRoom);        // add chat room information under room id
         mDatabase.getReference("ActiveChats").child(userID)
                 .child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
-        mDatabase.getReference("ActiveChats").child(userID)
-                .child(chatRoomUId).setValue(chatRoomUId);
         mDatabase.getReference("Participants").child(chatRoomUId)
-                .child(userID).setValue(userID);                   // add  the room id to chat participants node
+                .child(userID).setValue(userID);// add  the room id to chat participants node
+        mDatabase.getReference("Messages").child(chatRoomUId).setValue(chatRoomUId);
+
 
         List<String> expertsList =  mDatabaseServices.GetExpertsIDs();
         if( expertsList.isEmpty() )
@@ -278,6 +279,8 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
             pushNotify(expertsList,  "Request in: " + mSubjectName, "Tap to view the details");
             Intent intent = new Intent(this, ActivityChatRoom.class);
             intent.putExtra("chat_room_id", chatRoomUId);
+            intent.putExtra("room_name",i_roomName);
+            intent.putExtra("subject_image",mImgLinkForChatIntent);
 //            Toast.makeText(getApplicationContext(),R.string.chat_roomcreated_success,Toast.LENGTH_SHORT);
             this.startActivity(intent);
         }

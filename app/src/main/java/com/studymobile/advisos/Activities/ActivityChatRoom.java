@@ -52,8 +52,9 @@ public class ActivityChatRoom extends AppCompatActivity {
     private ImageButton mSendMessageButton;
     private EditText mMessageBodyText;
     private String senderName;
-    private CircleImageView mBackToHomeImageView;
-    private Button mCloseChatButton;
+    private ImageButton mBackToHomeImageView;
+    private CircleImageView mSubjectImg;
+    private ImageButton mCloseChatButton;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mChatRoonIdRefMessages;
     private FirebaseAuth mAuth;
@@ -92,7 +93,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                          mSendMessageButton.setClickable(false);
 //                         mSendMessageButton.setCursorVisible(false);
                          mCloseChatButton.setVisibility(View.INVISIBLE);
-                         mCloseChatButton.setCursorVisible(false);
+      //                   mCloseChatButton.setCursorVisible(false);
                          mCloseChatButton.setClickable(false);
                      }
                   }
@@ -112,9 +113,9 @@ public class ActivityChatRoom extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
                 {
-                    if(dataSnapshot.child("mChatRoomCreatorUid").getValue(String.class).equals(mCurrentUser.getUid()))
+                    if(dataSnapshot.child("creatorId").getValue(String.class).equals(mCurrentUser.getUid()))
                     {
-                        mCloseChatButton.setCursorVisible(true);
+                     //   mCloseChatButton.setCursorVisible(true);
                         mCloseChatButton.setClickable(true);
                         mCloseChatButton.setVisibility(View.VISIBLE);
                     }
@@ -130,11 +131,13 @@ public class ActivityChatRoom extends AppCompatActivity {
     }
 
     private void init() {
-        mChatRoomId = getIntent().getStringExtra("chat_room_id");
+        mSubjectImg = findViewById(R.id.img_subject_of_chat_room);
+        Picasso.get().load(getIntent().getStringExtra("subject_image")).into(mSubjectImg);
         mCloseChatButton = findViewById(R.id.button_close_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
         mRoomNameTextView = findViewById(R.id.textView_room_name_information_open);
+        mRoomNameTextView.setText(getIntent().getStringExtra("room_name"));
         mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -243,24 +246,25 @@ public class ActivityChatRoom extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        String messageText = mMessageBodyText.getText().toString();
+        final String messageText = mMessageBodyText.getText().toString();
         if(TextUtils.isEmpty(messageText))
         {
             Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT).show();
         }
         else{
+            mMessageBodyText.getText().clear();
             Calendar cal = Calendar.getInstance();
             Date currentLocalTime = cal.getTime();
             DateFormat date = new SimpleDateFormat("HH:mm");
-            String localTime = date.format(currentLocalTime);
-            String senderID = mCurrentUser.getUid();
+            final String localTime = date.format(currentLocalTime);
+            final String senderID = mCurrentUser.getUid();
             DatabaseReference reference = mDatabase.getReference("Users");
             reference.child(senderID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String name = dataSnapshot.child("firstName").getValue(String.class);
                     senderName = name;
-
+                    mChatRoonIdRefMessages.push().setValue(new ChatMessage(messageText,senderName,localTime,senderID));
                 }
 
                 @Override
@@ -268,13 +272,13 @@ public class ActivityChatRoom extends AppCompatActivity {
 
                 }
             });
-            mChatRoonIdRefMessages.push().setValue(new ChatMessage(messageText,senderName,localTime,senderID));
 
         }
 
     }
 
     private void setFirebaseReferences() {
+        mChatRoomId = getIntent().getStringExtra("chat_room_id");
         mDatabase = FirebaseDatabase.getInstance();
         mChatRoonIdRefMessages = mDatabase.getReference("Messages").child(mChatRoomId);
         mAuth = FirebaseAuth.getInstance();
@@ -326,7 +330,7 @@ public class ActivityChatRoom extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i, @NonNull ChatMessage chatMessage) {
+            protected void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i, @NonNull ChatMessage chatMessage) {
                 if(viewHolder instanceof ViewHolderSentMessageHolder )
                 {
                     ((ViewHolderSentMessageHolder) viewHolder).setMessageText(chatMessage.getMessageBody());
@@ -342,6 +346,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             link = dataSnapshot.child("imgLink").getValue(String.class);
+                            loadImageSender(link, (ViewHolderRecievedMessageHolder)viewHolder);
                         }
 
                         @Override
@@ -349,11 +354,32 @@ public class ActivityChatRoom extends AppCompatActivity {
 
                         }
                     });
-                    Picasso.get().load(link).into(((ViewHolderRecievedMessageHolder) viewHolder).getProfileImage());
+
                 }
+            }
+
+            private void loadImageSender(String link, ViewHolderRecievedMessageHolder viewHolder) {
+                Picasso.get().load(link).into(((ViewHolderRecievedMessageHolder) viewHolder).getProfileImage());
             }
         };
         mMessagesAdapterd.startListening();
+        mMessagesAdapterd.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int friendlyMessageCount = mMessagesAdapterd.getItemCount();
+                int lastVisiblePosition =
+                        new LinearLayoutManager(getApplicationContext()).findLastCompletelyVisibleItemPosition();
+                // If the recycler view is initially being loaded or the
+                // user is at the bottom of the list, scroll to the bottom
+                // of the list to show the newly added message.
+                if (lastVisiblePosition == -1 ||
+                        (positionStart >= (friendlyMessageCount - 1) &&
+                                lastVisiblePosition == (positionStart - 1))) {
+                    mMessagesRecyclerView.scrollToPosition(positionStart);
+                }
+            }
+        });
         mMessagesRecyclerView.setAdapter(mMessagesAdapterd);
 
     }

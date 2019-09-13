@@ -5,10 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ActivityParticipatedUsers">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_of_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_of_participants_screen"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue"
+            app:layout_scrollFlags="scroll|enterAlways" >
+
+            <ImageButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_back_to_home_from_chat"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_arrow_back_black"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_participating_users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout_of_participants"/>
 
 </RelativeLayout>
