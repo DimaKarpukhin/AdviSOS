@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.studymobile.advisos.Activities.ActivityRegistration;
+import com.studymobile.advisos.Activities.ActivityHomeScreen;
 import com.studymobile.advisos.R;
 
 
@@ -40,11 +40,12 @@ public class FireBaseMsgService  extends FirebaseMessagingService
                 .setVibrate(new long[]{100, 100, 100, 100})
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultSoundUri);
-        Intent resultIntent = new Intent(this, ActivityRegistration.class);
+        Intent resultIntent = new Intent(this, ActivityHomeScreen.class);
+        resultIntent.putExtra("ChatRoomID", "THE_ID");//should put the id in the 2nd argument
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ActivityRegistration.class);
+        stackBuilder.addParentStack(ActivityHomeScreen.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(

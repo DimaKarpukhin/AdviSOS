@@ -1,13 +1,5 @@
 package com.studymobile.advisos.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.ViewPager;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +12,14 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -78,6 +78,12 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     @Override
     public void onStart() {
+        /*--------------------------- Logic to go in other Activity ---------------------------*/
+        if(getIntent().getExtras() != null)
+        {
+            Log.e("onStart, in condition", "going to switch to FragmentChatRequests");
+        }
+        /*-------------------------------------------------------------------------------------*/
         super.onStart();
 
         if (!checkPermissions()) {

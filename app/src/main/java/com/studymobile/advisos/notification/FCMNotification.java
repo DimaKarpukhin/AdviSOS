@@ -1,7 +1,6 @@
 package com.studymobile.advisos.notification;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,17 +33,11 @@ public class FCMNotification {
                 URL url = null;
                 try {
                     url = new URL(FMCurl);
-                    Log.d("Good", "1");
-                } catch (MalformedURLException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (MalformedURLException e) {}
                 HttpURLConnection conn = null;
                 try {
                     conn = (HttpURLConnection) url.openConnection();
-                    Log.d("Good", "2");
-                } catch (IOException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (IOException e) {}
 
                 conn.setUseCaches(false);
                 conn.setDoInput(true);
@@ -52,70 +45,41 @@ public class FCMNotification {
 
                 try {
                     conn.setRequestMethod("POST");
-                    Log.d("Good", "3");
-                } catch (ProtocolException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (ProtocolException e) {}
                 conn.setRequestProperty("Authorization","key="+authKey);
                 conn.setRequestProperty("Content-Type","application/json");
 
                 JSONObject json = new JSONObject();
                 try {
                     json.put("to",DeviceIdKey.trim());
-                    Log.d("Good", "4");
-                } catch (JSONException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (JSONException e) { }
                 JSONObject info = new JSONObject();
                 try {
                     info.put("title", title);   // Notification title
-                    Log.d("Good", "5");
-                } catch (JSONException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (JSONException e) {}
                 try {
                     info.put("body", body); // Notification body
-                    Log.d("Good", "6");
-                } catch (JSONException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (JSONException e) {}
                 try {
                     json.put("notification", info);
-                    Log.d("Good", "7");
-                } catch (JSONException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (JSONException e) {}
 
                 OutputStreamWriter wr = null;
                 try {
                     wr = new OutputStreamWriter(conn.getOutputStream());
-                    Log.d("Good", "8");
-                } catch (IOException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (IOException e) {}
                 try {
                     wr.write(json.toString());
-                    Log.d("Good", "9");
-                } catch (IOException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (IOException e) {}
                 try {
                     wr.flush();
-                    Log.d("Good", "10");
-                } catch (IOException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
+                } catch (IOException e) {}
                 try {
                     conn.getInputStream();
-                    Log.d("Good", "11");
-                } catch (IOException e) {
-                    Log.d("Error", "############################# BAD ###############################");
-                }
-                Log.d("Error", "############################# VERY GOOD ###############################");
+                } catch (IOException e) {}
                 return null;
             }
         };
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        Log.d("Error", "############################# VERY VERY GOOD ###############################");
     }
 }
