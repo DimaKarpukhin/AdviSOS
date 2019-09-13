@@ -239,6 +239,12 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void showPopupDialog()
     {
+        m_PopupDialog.findViewById(R.id.btn_ok_of_dialog_profile_picture)
+                .setVisibility(View.VISIBLE);
+        m_PopupDialog.findViewById(R.id.btn_remove_of_dialog_profile_picture)
+                .setVisibility(View.VISIBLE);
+        m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
+                .setVisibility(View.VISIBLE);
         if(m_IsSocialAvatarPicked){
             Picasso.get().load(m_ProfileImgLink).into(m_DialogImgView);
         }else {
