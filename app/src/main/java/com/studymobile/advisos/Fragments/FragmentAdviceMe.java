@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
+import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.R;
@@ -43,15 +44,13 @@ public class FragmentAdviceMe extends Fragment
     private RecyclerView mAdviceMeList;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mAdviceMeRef;
+    private DatabaseReference mActiveChat;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    private String mSubjectID;
 
-    private FirebaseRecyclerOptions<ChatRoom> mOptions;
-    private FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup> mAdapter;
+    private FirebaseRecyclerOptions<ActiveChatRoom> mOptions;
+    private FirebaseRecyclerAdapter<ActiveChatRoom, ViewHolderAdviceGroup> mAdapter;
 
-    private List<String> mUserActiveChatRooms = new ArrayList<>();
 
     public FragmentAdviceMe() {
         // Required empty public constructor
@@ -69,7 +68,7 @@ public class FragmentAdviceMe extends Fragment
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        mAdviceMeRef = mDatabase.getReference().child("ChatRooms");
+        mActiveChat = mDatabase.getReference().child("ActiveChats");
 
         return mAdviceMeView;
     }
@@ -83,54 +82,22 @@ public class FragmentAdviceMe extends Fragment
 
     }
 
-    private void updateUI(@NonNull final ViewHolderAdviceGroup i_ViewHolder, int i_Position,
-                          @NonNull final ChatRoom i_ChatRoom)
-    {
-
-        DatabaseReference d = mAdapter.getRef(i_Position).getRef();
-
-        d.addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
-//                        for(DataSnapshot chatRoomID : i_DataSnapshot.getChildren())
-//                        {
-                            ChatRoom chatRoom = i_DataSnapshot.getValue(ChatRoom.class);
-
-                            Toast.makeText(getContext(),">>>" + chatRoom.getRoomId()
-                                    + "<<<\n" + mUserActiveChatRooms.size(), Toast.LENGTH_LONG).show();
-                            if(mUserActiveChatRooms.contains(chatRoom.getRoomId()))
-                            {
-                                i_ViewHolder.getBtnUnreadMessages().setVisibility(View.VISIBLE);
-                                i_ViewHolder.setParentSubjectName(chatRoom.getSubjectName());
-                                i_ViewHolder.setGroupTopic(chatRoom.getRoomName());
-                                i_ViewHolder.setLastMessageTime(chatRoom.getCreationTime());
-                                Picasso.get().load(chatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
-                            }
-
-                     //   }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-    }
-
     private void buildAdviceMeOptions()
     {
-        mOptions = new FirebaseRecyclerOptions.Builder<ChatRoom>()
-                .setQuery(mAdviceMeRef.orderByChild("creatorId").equalTo(mCurrentUser.getUid()), ChatRoom.class)
+        mOptions = new FirebaseRecyclerOptions.Builder<ActiveChatRoom>()
+                .setQuery(mActiveChat.child(mCurrentUser.getUid())
+                        .orderByChild("isCreator").equalTo(true), ActiveChatRoom.class)
                 .build();
     }
 
     private void populateAdviceMeView()
     {
-        mAdapter = new FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup>(mOptions) {
+        mAdapter = new FirebaseRecyclerAdapter<ActiveChatRoom, ViewHolderAdviceGroup>(mOptions) {
             @NonNull
             @Override
-            public ViewHolderAdviceGroup onCreateViewHolder(@NonNull ViewGroup i_ViewGroup, int i_Position) {
-                //Create a new instance of the ViewHolder and use R.layout.item_dish for each item
+            public ViewHolderAdviceGroup onCreateViewHolder
+                    (@NonNull ViewGroup i_ViewGroup, int i_Position)
+            {
                 View view = LayoutInflater
                         .from(i_ViewGroup.getContext())
                         .inflate(R.layout.item_advice_group, i_ViewGroup, false);
@@ -139,64 +106,42 @@ public class FragmentAdviceMe extends Fragment
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull final ViewHolderAdviceGroup i_ViewHolder, final int i_Position,
-                                            @NonNull final ChatRoom i_ChatRoom) {
-
-                final String currentUserID = mCurrentUser.getUid();
-                mDatabase.getReference("ActiveChats").child(currentUserID)
+            protected void onBindViewHolder
+                    (@NonNull final ViewHolderAdviceGroup i_ViewHolder,
+                     final int i_Position, @NonNull final ActiveChatRoom i_ActiveChatRoom)
+            {
+                DatabaseReference chatRoomRef = mDatabase.getReference("ChatRooms");
+                chatRoomRef.child(i_ActiveChatRoom.getChatRoomId())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @SuppressLint("SetTextI18n")
                             @Override
                             public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
                             {
-                                if(i_DataSnapshot.exists())
-                                {
-                                    for (DataSnapshot chatRoomID : i_DataSnapshot.getChildren())
+                                ChatRoom chatRoom = i_DataSnapshot.getValue(ChatRoom.class);
+                                Picasso.get().load(chatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
+                                i_ViewHolder.setParentSubjectName(chatRoom.getSubjectName());
+                                i_ViewHolder.setGroupTopic(chatRoom.getRoomName());
+                                i_ViewHolder.setLastMessageTime(chatRoom.getCreationTime());
+                                i_ViewHolder.setLastMessageDate(chatRoom.getCreationDate());
+
+                                i_ViewHolder.setItemClickListener(new ItemClickListener() {
+                                    @Override
+                                    public void onClick(View view, int position, boolean isLongClick)
                                     {
-                                        if(!mUserActiveChatRooms.contains(chatRoomID.getKey()))
-                                        {
-                                            mUserActiveChatRooms.add(chatRoomID.getKey());
-                                        }
+                                        Toast.makeText(getContext(),"Advice me", Toast.LENGTH_SHORT).show();
                                     }
-
-//                                    Toast.makeText(getContext(), mUserActiveChatRooms.size()
-//                                            + " " + currentUserID
-//                                            +"\n" + mUserActiveChatRooms.get(0), Toast.LENGTH_LONG).show();
-                                    updateUI(i_ViewHolder, i_Position, i_ChatRoom);
-
-                                }
+                                });
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {
+
                             }
                         });
-//                if(mUserChatRooms.contains(i_ChatRoom.getRoomId()))
-//                {
-//                    i_ViewHolder.setVisibility(View.VISIBLE);
-//                    Toast.makeText(getContext(),"GOOD", Toast.LENGTH_LONG).show();
-//                    i_ViewHolder.getBtnUnreadMessages().setVisibility(View.INVISIBLE);
-//                    i_ViewHolder.setParentSubjectName(i_ChatRoom.getSubjectName());
-//                    i_ViewHolder.setGroupTopic(i_ChatRoom.getRoomName());
-//                    i_ViewHolder.setLastMessageTime(i_ChatRoom.getCreationTime());
-//                    Picasso.get().load(i_ChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
-//                }
-//                else{
-//                    Toast.makeText(getContext(),"BAD", Toast.LENGTH_LONG).show();
-//                    i_ViewHolder.setVisibility(View.GONE);
-//                }
-//
-//                i_ViewHolder.setItemClickListener(new ItemClickListener() {
-//                    @Override
-//                    public void onClick(View view, int position, boolean isLongClick) {
-//
-//                    }
-//                });
+
             }
         };
 
         mAdapter.startListening();
         mAdviceMeList.setAdapter(mAdapter);
     }
-
 }

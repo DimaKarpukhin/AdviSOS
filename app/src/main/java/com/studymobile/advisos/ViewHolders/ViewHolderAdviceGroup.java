@@ -16,7 +16,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ViewHolderAdviceGroup extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     private CircleImageView m_GroupProfileImg;
-    private TextView m_ParentSubjectName, m_GroupTopic, m_LastMessageTime;
+    private TextView m_ParentSubjectName, m_GroupTopic, m_LastMessageTime, m_LastMessageDate;
     private Button m_BtnUnreadMessages;
     private ItemClickListener m_ItemClickListener;
     private CardView m_CardView;
@@ -29,7 +29,7 @@ public class ViewHolderAdviceGroup extends RecyclerView.ViewHolder implements Vi
         m_ParentSubjectName = i_ItemView.findViewById(R.id.txt_parent_subject_of_item_advice_group);
         m_GroupTopic = i_ItemView.findViewById(R.id.txt_topic_of_item_advice_group);
         m_LastMessageTime = i_ItemView.findViewById(R.id.txt_time_of_item_advice_group);
-        m_BtnUnreadMessages = i_ItemView.findViewById(R.id.btn_unread_of_item_advice_group);
+        m_LastMessageDate = i_ItemView.findViewById(R.id.txt_date_of_item_advice_group);
         i_ItemView.setOnClickListener(this);
     }
 
@@ -40,7 +40,7 @@ public class ViewHolderAdviceGroup extends RecyclerView.ViewHolder implements Vi
         m_ParentSubjectName.setVisibility(i_Visibility);
         m_GroupTopic.setVisibility(i_Visibility);
         m_LastMessageTime.setVisibility(i_Visibility);
-        m_BtnUnreadMessages.setVisibility(i_Visibility);
+        m_LastMessageDate.setVisibility(i_Visibility);
 
     }
 
@@ -67,6 +67,11 @@ public class ViewHolderAdviceGroup extends RecyclerView.ViewHolder implements Vi
     public void setLastMessageTime(String i_LastMessageTime)
     {
         m_LastMessageTime.setText(i_LastMessageTime);
+    }
+
+    public void setLastMessageDate(String i_LastMessageDate)
+    {
+        m_LastMessageDate.setText(i_LastMessageDate);
     }
 
     public void setItemClickListener(ItemClickListener i_ItemClickListener)

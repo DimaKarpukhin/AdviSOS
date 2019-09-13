@@ -274,49 +274,49 @@ public class DatabaseServices
                         case java.util.Calendar.SUNDAY:
                             // Current day is Sunday
                             if (weekAvailability.getSunday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getSunday().getStartTime();
                             endTime = weekAvailability.getSunday().getEndTime();
                             break;
                         case java.util.Calendar.MONDAY:
                             // Current day is Monday
                             if (weekAvailability.getMonday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getMonday().getStartTime();
                             endTime = weekAvailability.getMonday().getEndTime();
                             break;
                         case java.util.Calendar.TUESDAY:
                             // Current day is Tuesday
                             if (weekAvailability.getTuesday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getTuesday().getStartTime();
                             endTime = weekAvailability.getTuesday().getEndTime();
                             break;
                         case java.util.Calendar.WEDNESDAY:
                             // Current day is Wednesday
                             if (weekAvailability.getWednesday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getWednesday().getStartTime();
                             endTime = weekAvailability.getWednesday().getEndTime();
                             break;
                         case java.util.Calendar.THURSDAY:
                             // Current day is Thursday
                             if (weekAvailability.getThursday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getThursday().getStartTime();
                             endTime = weekAvailability.getThursday().getEndTime();
                             break;
                         case java.util.Calendar.FRIDAY:
                             // Current day is Friday
                             if (weekAvailability.getFriday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getFriday().getStartTime();
                             endTime = weekAvailability.getFriday().getEndTime();
                             break;
                         case java.util.Calendar.SATURDAY:
                             // Current day is Saturday
                             if (weekAvailability.getSaturday() == null)
-                                return;
+                                continue;
                             startTime = weekAvailability.getSaturday().getStartTime();
                             endTime = weekAvailability.getSaturday().getEndTime();
                             break;

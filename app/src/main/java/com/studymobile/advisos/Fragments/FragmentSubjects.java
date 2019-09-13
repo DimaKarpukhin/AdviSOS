@@ -114,8 +114,9 @@ public class FragmentSubjects extends Fragment
         mAdapter = new FirebaseRecyclerAdapter<Subject, ViewHolderSubject>(mOptions) {
             @NonNull
             @Override
-            public ViewHolderSubject onCreateViewHolder(@NonNull ViewGroup i_ViewGroup, int i_Position) {
-                //Create a new instance of the ViewHolder and use R.layout.item_dish for each item
+            public ViewHolderSubject onCreateViewHolder
+                    (@NonNull ViewGroup i_ViewGroup, int i_Position)
+            {
                 View view = LayoutInflater
                         .from(i_ViewGroup.getContext())
                         .inflate(R.layout.item_subject, i_ViewGroup, false);
@@ -124,13 +125,14 @@ public class FragmentSubjects extends Fragment
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
-                                            @NonNull final Subject i_Subject)
+            protected void onBindViewHolder
+                    (@NonNull ViewHolderSubject i_ViewHolder, int i_Position,
+                     @NonNull final Subject i_Subject)
             {
+                Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
                 i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
-                Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
 
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
@@ -147,8 +149,10 @@ public class FragmentSubjects extends Fragment
 
     private void startSubjectActionManagerActivity(int i_Position)
     {
-        Intent IntentSubjectActionManager = new Intent(getActivity(), ActivitySubjectActionManager.class);
-        IntentSubjectActionManager.putExtra(SUBJECT_NAME, mAdapter.getRef(i_Position).getKey());
+        Intent IntentSubjectActionManager = new Intent(getActivity(),
+                ActivitySubjectActionManager.class);
+        IntentSubjectActionManager
+                .putExtra(SUBJECT_NAME, mAdapter.getRef(i_Position).getKey());
         startActivity(IntentSubjectActionManager);
     }
 }
