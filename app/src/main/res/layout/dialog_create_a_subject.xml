@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="370dp">
+            android:layout_height="360dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 <RelativeLayout
                     android:layout_above="@+id/l2"
                     android:layout_width="match_parent"
-                    android:layout_height="245dp"
+                    android:layout_height="240dp"
                     android:background="@drawable/layout_blue_light_with_blue_frame">
 
                     <TextView
@@ -32,7 +32,7 @@
                         android:layout_above="@+id/layout_name"
                         android:layout_centerHorizontal="true"
                         android:text="Create a subject"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textColor="@color/blue"
                         android:textStyle="italic"/>
 
@@ -61,7 +61,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_description"
                         android:layout_width="match_parent"
-                        android:layout_height="110dp"
+                        android:layout_height="100dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
@@ -71,7 +71,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/field_subject_description_of_dialog_create_a_subj"
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="70dp"
                             android:gravity="top"
                             android:hint="Subject description"
                             android:padding="5dp"
@@ -131,8 +131,10 @@
                         android:background="@drawable/btn_rect_transparent_pressed_grey_light"
                         android:gravity="center"
                         android:text="Cancel"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
                         android:textColor="@color/blue"
-                        android:textSize="22sp">
+                        android:textSize="16sp">
 
                     </TextView>
                     <TextView
@@ -142,7 +144,9 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="Create"
-                        android:textSize="22sp"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
                         android:textColor="@color/blue"
                         android:background="@drawable/btn_rect_transparent_pressed_grey_light">
 

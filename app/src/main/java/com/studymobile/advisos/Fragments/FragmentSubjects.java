@@ -1,7 +1,10 @@
 package com.studymobile.advisos.Fragments;
 
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,11 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -45,6 +50,9 @@ public class FragmentSubjects extends Fragment
     private FirebaseRecyclerOptions<Subject> mOptions;
     private FirebaseRecyclerAdapter<Subject, ViewHolderSubject> mAdapter;
 
+    private Dialog m_PopupDialog;
+    private CircleImageView m_DialogImgView;
+
     public FragmentSubjects() {
         // Required empty public constructor
     }
@@ -61,7 +69,6 @@ public class FragmentSubjects extends Fragment
 
         mDatabase = FirebaseDatabase.getInstance();
         mSubjectRef = mDatabase.getReference().child("Subjects");
-
 
         buildSubjectsOptions();
         populateSubjectsView();
@@ -133,7 +140,12 @@ public class FragmentSubjects extends Fragment
                 i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());
-
+                i_ViewHolder.getSubjectImage().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showPopupDialog(i_Subject.getImgLink(), i_Subject.getSubjectName());
+                    }
+                });
                 i_ViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View i_View, int i_Position, boolean i_IsLongClick) {
@@ -145,6 +157,38 @@ public class FragmentSubjects extends Fragment
 
         mAdapter.startListening();
         mSubjectsList.setAdapter(mAdapter);
+    }
+
+    private void showPopupDialog(String i_ImgLink, String i_Title)
+    {
+        m_PopupDialog = new Dialog(getContext());
+        m_PopupDialog.setContentView(R.layout.dialog_image);
+        m_PopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        m_DialogImgView = m_PopupDialog.findViewById(R.id.img_of_dialog_profile_picture);
+        Picasso.get().load(i_ImgLink).into(m_DialogImgView);
+        TextView title = m_PopupDialog.findViewById(R.id.txt_title_of_dialog_image);
+        title.setText(i_Title);
+        title.setVisibility(View.VISIBLE);
+
+        m_PopupDialog.findViewById(R.id.layout_optional_of_dialog_image)
+                .setVisibility(View.INVISIBLE);
+        m_PopupDialog.findViewById(R.id.btn_ok_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+        m_PopupDialog.findViewById(R.id.btn_remove_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+        m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+
+
+        m_PopupDialog.findViewById(R.id.btn_close_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m_PopupDialog.dismiss();
+                    }
+                });
+
+        m_PopupDialog.show();
     }
 
     private void startSubjectActionManagerActivity(int i_Position)

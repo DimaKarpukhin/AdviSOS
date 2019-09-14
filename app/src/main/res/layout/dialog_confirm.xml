@@ -16,7 +16,7 @@
             android:id="@+id/txt_title_of_dialog_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="27dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
             android:gravity="center"
@@ -33,7 +33,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center"
             android:src="@drawable/ic_close_blue"
-            android:background="@drawable/btn_circ_transparent_pressed_white_transparent"
+            android:background="@drawable/btn_rect_transparent_pressed_grey_light"
             android:visibility="invisible">
         </ImageButton>
 
@@ -43,8 +43,8 @@
             android:layout_height="40dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:weightSum="2">
@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:text="Cancel"
                 android:textAllCaps="true"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="@color/blue"
                 android:textStyle="bold"
                 android:inputType="textMultiLine"
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Remove"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="@color/blue"
                 android:textAllCaps="true"
                 android:textStyle="bold"

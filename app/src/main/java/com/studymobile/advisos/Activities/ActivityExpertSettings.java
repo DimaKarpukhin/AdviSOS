@@ -118,6 +118,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private EditText m_FieldSubjName;
     private EditText m_FieldSubjDescription;
     private boolean m_IsImgPicked = false;
+    private boolean m_IsImgStored = false;
 
     private Dialog m_DialogSubjList;
     private RecyclerView m_DialogRecyclerView;
@@ -161,15 +162,6 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private boolean m_IsThursdayAvailable;
     private boolean m_IsFridayAvailable;
     private boolean m_IsSaturdayAvailable;
-
-    private boolean m_IsImgStored = false;
-
-
-
-    //
-    private String path;
-    //
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -505,11 +497,50 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
-                        m_DialogSubjList.dismiss();
+                        showConfirmDialog();
                     }
                 });
 
         m_DialogSubjList.show();
+    }
+
+    private void showConfirmDialog()
+    {
+        final Dialog confirmDialog = new Dialog(ActivityExpertSettings.this);
+        confirmDialog.setContentView(R.layout.dialog_confirm);
+
+        ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
+        TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
+        TextView rightBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
+        TextView leftBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
+
+        closeBtn.setVisibility(View.VISIBLE);
+        fieldTitle.setText("You'll be marked as an expert in the selected sections");
+        rightBtn.setText("Confirm");
+        leftBtn.setText("Cancel");
+
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDatabaseSubjectUsers();
+                confirmDialog.dismiss();
+                m_DialogSubjList.dismiss();
+            }
+        });
+        leftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+
+        confirmDialog.show();
     }
 
     private void buildSubjectsListOptions()
@@ -729,6 +760,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         final DatabaseReference subjectsRef = m_Database.getReference("Subjects");
         final String subjName = m_FieldSubjName.getText().toString().toUpperCase();
 
+        if(m_FieldSubjDescription.getText().toString().isEmpty())
+        {
+            m_FieldSubjDescription.setText("Subject description");
+        }
         subjectsRef.child(subjName).addListenerForSingleValueEvent(new ValueEventListener()
         {
                     @Override
@@ -842,8 +877,6 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
     private void populateDatabaseWithExpertSettings()
     {
-        updateDatabaseSubjectUsers();
-
         Day sunday, monday, tuesday, wednesday, thursday, friday, saturday;
         sunday = monday = tuesday = thursday
                 = wednesday = friday = saturday = null;

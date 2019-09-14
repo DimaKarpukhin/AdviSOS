@@ -33,7 +33,7 @@
         <RelativeLayout
             android:layout_toEndOf="@+id/layout_image"
             android:layout_width="match_parent"
-            android:layout_height="74.5dp"
+            android:layout_height="74.2dp"
             android:layout_alignParentEnd="true"
             android:background="@color/white">
 

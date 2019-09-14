@@ -4,28 +4,29 @@
     android:layout_width="290dp"
     android:layout_height="match_parent"
     android:layout_gravity="center">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:background="@drawable/layout_white_with_blue_frame">
+        android:background="@color/transparent">
 
         <RelativeLayout
+            android:id="@+id/layout_image"
             android:layout_width="match_parent"
             android:layout_height="290dp"
             android:background="@color/blueLight">
             <RelativeLayout
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
                 android:layout_centerInParent="true">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/img_of_dialog_profile_picture"
                     android:layout_margin="10dp"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/img_profile_picture"
                     app:civ_border_color="@color/blue"
@@ -33,11 +34,11 @@
 
                 <ImageButton
                     android:id="@+id/btn_add_a_photo_of_dialog_profile_picture"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/btn_circle_white_pressed_grey_light"
                     android:src="@drawable/ic_add_a_photo_blue">
@@ -59,39 +60,58 @@
             </ImageButton>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:weightSum="2"
+            android:layout_below="@+id/layout_image"
             android:background="@color/white">
+            <LinearLayout
+                android:id="@+id/layout_optional_of_dialog_image"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:weightSum="2"
+                android:background="@color/white">
 
-            <ImageButton
-                android:id="@+id/btn_remove_of_dialog_profile_picture"
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/ic_delete_blue"
-                android:background="@drawable/btn_rect_transparent_pressed_grey_light">
+                <ImageButton
+                    android:id="@+id/btn_remove_of_dialog_profile_picture"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_delete_blue"
+                    android:background="@drawable/btn_rect_transparent_pressed_grey_light">
 
-            </ImageButton>
+                </ImageButton>
+                <TextView
+                    android:id="@+id/btn_ok_of_dialog_profile_picture"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Ok"
+                    android:textSize="26sp"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    android:background="@drawable/btn_rect_transparent_pressed_grey_light">
+
+                </TextView>
+
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/btn_ok_of_dialog_profile_picture"
-                android:layout_width="36dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Ok"
-                android:textSize="26sp"
+                android:id="@+id/txt_title_of_dialog_image"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="Title"
                 android:textColor="@color/blue"
-                android:textStyle="bold"
-                android:background="@drawable/btn_rect_transparent_pressed_grey_light">
+                android:textSize="26dp"
+                android:layout_centerInParent="true"
+                android:textStyle="italic"
+                android:gravity="center"/>
+        </RelativeLayout>
 
-            </TextView>
-
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 
 

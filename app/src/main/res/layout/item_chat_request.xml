@@ -26,8 +26,8 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_chat_creator_of_item_request"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/img_profile_picture" />
         </RelativeLayout>
@@ -76,7 +76,7 @@
                         android:text="ACCEPT"
                         android:padding="6dp"
                         android:textColor="#FFFFFF"
-                        android:textSize="14sp"
+                        android:textSize="15sp"
                         android:background="@drawable/btn_rect_green"/>
 
                 </LinearLayout>
@@ -104,7 +104,18 @@
                             android:textStyle="italic"
                             android:text="SUBJECT NAME"/>
                         <TextView
+                            android:id="@+id/txt_topic"
+                            android:layout_below="@+id/txt_subject_name_of_item_request"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|top"
+                            android:textColor="@color/blue"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:text="Topic: "/>
+                        <TextView
                             android:id="@+id/txt_topic_of_item_request"
+                            android:layout_toRightOf="@+id/txt_topic"
                             android:layout_below="@+id/txt_subject_name_of_item_request"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

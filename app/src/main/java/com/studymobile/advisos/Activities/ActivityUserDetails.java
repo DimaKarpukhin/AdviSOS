@@ -239,6 +239,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void showPopupDialog()
     {
+        m_PopupDialog.findViewById(R.id.txt_title_of_dialog_image)
+                .setVisibility(View.INVISIBLE);
+        m_PopupDialog.findViewById(R.id.layout_optional_of_dialog_image)
+                .setVisibility(View.VISIBLE);
         m_PopupDialog.findViewById(R.id.btn_ok_of_dialog_profile_picture)
                 .setVisibility(View.VISIBLE);
         m_PopupDialog.findViewById(R.id.btn_remove_of_dialog_profile_picture)

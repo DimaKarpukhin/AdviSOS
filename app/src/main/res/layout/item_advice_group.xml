@@ -25,8 +25,8 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_subject_of_item_advice_group"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/img_advisos" />
         </RelativeLayout>
@@ -34,7 +34,7 @@
         <RelativeLayout
             android:layout_toEndOf="@+id/layout_image"
             android:layout_width="match_parent"
-            android:layout_height="79.5dp"
+            android:layout_height="79.2dp"
             android:layout_alignParentEnd="true"
             android:background="@color/white">
 
@@ -86,7 +86,7 @@
                         android:layout_weight="0"
                         android:layout_gravity="center"
                         android:textColor="@color/blue"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="italic"
                         android:lines="2"
                         android:text="Topic: "/>
@@ -99,7 +99,7 @@
                         android:textStyle="italic"
                         android:lines="2"
                         android:textColor="@color/blackLight"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <RelativeLayout
                         android:layout_width="20dp"
@@ -112,10 +112,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_centerVertical="true"
+                            android:layout_marginTop="5dp"
                             android:gravity="center|right"
                             android:textColor="@color/grey"
                             android:textSize="12sp"
+                            android:textStyle="italic"
                             android:text="00/00/1234"/>
 
 <!--                        <Button-->

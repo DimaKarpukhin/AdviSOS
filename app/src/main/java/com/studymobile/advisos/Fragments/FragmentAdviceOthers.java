@@ -1,6 +1,7 @@
 package com.studymobile.advisos.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Activities.ActivityChatRoom;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatRoom;
@@ -115,7 +117,7 @@ public class FragmentAdviceOthers extends Fragment
                             @Override
                             public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
                             {
-                                ChatRoom chatRoom = i_DataSnapshot.getValue(ChatRoom.class);
+                                final ChatRoom chatRoom = i_DataSnapshot.getValue(ChatRoom.class);
                                 Picasso.get().load(chatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
                                 i_ViewHolder.setParentSubjectName(chatRoom.getSubjectName());
                                 i_ViewHolder.setGroupTopic(chatRoom.getRoomName());
@@ -126,7 +128,9 @@ public class FragmentAdviceOthers extends Fragment
                                     @Override
                                     public void onClick(View view, int position, boolean isLongClick)
                                     {
-                                        Toast.makeText(getContext(),"Advice others", Toast.LENGTH_SHORT).show();
+                                        Intent IntentChatRoom = new Intent(getContext(), ActivityChatRoom.class);
+                                        IntentChatRoom.putExtra("chat_room_id", chatRoom.getRoomId());
+                                        startActivity(IntentChatRoom);
                                     }
                                 });
                             }

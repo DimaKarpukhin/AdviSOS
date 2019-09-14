@@ -148,7 +148,14 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         }
         else if (id == mBtnAskAdvice.getId())
         {
-            checkIfTopicExists();
+            if(mFieldTopic.getText().toString().isEmpty())
+            {
+                mFieldTopic.setError("The field is required");
+            }
+            else {
+                checkIfTopicExists();
+            }
+
         }
     }
 
@@ -275,10 +282,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 (mChatRoomUId, creatorID,true);
         mDatabase.getReference("ActiveChats").child(creatorID)
                 .child(mChatRoomUId).setValue(activeChatRoom);
-//        mDatabase.getReference("ActiveChats").child(userID)
-//                .child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
-//        mDatabase.getReference("ActiveChats").child(userID)
-//                .child(chatRoomUId).child("isCreator").setValue(true);
+
         mDatabase.getReference("Participants").child(mChatRoomUId)
                 .child(creatorID).setValue(creatorID);                   // add  the room id to chat participants node
 
@@ -311,7 +315,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                        {
                            String creatorId = mCurrentUser.getUid();
                            String creatorName = i_DataSnapshot.child("firstName").getValue(String.class)
-                                   + " " + i_DataSnapshot.child("femilyName").getValue(String.class);
+                                   + " " + i_DataSnapshot.child("familyName").getValue(String.class);
                            String creatorImgLink  = i_DataSnapshot.child("imgLink").getValue(String.class);
 
                            for(String expertId : mExpertsList)
@@ -322,11 +326,15 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                                chatRequest.setChatCreatorName(creatorName);
                                chatRequest.setChatCreatorImgLink(creatorImgLink);
                                chatRequest.setChatRoomId(mChatRoomUId);
-                               chatRequest.setChatCreatorName(mSubjectName);
+                               chatRequest.setChatRoomName(mSubjectName);
                                chatRequest.setTopic(mFieldTopic.getText().toString());
 
+                               String requestID = mDatabase.getReference
+                                       ("ChatRequests").child(expertId).push().getKey();
+                               chatRequest.setRequestId(requestID);
+
                                mDatabase.getReference("ChatRequests")
-                                       .child(expertId).push().setValue(chatRequest);
+                                       .child(expertId).child(requestID).setValue(chatRequest);
                            }
                        }
                     }

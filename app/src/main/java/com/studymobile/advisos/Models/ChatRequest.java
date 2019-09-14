@@ -2,6 +2,7 @@ package com.studymobile.advisos.Models;
 
 public class ChatRequest
 {
+    private String mRequestId;
     private String mChatRoomId;
     private String mChatRoomName;
     private String mTopic;
@@ -20,6 +21,15 @@ public class ChatRequest
         this.mChatCreatorId = i_ChatCreatorId;
         this.mChatCreatorImgLink = i_ChatCreatorImgLink;
         this.mChatCreatorName = i_ChatCreatorName;
+    }
+
+
+    public String getRequestId() {
+        return mRequestId;
+    }
+
+    public void setRequestId(String i_RequestId) {
+        this.mRequestId = i_RequestId;
     }
 
     public String getChatRoomId() {
