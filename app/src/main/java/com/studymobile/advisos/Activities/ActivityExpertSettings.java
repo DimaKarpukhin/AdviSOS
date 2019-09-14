@@ -73,6 +73,7 @@ import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.FileUtil;
 import com.studymobile.advisos.Services.InputValidation;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
@@ -109,6 +110,9 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private static final String DEFAULT = "Default";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
+
+    private File m_PickedImage;
+    private  File m_CompressedImage;
 
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
@@ -688,25 +692,28 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
-            m_DialogImgURI = data.getData();
+            try {
+                m_PickedImage = FileUtil.from(this, data.getData());
+                m_CompressedImage = new Compressor(this).compressToFile(m_PickedImage);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
         }
     }
+
 
     private void uploadImageToStorage(String i_Image)
     {
         StorageReference imagePath = m_Storage.getReference().child("Images/Subjects");
         if(m_DialogImgURI != null && !m_IsImgStored)
         {
-            try {
-                String[] projection = {MediaStore.Images.Media.DATA};
-                Cursor cur = getContentResolver().query(m_DialogImgURI, projection, null, null);
-                cur.moveToFirst();
-                String path = cur.getString(cur.getColumnIndex(MediaStore.Images.Media.DATA));
-                cur.close();
+
                 final StorageReference imageRef = imagePath.child(i_Image);
-                imageRef.putFile(android.net.Uri.parse(new Compressor(this).compressToFile(new File(path)).toURI().toString()))
+                imageRef.putFile(m_DialogImgURI)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -726,12 +733,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                                 "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (NullPointerException e){
-                e.printStackTrace();
-            }
+
 
         }
         else {
