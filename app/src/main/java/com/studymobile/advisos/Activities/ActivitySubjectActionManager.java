@@ -262,43 +262,26 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     private void createChatRoomActivity(String i_roomName)
     {
         mChatRoomsRef = mDatabase.getReference("ChatRooms");
-        mChatRoomUId = mChatRoomsRef.push().getKey();      //push new chat room id and get UId
+        mChatRoomUId = mChatRoomsRef.push().getKey();//push new chat room id and get UId
         Pair<String, String> date = getCreationDateAndTime();
         String creatorID = mCurrentUser.getUid();
 
         ChatRoom chatRoom = new ChatRoom
-                (mChatRoomUId,i_roomName,date.first,date.second,
-                        mSubjectName,creatorID, mCurrentSubject.getImgLink());
-        mChatRoomsRef.child(mChatRoomUId).setValue(chatRoom);        // add chat room information under room id
-//        mDatabase.getReference("ActiveChats").child(creatorID)
-//                .child(mChatRoomUId).setValue(mChatRoomUId);//add the room id to users active chats
+                (mChatRoomUId,i_roomName,
+                        date.first,date.second,
+                        mSubjectName,creatorID,
+                        mCurrentSubject.getImgLink());
+
+        mChatRoomsRef.child(mChatRoomUId).setValue(chatRoom);//add chat room information under room id
+
         ActiveChatRoom activeChatRoom = new ActiveChatRoom
                 (mChatRoomUId, creatorID,true);
         mDatabase.getReference("ActiveChats").child(creatorID)
                 .child(mChatRoomUId).setValue(activeChatRoom);
+
         mDatabase.getReference("Participants").child(mChatRoomUId)
-                .child(creatorID).setValue(creatorID);// add  the room id to chat participants node
+                .child(creatorID).setValue(creatorID);//add the room id to chat participants node
         mDatabase.getReference("Messages").child(mChatRoomUId).setValue(mChatRoomUId);
-
-
-//        List<String> expertsList =  mDatabaseServices.GetExpertsIDs();
-//        if( expertsList.isEmpty() )
-//                (mChatRoomUId, i_roomName,
-//                date.first, date.second,
-//                mSubjectName,creatorID,
-//                mCurrentSubject.getImgLink());
-
-
-//        ActiveChatRoom activeChatRoom = new ActiveChatRoom
-//                (mChatRoomUId, creatorID,true);
-//        mDatabase.getReference("ActiveChats").child(creatorID)
-//                .child(mChatRoomUId).setValue(activeChatRoom);
-//        mDatabase.getReference("ActiveChats").child(userID)
-//                .child(chatRoomUId).setValue(chatRoomUId);//add the room id to users active chats
-//        mDatabase.getReference("ActiveChats").child(userID)
-//                .child(chatRoomUId).child("isCreator").setValue(true);
-//        mDatabase.getReference("Participants").child(mChatRoomUId)
-//                .child(creatorID).setValue(creatorID);                   // add  the room id to chat participants node
 
         mExpertsList =  mDatabaseServices.GetExpertsIDs();
         pushRequestsToDB();
@@ -317,14 +300,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
             intent.putExtra("chat_room_id", mChatRoomUId);
             intent.putExtra("room_name",i_roomName);
             intent.putExtra("subject_image",mImgLinkForChatIntent);
-//            Toast.makeText(getApplicationContext(),R.string.chat_roomcreated_success,Toast.LENGTH_SHORT);
             this.startActivity(intent);
-
-            //pushNotify(expertsList,  "Need your advice on: " + mSubjectName, "Tap to view the details");
-//            Intent intent = new Intent(this, ActivityChatRoom.class);
-//            intent.putExtra("chat_room_id", chatRoomUId);
-//            this.startActivity(intent);
-
         }
 
     }
