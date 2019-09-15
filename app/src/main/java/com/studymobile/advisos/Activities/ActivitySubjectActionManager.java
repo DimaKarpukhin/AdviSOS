@@ -1,9 +1,5 @@
 package com.studymobile.advisos.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.util.Pair;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,20 +32,13 @@ import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatRequest;
 import com.studymobile.advisos.Models.ChatRoom;
-import com.studymobile.advisos.Models.Day;
-import com.studymobile.advisos.Models.Rating;
 import com.studymobile.advisos.Models.Subject;
-import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.Models.User;
-import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.UserLocation;
-import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.Services.DatabaseServices;
 import com.studymobile.advisos.notification.FCMNotification;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -296,7 +289,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         }
         else
         {
-            pushNotify(mExpertsList,  "Need your advice on: " + mSubjectName, "Tap to view the details");
+            pushNotify(mExpertsList,  "Need your advice about: " + mSubjectName, "Tap to view the details");
 //            Intent intent = new Intent(this, ActivityChatRoom.class);
 //            intent.putExtra("chat_room_id", chatRoomUId);
 //            this.startActivity(intent);
@@ -370,6 +363,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                     User user = dataSnapshot.getValue(User.class);
                     try
                     {
+                        Log.e("pushing to " + user.getFirstName() + " " + user.getFamilyName(), user.getDeviceToken());
                         FCMNotification.pushFCMNotification(user.getDeviceToken(), i_Title , i_Body);
                     }
                     catch (Exception e)
@@ -385,6 +379,4 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
             });
         }
     }
-    //===================================================
-
 }
