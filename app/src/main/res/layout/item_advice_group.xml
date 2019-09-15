@@ -128,6 +128,16 @@
 <!--                            android:text="1"-->
 <!--                            android:textColor="@color/white"-->
 <!--                            android:background="@drawable/background_circle_green"/>-->
+
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_unread_of_item_advice_group"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            android:layout_centerVertical="true"-->
+<!--                            android:layout_alignParentEnd="true"-->
+<!--                            android:text="1"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:background="@drawable/background_circle_green"/>-->
                     </RelativeLayout>
 
                 </LinearLayout>

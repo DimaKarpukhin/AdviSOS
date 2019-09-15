@@ -59,7 +59,7 @@
                 android:numStars="5"
                 android:rating="0"
                 android:stepSize="0.5"
-                android:progressTint="@color/yellow"
+                android:progressTint="@color/blueLight"
                 android:progressBackgroundTint="@color/greyLight">
             </RatingBar>
 
@@ -67,26 +67,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:layout_above="@+id/rating_bar_of_item_rated_user"
                 android:layout_alignParentEnd="true">
 
                 <ImageView
                     android:id="@+id/img_checked_of_item_rated_user"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_checked_green"/>
 
                 <Button
                     android:id="@+id/btn_ok_of_item_rated_user"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:text="ok"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:layout_marginEnd="5dp"
                     android:background="@drawable/btn_rect_white_pressed_blue_transparent"
                     android:longClickable="true" />
 

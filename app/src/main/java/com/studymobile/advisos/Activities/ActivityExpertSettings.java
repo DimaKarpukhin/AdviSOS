@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,8 +19,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import android.os.Environment;
 import android.provider.DocumentsContract;
+
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -70,12 +73,15 @@ import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.FileUtil;
 import com.studymobile.advisos.Services.InputValidation;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,6 +110,9 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private static final String DEFAULT = "Default";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
+
+    private File m_PickedImage;
+    private  File m_CompressedImage;
 
     private FirebaseAuth m_Auth;
     private FirebaseUser m_CurrentUser;
@@ -720,39 +729,49 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
-            m_DialogImgURI = data.getData();
+            try {
+                m_PickedImage = FileUtil.from(this, data.getData());
+                m_CompressedImage = new Compressor(this).compressToFile(m_PickedImage);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
         }
     }
+
 
     private void uploadImageToStorage(String i_Image)
     {
         StorageReference imagePath = m_Storage.getReference().child("Images/Subjects");
         if(m_DialogImgURI != null && !m_IsImgStored)
         {
-            final StorageReference imageRef = imagePath.child(i_Image);
-            imageRef.putFile(m_DialogImgURI)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri)
-                                {
-                                    m_IsImgStored = true;
-                                    m_DialogImgURI = uri;
-                                    pushNewSubjectToDatabase();
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ActivityExpertSettings.this,
-                            "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
+                final StorageReference imageRef = imagePath.child(i_Image);
+                imageRef.putFile(m_DialogImgURI)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        m_IsImgStored = true;
+                                        m_DialogImgURI = uri;
+                                        pushNewSubjectToDatabase();
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ActivityExpertSettings.this,
+                                "ERROR:\n" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
         }
         else {
             pushNewSubjectToDatabase();

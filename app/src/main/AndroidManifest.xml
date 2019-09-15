@@ -11,11 +11,19 @@
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
         <activity
+            android:name=".Activities.ActivityPossibleSameTopicsAndChats"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ActivityDisplayClosedChats"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.ActivityParticipatedUsers"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Activities.ActivityUserRatingBySubjects"
             android:parentActivityName=".Activities.ActivityHomeScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ActivityParticipatedUsers" />
         <activity
             android:name=".Activities.ActivityGiveRatingToUsers"
             android:screenOrientation="portrait"

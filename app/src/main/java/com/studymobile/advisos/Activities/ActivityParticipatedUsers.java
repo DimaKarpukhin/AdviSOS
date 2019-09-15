@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.facebook.internal.Logger;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -73,8 +75,8 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
     private void setDataBaseReference() {
         mDataBase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance();
-        String subjectName = getCurrentChatRoomSubjectName();
-        mSubjectUsersRef = mDataBase.getReference("SubjectUsers/" + subjectName);
+        getCurrentChatRoomSubjectName();
+        mSubjectUsersRef = mDataBase.getReference("SubjectUsers/" + mSubjectName);
 
 
     }
@@ -100,6 +102,7 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
                                             int i, @NonNull SubjectUser i_subjectUser) {
                 if(mParticipantsIds.contains(i_subjectUser.getUserId()))
                 {
+                    Toast.makeText(getApplicationContext(),"contains User", Toast.LENGTH_LONG);
                     viewHolderParticipatedUser.setUserName(i_subjectUser.getUserName());
                     viewHolderParticipatedUser.setUserRate(i_subjectUser.getRating().getAvgRating());
                     Picasso.get().load(i_subjectUser.getUserImgLink()).into(viewHolderParticipatedUser.getUserImage());
@@ -120,8 +123,8 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
         mParticipatedUsersAdapter.startListening();
         mUsersParticipatingRecyclerView.setAdapter(mParticipatedUsersAdapter);
     }
-
-    private String getCurrentChatRoomSubjectName(){
+     //TODO potential bug here
+    private void getCurrentChatRoomSubjectName(){
         DatabaseReference chatRoomRef = mDataBase.getReference("ChatRooms").child(mChatRoomUid);
         chatRoomRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -134,8 +137,6 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
 
             }
         });
-        return mSubjectName;
-
 
     }
     private void setOptions(){

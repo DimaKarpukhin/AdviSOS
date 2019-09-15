@@ -76,26 +76,26 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
         mCurrentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
 
-//        Intent intent = getIntent();
-//        if(intent != null)
-//        {
-//            mSubjectName = intent.getStringExtra(SUBJECT_NAME);
-//            mChatRoomId = intent.getStringExtra(CHAT_ROOM_ID);
-//            if (!mChatRoomId.isEmpty())
-//            {
-//                mChatParticipantsRef = mDatabase.getReference("Participants")
-//                        .child(mChatRoomId);
-//
-//                buildSubjectsOptions();
-//                populateSubjectsView();
-//            }
-//        }
-        mSubjectName = "AGODA MTA COMRESSED";
-        mChatRoomId = "-LomOUkATiLOVzsbJ4D7";
-        mChatParticipantsRef = mDatabase.getReference("Participants")
+        Intent intent = getIntent();
+        if(intent != null)
+        {
+            mSubjectName = intent.getStringExtra(SUBJECT_NAME);
+            mChatRoomId = intent.getStringExtra(CHAT_ROOM_ID);
+            if (!mChatRoomId.isEmpty())
+            {
+                mChatParticipantsRef = mDatabase.getReference("Participants")
                         .child(mChatRoomId);
-        buildSubjectsOptions();
-        populateSubjectsView();
+
+                buildSubjectsOptions();
+                populateSubjectsView();
+            }
+        }
+//        mSubjectName = "AGODA MTA COMRESSED";
+//        mChatRoomId = "-LomOUkATiLOVzsbJ4D7";
+//        mChatParticipantsRef = mDatabase.getReference("Participants")
+//                        .child(mChatRoomId);
+//        buildSubjectsOptions();
+//        populateSubjectsView();
     }
 
     @Override
@@ -177,12 +177,13 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                     {
                                         userSubjList.add(dataSnapshot.getValue(String.class));
                                     }
+
                                     if(userSubjList.contains(mSubjectName))
                                     {
                                         updateViewHolderWithExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
                                     }
                                     else {
-                                        updateViewHolderWithNonExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
+                                        updateViewHolderWithNonExpertUser(i_ViewHolder, i_ParticipantID);
                                     }
 
                                 }
@@ -221,7 +222,6 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                 subjectUser.setRating(rating);
                             }
 
-                            Toast.makeText(ActivityGiveRatingToUsers.this, subjectUser.getUserName(), Toast.LENGTH_LONG).show();
                             Picasso.get().load(subjectUser.getUserImgLink()).into(i_ViewHolder.getUserImageView());
                             i_ViewHolder.setUserName(subjectUser.getUserName());
                             i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
@@ -254,16 +254,18 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
     }
 
     private void updateViewHolderWithNonExpertUser
-            (final ViewHolderRatedUser i_ViewHolder, String i_SubjectName, String i_ParticipantID)
+            (final ViewHolderRatedUser i_ViewHolder, String i_ParticipantID)
     {
         mDatabase.getReference("Users")
-                .child(i_SubjectName).child(i_ParticipantID)
+                .child(i_ParticipantID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
                     {
                         if(i_DataSnapshot.exists())
                         {
+                            Toast.makeText(ActivityGiveRatingToUsers.this, "GOOD", Toast.LENGTH_LONG).show();
+
                             User user = i_DataSnapshot.getValue(User.class);
                             Picasso.get().load(user.getImgLink()).into(i_ViewHolder.getUserImageView());
                             i_ViewHolder.setUserName(user.getFirstName() + " " + user.getFamilyName());
@@ -274,6 +276,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v)
                                 {
+                                    Toast.makeText(ActivityGiveRatingToUsers.this, "OK", Toast.LENGTH_LONG).show();
                                     showConfirmDialog(i_ViewHolder, null, null);
                                 }
                             });
@@ -285,6 +288,9 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
 
                                         }
                                     });
+                        }
+                        else {
+                            Toast.makeText(ActivityGiveRatingToUsers.this, "BAD", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -311,14 +317,15 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
         rightBtn.setText("Accept");
         leftBtn.setText("Cancel");
 
+        i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+        i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                if(i_SubjectUser != null)
                {
-                   i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
-                   i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
                    i_SubjectUser.Rate(i_ViewHolder.getRatingBar().getRating());
                    mDatabase.getReference(i_SubjUserRef)
                            .child("rating").setValue(i_SubjectUser.getRating());
@@ -326,6 +333,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                 m_ConfirmDialog.dismiss();
             }
         });
+
         leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

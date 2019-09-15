@@ -27,6 +27,11 @@
             android:id="@+id/nav_my_ratings"
             android:icon="@drawable/ic_star"
             android:title="My ratings" />
+
+        <item
+            android:id="@+id/nav_closed_chats"
+            android:icon="@drawable/ic_social_network_black"
+            android:title="My closed chats"/>
         <item
             android:id="@+id/nav_create_new_subject"
             android:icon="@drawable/ic_create_blue"

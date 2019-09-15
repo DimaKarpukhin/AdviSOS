@@ -5,6 +5,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -456,8 +464,19 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             logOut();
             m_DrawerLayout.closeDrawer(GravityCompat.START);
         }
+        else if(id == R.id.nav_closed_chats)
+        {
+            myClosedChats();
+            m_DrawerLayout.closeDrawer(GravityCompat.START);
+        }
 
         return true;
+    }
+
+    private void myClosedChats() {
+        Intent intent = new Intent(this,ActivityDisplayClosedChats.class);
+        this.startActivity(intent);
+
     }
 
     private void setIsOnline(final boolean i_IsClicked)
