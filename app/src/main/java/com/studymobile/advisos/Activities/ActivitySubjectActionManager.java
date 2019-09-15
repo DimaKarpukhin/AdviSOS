@@ -292,6 +292,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         {
             pushNotify(mExpertsList,  "Need your advice about: " +
                     mSubjectName, "Tap to view the details");
+            addRequestedUsersToDB();
             Intent intent = new Intent(this, ActivityChatRoom.class);
             intent.putExtra("chat_room_id", mChatRoomUId);
             intent.putExtra("room_name",i_roomName);
@@ -301,6 +302,16 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         }
 
 
+    }
+
+    private void addRequestedUsersToDB()
+    {
+        DatabaseReference requestedUsers = mDatabase
+                .getReference("RequestedChatRoomUsers").child(mChatRoomUId);
+        for(String expertID: mExpertsList)
+        {
+            requestedUsers.child(expertID).setValue(expertID);
+        }
     }
 
     private void pushRequestsToDB()

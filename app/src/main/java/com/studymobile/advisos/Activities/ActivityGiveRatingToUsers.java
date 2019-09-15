@@ -177,7 +177,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                     {
                                         userSubjList.add(dataSnapshot.getValue(String.class));
                                     }
-
+                                    
                                     if(userSubjList.contains(mSubjectName))
                                     {
                                         updateViewHolderWithExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
@@ -256,6 +256,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
     private void updateViewHolderWithNonExpertUser
             (final ViewHolderRatedUser i_ViewHolder, String i_ParticipantID)
     {
+        Toast.makeText(ActivityGiveRatingToUsers.this, "TEST", Toast.LENGTH_LONG).show();
         mDatabase.getReference("Users")
                 .child(i_ParticipantID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -264,8 +265,6 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                     {
                         if(i_DataSnapshot.exists())
                         {
-                            Toast.makeText(ActivityGiveRatingToUsers.this, "GOOD", Toast.LENGTH_LONG).show();
-
                             User user = i_DataSnapshot.getValue(User.class);
                             Picasso.get().load(user.getImgLink()).into(i_ViewHolder.getUserImageView());
                             i_ViewHolder.setUserName(user.getFirstName() + " " + user.getFamilyName());

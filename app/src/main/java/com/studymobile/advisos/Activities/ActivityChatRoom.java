@@ -2,6 +2,7 @@ package com.studymobile.advisos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,7 @@ import com.studymobile.advisos.ViewHolders.ViewHolderSentMessageHolder;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+import androidx.appcompat.widget.Toolbar;
 
 public class ActivityChatRoom extends AppCompatActivity {
 
@@ -74,6 +75,11 @@ public class ActivityChatRoom extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        Toolbar toolbar = findViewById(R.id.toolbar_of_chat_room);
+//        setSupportActionBar(toolbar);
+//        toolbar.getContentInsetLeft();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
         setFirebaseReferences();
