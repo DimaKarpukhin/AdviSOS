@@ -364,12 +364,8 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_FabCreate = findViewById(R.id.fab_create_of_activity_home_screen);
         m_FabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
-<<<<<<< HEAD
-            public void onClick(View v) {
-=======
             public void onClick(View v)
             {
->>>>>>> d48bab06d712026bb1a159f468273b0afec29dff
                 showDialogCreateSubject();
             }
         });
