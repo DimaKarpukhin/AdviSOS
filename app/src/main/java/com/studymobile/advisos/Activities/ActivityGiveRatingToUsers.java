@@ -165,8 +165,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull final ViewHolderRatedUser i_ViewHolder, int i_Position,
                                             @NonNull final String i_ParticipantID)
             {
-                String userID = mCurrentUser.getUid();
-                mDatabase.getReference("UserSubjects").child(userID)
+                mDatabase.getReference("UserSubjects").child(i_ParticipantID)
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
@@ -181,9 +180,13 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
 
                                     if(userSubjList.contains(mSubjectName))
                                     {
+                                        Toast.makeText(ActivityGiveRatingToUsers.this, "GOOD", Toast.LENGTH_LONG).show();
                                         updateViewHolderWithExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
                                     }
                                     else {
+                                        Toast.makeText(ActivityGiveRatingToUsers.this, "BAD" + userSubjList.size() + "\n" +
+                                                userSubjList.get(0) + "\n" +
+                                                userSubjList.get(1) + "\n" + mSubjectName, Toast.LENGTH_LONG).show();
                                         updateViewHolderWithNonExpertUser(i_ViewHolder, i_ParticipantID);
                                     }
 
