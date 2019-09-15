@@ -39,6 +39,8 @@
 
             <TextView
                 android:id="@+id/txt_subject_name_of_item_subject"
+                android:layout_toLeftOf="@+id/layout_rating_of_item_subject"
+                android:layout_alignParentStart="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -73,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="1dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true">
 

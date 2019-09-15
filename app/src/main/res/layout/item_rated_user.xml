@@ -45,9 +45,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:text="User name"
                 android:textStyle="italic"/>
@@ -57,9 +57,9 @@
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:numStars="5"
-                android:rating="0"
+                android:rating="3"
                 android:stepSize="0.5"
-                android:progressTint="@color/blueLight"
+                android:progressTint="#8391C0"
                 android:progressBackgroundTint="@color/greyLight">
             </RatingBar>
 

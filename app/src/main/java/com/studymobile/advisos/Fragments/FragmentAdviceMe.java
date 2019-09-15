@@ -132,6 +132,9 @@ public class FragmentAdviceMe extends Fragment
                                     {
                                         Intent IntentChatRoom = new Intent(getContext(), ActivityChatRoom.class);
                                         IntentChatRoom.putExtra("chat_room_id", chatRoom.getRoomId());
+                                        IntentChatRoom.putExtra("room_name",chatRoom.getRoomName());
+                                        IntentChatRoom.putExtra("subject_name",chatRoom.getSubjectName() );
+                                        IntentChatRoom.putExtra("subject_image",chatRoom.getImgLink());
                                         startActivity(IntentChatRoom);
                                     }
                                 });

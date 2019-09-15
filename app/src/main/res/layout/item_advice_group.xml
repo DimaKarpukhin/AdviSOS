@@ -58,7 +58,7 @@
                         android:layout_weight="5"
                         android:layout_gravity="center"
                         android:textColor="@color/blue"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="italic"
                         android:text="Parent subject"/>
                     <TextView
