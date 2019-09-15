@@ -207,7 +207,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
 
     private void uploadImgToStorage(String i_Image)
     {
-        StorageReference imagePath = m_Storage.getReference().child("Images/Profile pictures");
+        StorageReference imagePath = m_Storage.getReference().child("Images/Profile images");
         if(m_ProfileImgURI != null)
         {
             final StorageReference imageRef = imagePath.child(i_Image);
@@ -411,10 +411,6 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
-
-//            m_DialogImgURI = data.getData();
-//            m_DialogImgView.setImageURI(m_DialogImgURI);
-//            m_IsImgPicked = true;
         }
     }
 

@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.Models.Rating;
 import com.studymobile.advisos.Models.Subject;
 import com.studymobile.advisos.Models.SubjectUser;
@@ -187,6 +188,9 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                     }
 
                                 }
+                                else{
+                                    updateViewHolderWithNonExpertUser(i_ViewHolder, i_ParticipantID);
+                                }
 
                             }
 
@@ -215,7 +219,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                         if(i_DataSnapshot.exists())
                         {
                             final SubjectUser subjectUser = i_DataSnapshot.getValue(SubjectUser.class);
-                            Rating rating = null;
+                            Rating rating;
                             if(i_DataSnapshot.child("rating").exists())
                             {
                                 rating = i_DataSnapshot.child("rating").getValue(Rating.class);
@@ -226,44 +230,56 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                             i_ViewHolder.setUserName(subjectUser.getUserName());
                             i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
                             i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
-                            if(subjectUser.getUserId().equals(mCurrentUser.getUid()))
-                            {
-                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
-                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
-                                i_ViewHolder.getRatingBar().setRating(5);
-                            }
 
-                            i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    showConfirmDialog(i_ViewHolder, subjectUser, subjUserRef);
-                                }
-                            });
+                            mDatabase.getReference("ChatRooms").child(mChatRoomId)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                                        {
+                                            if(i_DataSnapshot.exists())
+                                            {
+
+                                                if(subjectUser.getUserId().equals(i_DataSnapshot.child("creatorId"))
+                                                        || subjectUser.getUserId().equals(mCurrentUser.getUid()))
+                                                {
+                                                    i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                                    i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                                                    i_ViewHolder.getRatingBar().setRating(5);
+                                                    i_ViewHolder.getRatingBar().setEnabled(false);
+                                                }
+                                            }
+
+                                            i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v)
+                                                {
+                                                    showConfirmDialog(i_ViewHolder, subjectUser, subjUserRef);
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {
+
+                                        }
+                                    });
 
                             i_ViewHolder.getRatingBar().setOnRatingBarChangeListener
                                     (new RatingBar.OnRatingBarChangeListener() {
                                 @Override
-                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
-                                {
-
-                                }
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) { }
                             });
                         }
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError i_DataSnapshot) { }
                 });
     }
 
     private void updateViewHolderWithNonExpertUser
             (final ViewHolderRatedUser i_ViewHolder, String i_ParticipantID)
     {
-        Toast.makeText(ActivityGiveRatingToUsers.this, "TEST", Toast.LENGTH_LONG).show();
         mDatabase.getReference("Users")
                 .child(i_ParticipantID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -277,34 +293,47 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                             i_ViewHolder.setUserName(user.getFirstName() + " " + user.getFamilyName());
                             i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
                             i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                            i_ViewHolder.getRatingBar().setEnabled(true);
 
-                            if(user.getUserId().equals(mCurrentUser.getUid()))
-                            {
-                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
-                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
-                                i_ViewHolder.getRatingBar().setRating(5);
-                            }
-                            
-                            i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    Toast.makeText(ActivityGiveRatingToUsers.this, "OK", Toast.LENGTH_LONG).show();
-                                    showConfirmDialog(i_ViewHolder, null, null);
-                                }
-                            });
-                            i_ViewHolder.getRatingBar().setOnRatingBarChangeListener
-                                    (new RatingBar.OnRatingBarChangeListener() {
+
+
+                            mDatabase.getReference("ChatRooms").child(mChatRoomId)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
-                                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
+                                        public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
                                         {
+                                            if(i_DataSnapshot.exists())
+                                            {
+
+                                                if(user.getUserId().equals(i_DataSnapshot.child("creatorId"))
+                                                        || user.getUserId().equals(mCurrentUser.getUid()))
+                                                {
+                                                    i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                                    i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                                                    i_ViewHolder.getRatingBar().setRating(5);
+                                                    i_ViewHolder.getRatingBar().setEnabled(false);
+                                                }
+                                            }
+
+                                            i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v)
+                                                {
+                                                    showConfirmDialog(i_ViewHolder, null, null);
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {
 
                                         }
                                     });
-                        }
-                        else {
-                            Toast.makeText(ActivityGiveRatingToUsers.this, "BAD", Toast.LENGTH_LONG).show();
+                            i_ViewHolder.getRatingBar().setOnRatingBarChangeListener
+                                    (new RatingBar.OnRatingBarChangeListener() {
+                                        @Override
+                                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) { }
+                                    });
                         }
                     }
 
@@ -344,6 +373,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                    mDatabase.getReference(i_SubjUserRef)
                            .child("rating").setValue(i_SubjectUser.getRating());
                }
+                i_ViewHolder.getRatingBar().setEnabled(false);
                 m_ConfirmDialog.dismiss();
             }
         });
@@ -352,12 +382,8 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 m_ConfirmDialog.dismiss();
-            }
-        });
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                m_ConfirmDialog.dismiss();
+                i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
             }
         });
 

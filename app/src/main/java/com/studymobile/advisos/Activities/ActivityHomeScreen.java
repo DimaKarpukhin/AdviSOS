@@ -236,8 +236,6 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
                         } else {
                             Log.w(TAG, "getLastLocation:exception", task.getException());
-                            //getLastLocation();
-
                         }
                     }
                 });
@@ -366,12 +364,9 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_FabCreate = findViewById(R.id.fab_create_of_activity_home_screen);
         m_FabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-//                showDialogCreateSubject();
-
-                Intent IntentResetPassword = new Intent
-                        (ActivityHomeScreen.this, ActivityGiveRatingToUsers.class);
-                startActivity(IntentResetPassword);
+            public void onClick(View v)
+            {
+                showDialogCreateSubject();
             }
         });
 
@@ -645,6 +640,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
                             m_FieldSubjName.setError("The field is required");
                         }
                         else {
+                            m_DialogCreateSubj.dismiss();
                             if(m_IsImgPicked){
                                 uploadImageToStorage( m_FieldSubjName.getText().toString());
                             }else{

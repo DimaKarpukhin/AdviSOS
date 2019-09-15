@@ -39,7 +39,13 @@ public class ViewHolderParticipatedUser extends RecyclerView.ViewHolder {
     }
     public void setUserRate(float i_UserRate)
     {
-        String fullNumber =  String.valueOf(i_UserRate);
-        m_UserRate.setText(fullNumber.substring(0,fullNumber.indexOf(".") + 1));
+        if(i_UserRate == -1)
+        {
+            m_UserRate.setText("--");
+        }
+        else {
+            String fullNumber = String.valueOf(i_UserRate);
+            m_UserRate.setText(fullNumber.substring(0, fullNumber.indexOf(".") + 2));
+        }
     }
 }
