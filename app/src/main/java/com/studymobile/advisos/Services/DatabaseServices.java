@@ -161,12 +161,16 @@ public class DatabaseServices
                         }
 
                         Collections.shuffle(mAvailableUsers);
+                        String currentUserID =
+                                FirebaseAuth.getInstance().getCurrentUser().getUid();
                         for(User user : mAvailableUsers)
                         {
                             if(mExperts.size() == NUM_OF_EXPERTS)
                                 break;
-                            if(!mAvailableUsers.contains(user.getUserId()))
+                            if(!user.getUserId().equals(currentUserID))
+                            {
                                 mExperts.add(user.getUserId());
+                            }
                         }
                     }
 
