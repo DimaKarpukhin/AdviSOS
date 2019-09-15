@@ -411,7 +411,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
+<<<<<<< HEAD
 
+=======
+>>>>>>> d48bab06d712026bb1a159f468273b0afec29dff
         }
     }
 

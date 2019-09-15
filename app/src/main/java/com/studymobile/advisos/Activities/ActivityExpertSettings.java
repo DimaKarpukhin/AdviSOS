@@ -654,11 +654,13 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                             m_FieldSubjName.setError("The field is required");
                         }
                         else {
+                            m_DialogCreateSubj.dismiss();
                             if(m_IsImgPicked){
                                 uploadImageToStorage( m_FieldSubjName.getText().toString());
                             }else{
                                 uploadImageToStorage(DEFAULT);
                             }
+
                         }
                     }
                 });
