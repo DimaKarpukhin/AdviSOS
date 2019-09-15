@@ -272,15 +272,19 @@ public class ActivityChatRoom extends AppCompatActivity {
                     for(DataSnapshot users : dataSnapshot.getChildren())
                     {
                         String id = users.getValue(String.class);
-                        if(!id.equals(mCurrentUser))
+                        if(!id.equals(mCurrentUser.getUid()))
                         {
                             requests.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if(dataSnapshot.exists())
                                     {
-                                        if(dataSnapshot.child(mChatRoomId).exists())
-                                            requests.child(id).child(mChatRoomId).removeValue();
+                                        for(DataSnapshot requestId : dataSnapshot.getChildren()) {
+                                            if(requestId.child("chatRoomId").getValue(String.class).equals(mChatRoomId))
+                                            {
+                                                requests.child(id).child(requestId.getKey()).removeValue();
+                                            }
+                                        }
                                     }
                                 }
 

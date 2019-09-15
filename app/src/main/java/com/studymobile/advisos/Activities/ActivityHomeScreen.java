@@ -367,11 +367,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_FabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDialogCreateSubject();
-
-                Intent IntentResetPassword = new Intent
-                        (ActivityHomeScreen.this, ActivityGiveRatingToUsers.class);
-                startActivity(IntentResetPassword);
+                showDialogCreateSubject();
             }
         });
 
