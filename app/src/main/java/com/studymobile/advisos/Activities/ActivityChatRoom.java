@@ -220,6 +220,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                 if(!mCurrentUser.getUid().equals(dataSnapshot.getValue(String.class))){
 
                     activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).removeValue();
+
                     startRateUsersActivity();
 
                 }
@@ -249,14 +250,54 @@ public class ActivityChatRoom extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    deleteRequestsFromUsersThatNotacceptedTheChatRequest();
                     removeFromActiveChatsToClosedChats();
-                    startRateUsersActivity();
                     addChatRoomClosedUnderSubjectClosedChats();
+
                 }
 
 
             }
 
+        });
+    }
+
+    private void deleteRequestsFromUsersThatNotacceptedTheChatRequest() {
+        DatabaseReference requestedUsers = mDatabase.getReference("RequestedChatRoomUsers");
+        requestedUsers.child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    DatabaseReference requests = mDatabase.getReference("ChatRequests");
+                    for(DataSnapshot users : dataSnapshot.getChildren())
+                    {
+                        String id = users.getValue(String.class);
+                        if(!id.equals(mCurrentUser))
+                        {
+                            requests.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists())
+                                    {
+                                        if(dataSnapshot.child(mChatRoomId).exists())
+                                            requests.child(id).child(mChatRoomId).removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
     }
 
@@ -272,7 +313,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                     subjectClosedChatsRef.child(room.getSubjectName()).child(mChatRoomId).setValue(room).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
+                            startRateUsersActivity();
                         }
                     });
                 }
