@@ -296,7 +296,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         }
         else
         {
-            //pushNotify(expertsList,  "Need your advice on: " + mSubjectName, "Tap to view the details");
+            pushNotify(mExpertsList,  "Need your advice on: " + mSubjectName, "Tap to view the details");
 //            Intent intent = new Intent(this, ActivityChatRoom.class);
 //            intent.putExtra("chat_room_id", chatRoomUId);
 //            this.startActivity(intent);

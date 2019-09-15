@@ -516,8 +516,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
         closeBtn.setVisibility(View.VISIBLE);
         fieldTitle.setText("You'll be marked as an expert in the selected sections");
-        rightBtn.setText("Confirm");
-        leftBtn.setText("Cancel");
+        rightBtn.setText("Accept");
+        leftBtn.setText("Reset all");
 
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -531,6 +531,10 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 confirmDialog.dismiss();
+                m_DialogSubjList.dismiss();
+                m_SubjStateMap.clear();
+                m_SubjNamesSet.clear();
+                updateDatabaseSubjectUsers();
             }
         });
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -569,6 +573,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
             protected void onBindViewHolder(@NonNull final ViewHolderSubject i_ViewHolder, int i_Position,
                                             @NonNull final Subject i_Subject)
             {
+                i_ViewHolder.getAvgRating().setVisibility(View.INVISIBLE);
+                i_ViewHolder.getStarIcon().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getCheckBox().setVisibility(View.VISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.INVISIBLE);
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
@@ -773,6 +779,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                             m_FieldSubjName.setError("Subject already exists.");
                         }
                         else {
+                            m_DialogCreateSubj.dismiss();
                             subject.setSubjectName(subjName);
                             subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
                             subject.setImgLink(m_DialogImgURI.toString());
@@ -794,7 +801,6 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                                             setDefaultDialogCreateSubject();
                                         }
                                     });
-                            m_DialogCreateSubj.dismiss();
                         }
                     }
 
@@ -950,6 +956,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
     private void updateDatabaseSubjectUsers()
     {
+        final DatabaseReference userSubjectsRef =  m_Database.getReference("UserSubjects");
         DatabaseReference subjectRef =  m_Database.getReference("SubjectUsers");
         String userID = m_CurrentUser.getUid();
         for (String subjectName : m_SubjNamesSet)
@@ -974,6 +981,8 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                     subjectRef.child(subjectName).child(userID).child("userImgLink").setValue(m_DatabaseUser.getImgLink());
                     subjectRef.child(subjectName).child(userID).child("userId").setValue(userID);
                 }
+
+                userSubjectsRef.child(userID).child(subjectName).setValue(subjectName);
             }
         }
     }

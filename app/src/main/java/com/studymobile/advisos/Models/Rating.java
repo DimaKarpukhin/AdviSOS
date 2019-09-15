@@ -32,14 +32,14 @@ public class Rating
         this.mAvgRating = i_AvgRating;
     }
 
-    public void Rate(int i_Score)
-    {
-        if(i_Score < 1 || i_Score > 5)
-        {
-            throw new IllegalArgumentException (String.format("A user cannot be rated with a score of %d", i_Score));
-        }
-
-        mVotersNum++;
-        mAvgRating += 1 / mVotersNum * i_Score;
-    }
+//    public void Rate(int i_Score)
+//    {
+//        if(i_Score < 0 || i_Score > 5)
+//        {
+//            throw new IllegalArgumentException (String.format("A user cannot be rated with a score of %d", i_Score));
+//        }
+//
+//        mVotersNum++;
+//        mAvgRating += 1 / mVotersNum * i_Score;
+//    }
 }

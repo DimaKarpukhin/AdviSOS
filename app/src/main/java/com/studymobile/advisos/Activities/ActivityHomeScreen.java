@@ -347,7 +347,11 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_FabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogCreateSubject();
+//                showDialogCreateSubject();
+
+                Intent IntentResetPassword = new Intent
+                        (ActivityHomeScreen.this, ActivityGiveRatingToUsers.class);
+                startActivity(IntentResetPassword);
             }
         });
 
@@ -434,7 +438,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         }
         else if (id == R.id.nav_my_ratings)
         {
-           startMyRatingsActivity();
+           startUserRatingBySubjectsActivity();
             m_DrawerLayout.closeDrawer(GravityCompat.START);
         }
         else if (id == R.id.nav_share)
@@ -471,7 +475,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     private void updateNavUI(final boolean i_IsClicked)
     {
-        MenuItem availability = m_NavigationMenu.findItem(R.id.nav_availability);
+        MenuItem availability = m_NavigationMenu.findItem(R.id.nav_is_online);
 
         if(i_IsClicked)
         {
@@ -519,18 +523,20 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         startActivity(IntentUserDetails);
     }
 
-    private void startMyRatingsActivity()
+    private void startUserRatingBySubjectsActivity()
     {
-        //TODO
-        Snackbar.make(findViewById(android.R.id.content),
-                "Will be implemented soon", Snackbar.LENGTH_LONG).show();
+        Intent IntentUserRatingBySubjects = new Intent
+                (ActivityHomeScreen.this, ActivityUserRatingBySubjects.class);
+        startActivity(IntentUserRatingBySubjects);
     }
 
     private void share()
     {
-        //TODO
-        Snackbar.make(findViewById(android.R.id.content),
-                "Ronen will implement it soon", Snackbar.LENGTH_LONG).show();
+        Intent IntentShare = new Intent();
+        IntentShare.setAction(Intent.ACTION_SEND);
+        IntentShare.putExtra(Intent.EXTRA_TEXT,"youtube.com");
+        IntentShare.setType("text/plain");
+        startActivity(Intent.createChooser(IntentShare,"Choose app to share the link"));
     }
 
     private void logOut()
@@ -742,6 +748,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
                     m_FieldSubjName.setError("Subject already exists.");
                 }
                 else {
+                    m_DialogCreateSubj.dismiss();
                     subject.setSubjectName(subjName);
                     subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
                     subject.setImgLink(m_DialogImgURI.toString());
@@ -763,7 +770,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
                                     setDefaultDialogCreateSubject();
                                 }
                             });
-                    m_DialogCreateSubj.dismiss();
+
                 }
             }
 
@@ -820,8 +827,9 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_DialogSubjList.findViewById(R.id.btn_new_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View i_View) {
-                        showDialogCreateSubject();
+                    public void onClick(View i_View)
+                    {
+                            showDialogCreateSubject();
                     }
                 });
 
@@ -847,9 +855,9 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         TextView leftBtn = m_ConfirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
 
         closeBtn.setVisibility(View.VISIBLE);
-        fieldTitle.setText("You'll be marked as an expert in the selected sections");
-        rightBtn.setText("Confirm");
-        leftBtn.setText("Cancel");
+        fieldTitle.setText("You'll be marked as an expert of the marked sections");
+        rightBtn.setText("Accept");
+        leftBtn.setText("Reset all");
 
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -863,6 +871,11 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 m_ConfirmDialog.dismiss();
+                m_DialogSubjList.dismiss();
+                m_SubjStateMap.clear();
+                m_SubjNamesSet.clear();
+                updateDatabaseSubjectUsers();
+
             }
         });
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -877,7 +890,8 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     private void updateDatabaseSubjectUsers()
     {
-        final DatabaseReference subjectRef =  m_Database.getReference("SubjectUsers");
+        final DatabaseReference userSubjectsRef =  m_Database.getReference("UserSubjects");
+        final DatabaseReference subjectUsersRef =  m_Database.getReference("SubjectUsers");
         final String userID = m_CurrentUser.getUid();
         for (final String subjectName : m_SubjNamesSet)
         {
@@ -896,20 +910,22 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
                                     if(m_SubjStateMap.get(subjectName))
                                     {
-                                        subjectRef.child(subjectName).child(userID).child("isValid").setValue(true);
-                                        subjectRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
-                                        subjectRef.child(subjectName).child(userID).child("userName").setValue(userName);
-                                        subjectRef.child(subjectName).child(userID).child("userImgLink").setValue(userImgLink);
-                                        subjectRef.child(subjectName).child(userID).child("userId").setValue(userID);
+                                        subjectUsersRef.child(subjectName).child(userID).child("isValid").setValue(true);
+                                        subjectUsersRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userName").setValue(userName);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userImgLink").setValue(userImgLink);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userId").setValue(userID);
 
                                     }
                                     else{
-                                        subjectRef.child(subjectName).child(userID).child("isValid").setValue(false);
-                                        subjectRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
-                                        subjectRef.child(subjectName).child(userID).child("userName").setValue(userName);
-                                        subjectRef.child(subjectName).child(userID).child("userImgLink").setValue(userImgLink);
-                                        subjectRef.child(subjectName).child(userID).child("userId").setValue(userID);
+                                        subjectUsersRef.child(subjectName).child(userID).child("isValid").setValue(false);
+                                        subjectUsersRef.child(subjectName).child(userID).child("subjectName").setValue(subjectName);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userName").setValue(userName);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userImgLink").setValue(userImgLink);
+                                        subjectUsersRef.child(subjectName).child(userID).child("userId").setValue(userID);
                                     }
+
+                                    userSubjectsRef.child(userID).child(subjectName).setValue(subjectName);
                                 }
                             }
 
@@ -946,6 +962,8 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             protected void onBindViewHolder(@NonNull final ViewHolderSubject i_ViewHolder, int i_Position,
                                             @NonNull final Subject i_Subject)
             {
+                i_ViewHolder.getAvgRating().setVisibility(View.INVISIBLE);
+                i_ViewHolder.getStarIcon().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getCheckBox().setVisibility(View.VISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.INVISIBLE);
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());

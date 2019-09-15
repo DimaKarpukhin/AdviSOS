@@ -22,6 +22,24 @@ public class SubjectUser
         this.setUserImgLink(i_UserImgLink);
     }
 
+    public void Rate(float i_Score)
+    {
+        if(mRating == null)
+        {
+            mRating = new Rating(0, 0);
+        }
+
+        if (i_Score < 0 || i_Score > 5) {
+            throw new IllegalArgumentException
+                    (String.format("A user cannot be rated with a score of %d", i_Score));
+        }
+        float avgRating = mRating.getAvgRating();
+        long votersNum = mRating.getVotersNum();
+        avgRating = (avgRating * votersNum + i_Score)/(++votersNum);
+        mRating.setAvgRating(avgRating);
+        mRating.setVotersNum(votersNum);
+    }
+
     public String getUserName()
     {
         return mUserName;

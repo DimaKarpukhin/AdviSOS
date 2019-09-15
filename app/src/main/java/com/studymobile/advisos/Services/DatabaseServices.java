@@ -2,6 +2,7 @@ package com.studymobile.advisos.Services;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -324,6 +325,15 @@ public class DatabaseServices
 
                     if (isBetween(currTime, startTime, endTime)) {
                         mAvailableUsers.add(user);
+                    }
+                    for(User availableUser : mAvailableUsers)
+                    {
+                        String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        if(availableUser.getUserId().equals(currentUserID))
+                        {
+                            mAvailableUsers.remove(availableUser);
+                            break;
+                        }
                     }
                 }
             }

@@ -15,6 +15,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewHolderSubject extends RecyclerView.ViewHolder implements View.OnClickListener
 {
+    private ImageView m_Star;
+    private TextView m_Rating;
     private CircleImageView m_SubjectImgView;
     private TextView m_SubjectName;
     private CheckBox m_Checkbox;
@@ -24,11 +26,23 @@ public class ViewHolderSubject extends RecyclerView.ViewHolder implements View.O
     public ViewHolderSubject(View i_ItemView)
     {
         super(i_ItemView);
+        m_Star = i_ItemView.findViewById(R.id.img_star_of_item_subject);
+        m_Rating = i_ItemView.findViewById(R.id.txt_rate_mark_of_item_subject);
         m_ArrowRightIcon = i_ItemView.findViewById(R.id.img_arrow_right_of_item_subject);
         m_Checkbox = i_ItemView.findViewById(R.id.checkBox_of_item_subject);
         m_SubjectImgView = i_ItemView.findViewById(R.id.img_subject_of_item_subject);
         m_SubjectName = i_ItemView.findViewById(R.id.txt_subject_name_of_item_subject);
         i_ItemView.setOnClickListener(this);
+    }
+
+    public ImageView getStarIcon()
+    {
+        return m_Star;
+    }
+
+    public TextView getAvgRating()
+    {
+        return m_Rating;
     }
 
     public ImageView getArrowRightIcon()

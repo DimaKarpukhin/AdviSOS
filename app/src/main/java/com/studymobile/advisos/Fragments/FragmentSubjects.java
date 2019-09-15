@@ -137,6 +137,8 @@ public class FragmentSubjects extends Fragment
                      @NonNull final Subject i_Subject)
             {
                 Picasso.get().load(i_Subject.getImgLink()).into(i_ViewHolder.getSubjectImage());
+                i_ViewHolder.getAvgRating().setVisibility(View.INVISIBLE);
+                i_ViewHolder.getStarIcon().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getCheckBox().setVisibility(View.INVISIBLE);
                 i_ViewHolder.getArrowRightIcon().setVisibility(View.VISIBLE);
                 i_ViewHolder.setSubjectName(i_Subject.getSubjectName());

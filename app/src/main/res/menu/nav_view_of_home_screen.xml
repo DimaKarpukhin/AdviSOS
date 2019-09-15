@@ -19,10 +19,6 @@
             android:icon="@drawable/ic_available"
             android:title="Availability" />
         <item
-            android:id="@+id/nav_create_new_subject"
-            android:icon="@drawable/ic_create_blue"
-            android:title="Create subject" />
-        <item
             android:id="@+id/nav_my_subjects"
             android:icon="@drawable/ic_my_list"
             android:title="My subjects" />
@@ -31,6 +27,10 @@
             android:id="@+id/nav_my_ratings"
             android:icon="@drawable/ic_star"
             android:title="My ratings" />
+        <item
+            android:id="@+id/nav_create_new_subject"
+            android:icon="@drawable/ic_create_blue"
+            android:title="Create subject" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"

@@ -10,17 +10,24 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name=".Activities.ActivityParticipatedUsers"></activity>
-        <activity android:name=".Activities.ActivityGiveRatingToUsers" />
+        <activity
+            android:name=".Activities.ActivityUserRatingBySubjects"
+            android:parentActivityName=".Activities.ActivityHomeScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.ActivityParticipatedUsers" />
+        <activity
+            android:name=".Activities.ActivityGiveRatingToUsers"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activities.ActivitySubjectActionManager"
             android:parentActivityName=".Activities.ActivityHomeScreen"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ActivityHomeScreen"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".Activities.ActivityCreateChatRoom" />
         <activity
             android:name=".Activities.ActivityChatRoom"
@@ -118,11 +125,12 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
