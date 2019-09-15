@@ -259,7 +259,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     private void createChatRoomActivity(String i_roomName)
     {
         mChatRoomsRef = mDatabase.getReference("ChatRooms");
-        mChatRoomUId = mChatRoomsRef.push().getKey();        //push new chat room id and get UId
+        mChatRoomUId = mChatRoomsRef.push().getKey();//push new chat room id and get UId
         Pair<String, String> date = getCreationDateAndTime();
         String creatorID = mCurrentUser.getUid();
 
@@ -269,7 +269,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 mSubjectName,creatorID,
                 mCurrentSubject.getImgLink());
 
-        mChatRoomsRef.child(mChatRoomUId).setValue(chatRoom);       // add chat room information under room id
+        mChatRoomsRef.child(mChatRoomUId).setValue(chatRoom);//add chat room information under room id
 
         ActiveChatRoom activeChatRoom = new ActiveChatRoom
                 (mChatRoomUId, creatorID,true);
@@ -277,7 +277,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 .child(mChatRoomUId).setValue(activeChatRoom);
 
         mDatabase.getReference("Participants").child(mChatRoomUId)
-                .child(creatorID).setValue(creatorID);                   // add  the room id to chat participants node
+                .child(creatorID).setValue(creatorID);//add the room id to chat participants node
 
         mExpertsList =  mDatabaseServices.GetExpertsIDs();
         pushRequestsToDB();
@@ -290,9 +290,6 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         else
         {
             pushNotify(mExpertsList,  "Need your advice about: " + mSubjectName, "Tap to view the details");
-//            Intent intent = new Intent(this, ActivityChatRoom.class);
-//            intent.putExtra("chat_room_id", chatRoomUId);
-//            this.startActivity(intent);
         }
 
     }

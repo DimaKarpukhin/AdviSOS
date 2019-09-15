@@ -276,13 +276,18 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
         setFirebaseData();
         setActivityContent();
-        setFabVisibilityForTabs();
+        setFabCreateVisibilityForTabs();
         getUserSubjectsFromDB();
         setDialogSubjectsList();
         setDialogCreateSubject();
+
+        if(getIntent().getExtras() != null)
+        {
+            Log.e("onStart, in condition", "going to switch to FragmentChatRequests");
+        }
     }
 
-    private void setFabVisibilityForTabs()
+    private void setFabCreateVisibilityForTabs()
     {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
