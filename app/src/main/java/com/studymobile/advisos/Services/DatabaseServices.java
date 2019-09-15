@@ -165,7 +165,7 @@ public class DatabaseServices
                         {
                             if(mExperts.size() == NUM_OF_EXPERTS)
                                 break;
-                            if(!mExperts.contains(user.getUserId()))
+                            if(!mAvailableUsers.contains(user.getUserId()))
                                 mExperts.add(user.getUserId());
                         }
                     }
