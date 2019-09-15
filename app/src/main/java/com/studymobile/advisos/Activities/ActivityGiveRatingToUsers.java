@@ -177,7 +177,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                                     {
                                         userSubjList.add(dataSnapshot.getValue(String.class));
                                     }
-                                    
+
                                     if(userSubjList.contains(mSubjectName))
                                     {
                                         updateViewHolderWithExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
@@ -226,6 +226,13 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                             i_ViewHolder.setUserName(subjectUser.getUserName());
                             i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
                             i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                            if(subjectUser.getUserId().equals(mCurrentUser.getUid()))
+                            {
+                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                                i_ViewHolder.getRatingBar().setRating(5);
+                            }
+
                             i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener()
                             {
                                 @Override
@@ -270,6 +277,14 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                             i_ViewHolder.setUserName(user.getFirstName() + " " + user.getFamilyName());
                             i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
                             i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+
+                            if(user.getUserId().equals(mCurrentUser.getUid()))
+                            {
+                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                                i_ViewHolder.getRatingBar().setRating(5);
+                            }
+                            
                             i_ViewHolder.getButtonOk().setOnClickListener(new View.OnClickListener()
                             {
                                 @Override

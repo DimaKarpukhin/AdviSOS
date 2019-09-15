@@ -37,8 +37,11 @@ import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.User;
 import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.FileUtil;
 import com.studymobile.advisos.Services.InputValidation;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -47,6 +50,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class ActivityUserDetails extends AppCompatActivity implements View.OnClickListener
 {
@@ -99,6 +103,10 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
     private boolean m_IsOnline = true;
 
     private String m_DeviceToken;
+
+
+    private File m_PickedImage;
+    private  File m_CompressedImage;
 
 
     @Override
@@ -393,9 +401,20 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
-            m_DialogImgURI = data.getData();
+            try {
+                m_PickedImage = FileUtil.from(this, data.getData());
+                m_CompressedImage = new Compressor(this).compressToFile(m_PickedImage);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
+
+//            m_DialogImgURI = data.getData();
+//            m_DialogImgView.setImageURI(m_DialogImgURI);
+//            m_IsImgPicked = true;
         }
     }
 

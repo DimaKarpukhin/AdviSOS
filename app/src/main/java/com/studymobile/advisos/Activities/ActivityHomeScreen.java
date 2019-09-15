@@ -46,6 +46,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
+import id.zelory.compressor.Compressor;
 
 import com.facebook.login.LoginManager;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -85,8 +86,11 @@ import com.studymobile.advisos.Models.UserAvailability;
 import com.studymobile.advisos.Models.UserLocation;
 import com.studymobile.advisos.Models.Week;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.FileUtil;
 import com.studymobile.advisos.ViewHolders.ViewHolderSubject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -145,6 +149,9 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     private ViewPager.OnPageChangeListener m_ViewPager;
     private FloatingActionButton m_FabCreate;
+
+    private File m_PickedImage;
+    private  File m_CompressedImage;
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -713,9 +720,20 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == IMG_REQ && data != null)
         {
-            m_DialogImgURI = data.getData();
+            try {
+                m_PickedImage = FileUtil.from(this, data.getData());
+                m_CompressedImage = new Compressor(this).compressToFile(m_PickedImage);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
+
+//            m_DialogImgURI = data.getData();
+//            m_DialogImgView.setImageURI(m_DialogImgURI);
+//            m_IsImgPicked = true;
         }
     }
 
