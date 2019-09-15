@@ -61,6 +61,9 @@ public class FCMNotification {
                     info.put("body", body); // Notification body
                 } catch (JSONException e) {}
                 try {
+                    info.put("sound", "default");
+                }catch (JSONException e){}
+                try {
                     json.put("notification", info);
                 } catch (JSONException e) {}
 
