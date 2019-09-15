@@ -34,7 +34,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatMessage;
+import com.studymobile.advisos.Models.ChatRoom;
 import com.studymobile.advisos.R;
+import com.studymobile.advisos.Services.WordCounter;
 import com.studymobile.advisos.ViewHolders.ViewHolderRecievedMessageHolder;
 import com.studymobile.advisos.ViewHolders.ViewHolderSentMessageHolder;
 
@@ -226,6 +228,7 @@ public class ActivityChatRoom extends AppCompatActivity {
     private void closeChatButtonPressed() {
         //TODO do the logic of closing the chat and rate the users,
         //TODO need to check how closing the chat affects other user since the chat is not active
+        new Thread(new WordCounter(mChatRoomId)).start();
         disableAndClearAllCommandViewsIfChatIsClosed();
         DatabaseReference reference = mDatabase.getReference("ChatRooms");
         reference.child(mChatRoomId).child("mIsChatClosed").setValue(Boolean.TRUE).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -234,7 +237,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     removeFromActiveChatsToClosedChats();
                     startRateUsersActivity();
-                 //TODO   addChatRoomClosedUnderSubjectClosedChats();
+                    addChatRoomClosedUnderSubjectClosedChats();
                 }
 
 
@@ -243,8 +246,35 @@ public class ActivityChatRoom extends AppCompatActivity {
         });
     }
 
+    private void addChatRoomClosedUnderSubjectClosedChats() {
+        final DatabaseReference subjectClosedChatsRef = mDatabase.getReference("SubjectClosedChats");
+        final DatabaseReference chatRoomsRef = mDatabase.getReference("ChatRooms");
+        chatRoomsRef.child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    ChatRoom room = dataSnapshot.getValue(ChatRoom.class);
+                    subjectClosedChatsRef.child(room.getSubjectName()).child(mChatRoomId).setValue(room).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void startRateUsersActivity() {
         Intent intent = new Intent(this,ActivityGiveRatingToUsers.class);
+        intent.putExtra("chat_room", mChatRoomId);
         this.startActivity(intent);
     }
 
