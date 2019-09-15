@@ -372,7 +372,7 @@ public class ActivityChatRoom extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        final String messageText = mMessageBodyText.getText().toString();
+        final String messageText = mMessageBodyText.getText().toString().trim();
         if(TextUtils.isEmpty(messageText))
         {
             Toast.makeText(this,R.string.message_edit_text_toast,Toast.LENGTH_SHORT).show();

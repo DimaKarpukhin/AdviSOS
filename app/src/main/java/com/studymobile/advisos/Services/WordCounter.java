@@ -42,14 +42,13 @@ public class WordCounter implements Runnable {
                 "or",
                 "kind",
                 "should","would","could","have","been",
-                "for",
+                "for","its",
                 "you","in", "at","it","i","will",
                 "because",
                 "me",
                 "is",
                 "are",
                 "they",
-                "dont",
                 "not",
                 "yes",
                 "no",
@@ -59,7 +58,6 @@ public class WordCounter implements Runnable {
                 "of",
                 "to","the",
                 "dont",
-                "wasnt",
                 "wasnt",
                 "ok",
                 "cool",
@@ -96,7 +94,7 @@ public class WordCounter implements Runnable {
                         String[] words = body.split("\\s+");
                         for(String word : words)
                         {
-                            word = word.replaceAll("[^a-zA-Z0-9]", "");
+                            word = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
                             if(i_Ignore.contains(word)|| word.isEmpty() || word.contains(" ") || word.matches("\\s*")||word.length()<3)
                             {
                                 continue;
@@ -138,7 +136,7 @@ public class WordCounter implements Runnable {
                     String[]topic = dataSnapshot.child("roomName").getValue(String.class).split("\\s+");
                     for(String str: topic)
                     {
-                        str = str.replaceAll("[^a-zA-Z0-9]", "");
+                        str = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
                         if( str.isEmpty() || str.contains(" ")|| str.matches("\\s*") || str.length()<3) continue;
                         else if(keys.containsKey(str)) keys.put(str,keys.get(str)+1);
                         else keys.put(str,1);
