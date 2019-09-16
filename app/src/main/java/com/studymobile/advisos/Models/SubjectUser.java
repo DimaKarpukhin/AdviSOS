@@ -1,5 +1,7 @@
 package com.studymobile.advisos.Models;
 
+import android.util.Log;
+
 public class SubjectUser
 {
     private String mSubjectName;
@@ -33,11 +35,15 @@ public class SubjectUser
             throw new IllegalArgumentException
                     (String.format("A user cannot be rated with a score of %d", i_Score));
         }
+
         float avgRating = mRating.getAvgRating();
         long votersNum = mRating.getVotersNum();
-        avgRating = (avgRating * votersNum + i_Score)/(++votersNum);
+        votersNum++;
+        avgRating = (avgRating * votersNum + i_Score)/(votersNum);
         mRating.setAvgRating(avgRating);
         mRating.setVotersNum(votersNum);
+        Log.e("avgRating", String.valueOf(mRating.getAvgRating()));
+        Log.e("votersNum", String.valueOf(mRating.getVotersNum()));
     }
 
     public String getUserName()
