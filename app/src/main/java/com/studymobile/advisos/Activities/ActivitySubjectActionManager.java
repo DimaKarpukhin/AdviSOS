@@ -338,6 +338,8 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                                chatRequest.setChatRoomId(mChatRoomUId);
                                chatRequest.setChatRoomName(mSubjectName);
                                chatRequest.setTopic(mFieldTopic.getText().toString());
+                               chatRequest.setSubjectImgLink(mCurrentSubject.getImgLink());
+
 
                                String requestID = mDatabase.getReference
                                        ("ChatRequests").child(expertId).push().getKey();
@@ -345,6 +347,14 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
 
                                mDatabase.getReference("ChatRequests")
                                        .child(expertId).child(requestID).setValue(chatRequest);
+
+                               Toast.makeText(ActivitySubjectActionManager.this, ">>"
+                                       + mExpertsList.size() + "\n"
+                                               + mExpertsList.get(0) + "\n"
+                                               + mExpertsList.get(1) + "\n"
+                                       + mExpertsList.get(2) + "\n"
+                                       + mExpertsList.get(3) ,
+                                       Toast.LENGTH_LONG).show();
                            }
                        }
                     }

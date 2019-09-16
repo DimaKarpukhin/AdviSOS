@@ -10,6 +10,7 @@ public class ChatRequest
     private String mChatCreatorImgLink;
     private String mChatCreatorName;
     private String mRequestedUserId;
+    private String mSubjectImgLink;
 
     public ChatRequest(){}
 
@@ -23,6 +24,13 @@ public class ChatRequest
         this.mChatCreatorName = i_ChatCreatorName;
     }
 
+    public String getSubjectImgLink() {
+        return mSubjectImgLink;
+    }
+
+    public void setSubjectImgLink(String i_SubjectImgLink) {
+        this.mSubjectImgLink = i_SubjectImgLink;
+    }
 
     public String getRequestId() {
         return mRequestId;
