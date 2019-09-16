@@ -1,5 +1,7 @@
 package com.studymobile.advisos.Services;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -130,6 +132,7 @@ public class DatabaseServices
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         getByRating(dataSnapshot);
+                        Log.e("experts", String.valueOf(mExperts.size())); /* DEBUG */
                         Collections.sort(mPairsUserIdAndAvgRating);
                         Collections.reverse(mPairsUserIdAndAvgRating);
                         /* mPairsUserIdAndAvgRating is ready to iterate over */
@@ -146,6 +149,7 @@ public class DatabaseServices
                         }
 
                         getByLocation();
+                        Log.e("experts", String.valueOf(mExperts.size())); /* DEBUG */
                         Collections.sort(mPairsUserIdAndDistance);
                         /* mPairsUserIdAndDistance is ready to iterate over */
                         for(PairUserIdAndDistance pair : mPairsUserIdAndDistance)
@@ -161,17 +165,16 @@ public class DatabaseServices
                         }
 
                         Collections.shuffle(mAvailableUsers);
-                        String currentUserID =
-                                FirebaseAuth.getInstance().getCurrentUser().getUid();
                         for(User user : mAvailableUsers)
                         {
                             if(mExperts.size() == NUM_OF_EXPERTS)
                                 break;
-                            if(!user.getUserId().equals(currentUserID))
+                            if(!mExperts.contains(user.getUserId()))
                             {
                                 mExperts.add(user.getUserId());
                             }
                         }
+                        Log.e("experts", String.valueOf(mExperts.size())); /* DEBUG */
                     }
 
                     @Override
@@ -230,11 +233,20 @@ public class DatabaseServices
 
     private void getAllAvailableUsers(DataSnapshot dataSnapshot)
     {
+        String currentUserID =
+                FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         User currentUser;
         UserAvailability userAvailability;
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
             currentUser = ds.getValue(User.class);
+
+            if(currentUserID.equals(currentUser.getUserId()))
+            {
+                continue;
+            }
+
             if(currentUser.getIsOnline()) {
                 if (ds.child("userAvailability").exists()) {
                     userAvailability = retrieveUserAvailabilityFromDB(ds.child("userAvailability"));
@@ -327,15 +339,6 @@ public class DatabaseServices
                     if (isBetween(currTime, startTime, endTime)) {
                         mAvailableUsers.add(user);
                     }
-                    for(User availableUser : mAvailableUsers)
-                    {
-                        String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        if(availableUser.getUserId().equals(currentUserID))
-                        {
-                            mAvailableUsers.remove(availableUser);
-                            break;
-                        }
-                    }
                 }
             }
         }
@@ -370,6 +373,7 @@ public class DatabaseServices
                 continue;
             }
 
+
             PairUserIdAndAvgRating pair = new PairUserIdAndAvgRating();
             pair.setUserID(subjectUser.getUserId());
 
@@ -394,7 +398,8 @@ public class DatabaseServices
         if(mOpenerLoc != null)
         {
             for (User user : mAvailableUsers) {
-                if (user.getLocation() != null) {
+                if (user.getLocation() != null && !mExperts.contains(user.getUserId()))
+                {
                     pair.setUserID(user.getUserId());
                     pair.setDistance(mOpenerLoc.distanceBetween(user.getLocation()));
                     mPairsUserIdAndDistance.add(pair);
