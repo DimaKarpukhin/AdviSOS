@@ -271,7 +271,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                     final DatabaseReference requests = mDatabase.getReference("ChatRequests");
                     for(DataSnapshot users : dataSnapshot.getChildren())
                     {
-                        String id = users.getValue(String.class);
+                        final String id = users.getValue(String.class);
                         if(!id.equals(mCurrentUser.getUid()))
                         {
                             requests.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
