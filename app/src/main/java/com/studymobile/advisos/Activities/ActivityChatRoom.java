@@ -163,7 +163,7 @@ public class ActivityChatRoom extends AppCompatActivity {
         String roomName = getIntent().getStringExtra("room_name");
         mRoomNameTextView.setText(roomName);
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
-//        mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
+        mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSubjectImg.setOnClickListener(new View.OnClickListener() {
@@ -190,12 +190,12 @@ public class ActivityChatRoom extends AppCompatActivity {
                 sendMessage();
             }
         });
-//        mBackToHomeImageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                backToHomeActivity();
-//            }
-//        });
+        mBackToHomeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backToHomeActivity();
+            }
+        });
         DatabaseReference chatRoomReference = mDatabase.getReference("ChatRooms");
         chatRoomReference.child(mChatRoomId).addValueEventListener(new ValueEventListener() {
             @Override
