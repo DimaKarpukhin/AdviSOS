@@ -14,20 +14,26 @@
             android:id="@+id/toolbar_of_participants_screen"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
-            app:layout_scrollFlags="scroll|enterAlways" >
-
-            <ImageButton
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_back_to_home_from_chat"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:background="@color/transparent"
-                android:src="@drawable/ic_arrow_back_black"
-                />
-
+            android:background="@color/black"
+            android:backgroundTint="@color/blue"
+            android:elevation="4dp"
+            app:navigationIcon="@drawable/ic_arrow_back_white"
+            app:buttonGravity="bottom"
+            app:title="AdviSOS"
+            app:titleTextColor="@color/white">
         </androidx.appcompat.widget.Toolbar>
+
+<!--            <ImageButton-->
+<!--                xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--                android:id="@+id/img_back_to_home_from_chat"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:background="@color/transparent"-->
+<!--                android:src="@drawable/ic_arrow_back_black"-->
+<!--                />-->
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

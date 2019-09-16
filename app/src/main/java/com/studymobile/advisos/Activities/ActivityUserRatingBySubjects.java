@@ -165,7 +165,7 @@ public class ActivityUserRatingBySubjects extends AppCompatActivity {
                                                 } else {
                                                     String avgRating = String.valueOf(rating.getAvgRating());
                                                     i_ViewHolder.getAvgRating()
-                                                            .setText(avgRating.substring(0, avgRating.indexOf(".") + 1));
+                                                            .setText(avgRating.substring(0, avgRating.indexOf(".") + 2));
                                                 }
                                             }
                                         }
