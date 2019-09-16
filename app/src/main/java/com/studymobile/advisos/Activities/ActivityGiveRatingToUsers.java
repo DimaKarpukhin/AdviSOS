@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -383,10 +385,14 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                {
                    i_SubjectUser.Rate(i_ViewHolder.getRatingBar().getRating());
                    mDatabase.getReference(i_SubjUserRef)
-                           .child("rating").setValue(i_SubjectUser.getRating());
+                           .child("rating").setValue(i_SubjectUser.getRating()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                       @Override
+                       public void onComplete(@NonNull Task<Void> task) {
+                           i_ViewHolder.getRatingBar().setEnabled(false);
+                           m_ConfirmDialog.dismiss();
+                       }
+                   });
                }
-                i_ViewHolder.getRatingBar().setEnabled(false);
-                m_ConfirmDialog.dismiss();
             }
         });
 
