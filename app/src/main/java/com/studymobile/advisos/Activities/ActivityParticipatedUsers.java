@@ -2,6 +2,7 @@ package com.studymobile.advisos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,7 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
     private static final String SUBJECT_NAME = "subject_name";
 
     private RecyclerView mUsersParticipatingRecyclerView;
-    private  FirebaseDatabase mDataBase;
+    private FirebaseDatabase mDataBase;
     private FirebaseStorage mStorage;
     private DatabaseReference mParticipantsRef;
     private String mUserUid;
@@ -54,6 +55,10 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
         mUserUid = getIntent().getStringExtra("user_id");
         mChatRoomUid = getIntent().getStringExtra("chat_room_id");
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_of_participants_screen);
+        setSupportActionBar(toolbar);
+        toolbar.getContentInsetLeft();
         init();
         setDataBaseReference();
         setParticipentsSet();

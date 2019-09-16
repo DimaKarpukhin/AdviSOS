@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_of_user_rating_by_subjects"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/black"
             android:backgroundTint="@color/blue"
             android:elevation="4dp"

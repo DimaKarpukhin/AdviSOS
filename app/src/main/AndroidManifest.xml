@@ -15,10 +15,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.ActivityDisplayClosedChats"
+            android:parentActivityName=".Activities.ActivityHomeScreen"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Activities.ActivityParticipatedUsers"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".Activities.ActivityHomeScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activities.ActivityUserRatingBySubjects"
             android:parentActivityName=".Activities.ActivityHomeScreen"

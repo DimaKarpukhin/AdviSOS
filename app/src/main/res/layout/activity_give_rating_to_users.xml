@@ -21,7 +21,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_of_activity_give_rating_to_users"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="?attr/actionBarSize"
                 android:background="@color/black"
                 android:backgroundTint="@color/blue"
                 android:elevation="4dp"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_create_of_activity_home_screen"
+            android:id="@+id/fab_next_of_activity_give_rating_to_users"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

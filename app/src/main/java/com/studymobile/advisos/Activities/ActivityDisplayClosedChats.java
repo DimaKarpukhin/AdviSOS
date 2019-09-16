@@ -2,6 +2,7 @@ package com.studymobile.advisos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +35,6 @@ import com.studymobile.advisos.ViewHolders.ViewHolderAdviceGroup;
 public class ActivityDisplayClosedChats extends AppCompatActivity {
 
     private RecyclerView mClosedChatsRecyclerView;
-    private TextView mSubject;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mClosedChats;
     private FirebaseAuth mAuth;
@@ -51,10 +51,13 @@ public class ActivityDisplayClosedChats extends AppCompatActivity {
     }
 
     private void init() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar_of_closed_chats);
+        setSupportActionBar(toolbar);
+        toolbar.getContentInsetLeft();
+
         mClosedChatsRecyclerView = findViewById(R.id.recycler_closed_chats);
         mClosedChatsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mSubject = findViewById(R.id.textView_closed_chats_subject);
-
     }
 
     private void setFirebaseData() {

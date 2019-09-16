@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +61,8 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
 
     private Dialog m_ConfirmDialog;
 
+    private FloatingActionButton m_FabNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +94,22 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                 populateSubjectsView();
             }
         }
-//        mSubjectName = "AGODA MTA COMRESSED";
-//        mChatRoomId = "-LomOUkATiLOVzsbJ4D7";
-//        mChatParticipantsRef = mDatabase.getReference("Participants")
-//                        .child(mChatRoomId);
-//        buildSubjectsOptions();
-//        populateSubjectsView();
+
+        m_FabNext = findViewById(R.id.fab_next_of_activity_give_rating_to_users);
+        m_FabNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                startHomeScreenActivity();
+            }
+        });
+    }
+
+    private void startHomeScreenActivity()
+    {
+        Intent IntentHomeScreen = new Intent
+                (ActivityGiveRatingToUsers.this, ActivityHomeScreen.class);
+        startActivity(IntentHomeScreen);
     }
 
     @Override
