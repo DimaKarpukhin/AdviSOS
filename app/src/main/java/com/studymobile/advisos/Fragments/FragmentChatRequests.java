@@ -2,6 +2,7 @@ package com.studymobile.advisos.Fragments;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+import com.studymobile.advisos.Activities.ActivityChatRoom;
 import com.studymobile.advisos.Activities.ActivitySubjectActionManager;
 import com.studymobile.advisos.Activities.ActivityUserDetails;
 import com.studymobile.advisos.Models.ActiveChatRoom;
@@ -130,11 +132,16 @@ public class FragmentChatRequests extends Fragment {
 
                 i_ViewHolder.getBtnAccept().setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View i_View) {
-                        showConfirmDialog("Accept the request?",
-                                "Cancel", "Accept",
-                                true, i_ChatRequest.getChatRoomId(), i_ChatRequest.getRequestId());
-
+                    public void onClick(View i_View)
+                    {
+                        addUserToActiveChats(i_ChatRequest.getChatRoomId());
+                        removeRequestFromDB(i_ChatRequest.getRequestId());
+                        Intent intent = new Intent(getContext(), ActivityChatRoom.class);
+                        intent.putExtra("chat_room_id", i_ChatRequest.getChatRoomId());
+                        intent.putExtra("room_name",i_ChatRequest.getTopic());
+                        intent.putExtra("subject_name", i_ChatRequest.getChatRoomName());
+                        intent.putExtra("subject_image",i_ChatRequest.getSubjectImgLink());
+                        startActivity(intent);
                     }
                 });
 
@@ -197,6 +204,7 @@ public class FragmentChatRequests extends Fragment {
 
         confirmDialog.show();
     }
+
 
     private void addUserToActiveChats(String i_ChatRoomId)
     {

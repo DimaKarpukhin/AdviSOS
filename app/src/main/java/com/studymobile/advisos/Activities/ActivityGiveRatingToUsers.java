@@ -180,13 +180,9 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
 
                                     if(userSubjList.contains(mSubjectName))
                                     {
-                                        Toast.makeText(ActivityGiveRatingToUsers.this, "GOOD", Toast.LENGTH_LONG).show();
                                         updateViewHolderWithExpertUser(i_ViewHolder, mSubjectName, i_ParticipantID);
                                     }
                                     else {
-                                        Toast.makeText(ActivityGiveRatingToUsers.this, "BAD" + userSubjList.size() + "\n" +
-                                                userSubjList.get(0) + "\n" +
-                                                userSubjList.get(1) + "\n" + mSubjectName, Toast.LENGTH_LONG).show();
                                         updateViewHolderWithNonExpertUser(i_ViewHolder, i_ParticipantID);
                                     }
 
