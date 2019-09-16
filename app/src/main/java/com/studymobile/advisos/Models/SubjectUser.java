@@ -42,10 +42,6 @@ public class SubjectUser
         avgRating = (avgRating * votersNum + i_Score)/(votersNum);
         mRating.setAvgRating(avgRating);
         mRating.setVotersNum(votersNum);
-<<<<<<< HEAD
-
-=======
->>>>>>> a71ff95bc11b89198f20f71a72c2b05953ff1dca
         Log.e("avgRating", String.valueOf(mRating.getAvgRating()));
         Log.e("votersNum", String.valueOf(mRating.getVotersNum()));
     }
