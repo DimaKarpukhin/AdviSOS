@@ -20,7 +20,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ActivityParticipatedUsers"
-            android:parentActivityName=".Activities.ActivityHomeScreen"
+            android:parentActivityName=".Activities.ActivityChatRoom"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -43,6 +43,7 @@
         <activity android:name=".Activities.ActivityCreateChatRoom" />
         <activity
             android:name=".Activities.ActivityChatRoom"
+            android:parentActivityName=".Activities.ActivityHomeScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

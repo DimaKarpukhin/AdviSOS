@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -65,6 +66,15 @@ public class ActivityParticipatedUsers extends AppCompatActivity {
 //        Toast.makeText(this, "" + mParticipantsIds.size(), Toast.LENGTH_LONG).show();
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     private void setParticipentsSet() {

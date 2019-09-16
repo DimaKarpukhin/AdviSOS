@@ -385,6 +385,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                {
                    i_SubjectUser.Rate(i_ViewHolder.getRatingBar().getRating());
                    mDatabase.getReference(i_SubjUserRef)
+<<<<<<< HEAD
                            .child("rating").setValue(i_SubjectUser.getRating()).addOnCompleteListener(new OnCompleteListener<Void>() {
                        @Override
                        public void onComplete(@NonNull Task<Void> task) {
@@ -392,6 +393,16 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                            m_ConfirmDialog.dismiss();
                        }
                    });
+=======
+                           .child("rating").setValue(i_SubjectUser.getRating())
+                           .addOnCompleteListener(new OnCompleteListener<Void>() {
+                               @Override
+                               public void onComplete(@NonNull Task<Void> task) {
+                                   i_ViewHolder.getRatingBar().setEnabled(false);
+                                   m_ConfirmDialog.dismiss();
+                               }
+                           });
+>>>>>>> a71ff95bc11b89198f20f71a72c2b05953ff1dca
                }
             }
         });

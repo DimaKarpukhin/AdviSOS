@@ -6,13 +6,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -143,17 +147,31 @@ public class ActivityChatRoom extends AppCompatActivity {
     }
 
     private void init() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar_of_chat_room);
+        setSupportActionBar(toolbar);
+        toolbar.getContentInsetLeft();
+
         mSubjectImg = findViewById(R.id.img_subject_of_chat_room);
-        Picasso.get().load(getIntent().getStringExtra("subject_image")).into(mSubjectImg);
+
+        String link = getIntent().getStringExtra("subject_image");
+        Picasso.get().load(link).into(mSubjectImg);
         mCloseChatButton = findViewById(R.id.button_close_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
         mRoomNameTextView = findViewById(R.id.textView_room_name_information_open);
-        mRoomNameTextView.setText(getIntent().getStringExtra("room_name"));
+        String roomName = getIntent().getStringExtra("room_name");
+        mRoomNameTextView.setText(roomName);
         mSubjectName = getIntent().getStringExtra(SUBJECT_NAME);
         mBackToHomeImageView = findViewById(R.id.img_back_to_home_from_chat);
         mMessagesRecyclerView = findViewById(R.id.reyclerview_chat_messages);
         mMessagesRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mSubjectImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupDialog(link, roomName);
+            }
+        });
         mRoomNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,6 +217,15 @@ public class ActivityChatRoom extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     private void displayChatRoomParticipants() {
@@ -349,7 +376,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                        dataSnapshot.getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getApplicationContext(), "delted active chat", Toast.LENGTH_LONG).show();
+                               // Toast.makeText(getApplicationContext(), "delted active chat", Toast.LENGTH_LONG).show();
                                 addToClosedChats(room);
 
                         }
@@ -521,5 +548,38 @@ public class ActivityChatRoom extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mMessagesAdapterd.stopListening();
+    }
+
+
+    private void showPopupDialog(String i_ImgLink, String i_Title)
+    {
+        Dialog popupDialog = new Dialog(this);
+        popupDialog.setContentView(R.layout.dialog_image);
+        popupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        CircleImageView dialogImgView = popupDialog.findViewById(R.id.img_of_dialog_profile_picture);
+        Picasso.get().load(i_ImgLink).into(dialogImgView);
+        TextView title = popupDialog.findViewById(R.id.txt_title_of_dialog_image);
+        title.setText(i_Title);
+        title.setVisibility(View.VISIBLE);
+
+        popupDialog.findViewById(R.id.layout_optional_of_dialog_image)
+                .setVisibility(View.INVISIBLE);
+        popupDialog.findViewById(R.id.btn_ok_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+        popupDialog.findViewById(R.id.btn_remove_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+        popupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
+                .setVisibility(View.INVISIBLE);
+
+
+        popupDialog.findViewById(R.id.btn_close_of_dialog_profile_picture)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupDialog.dismiss();
+                    }
+                });
+
+        popupDialog.show();
     }
 }

@@ -35,13 +35,17 @@ public class SubjectUser
             throw new IllegalArgumentException
                     (String.format("A user cannot be rated with a score of %d", i_Score));
         }
+
         float avgRating = mRating.getAvgRating();
         long votersNum = mRating.getVotersNum();
         votersNum++;
         avgRating = (avgRating * votersNum + i_Score)/(votersNum);
         mRating.setAvgRating(avgRating);
         mRating.setVotersNum(votersNum);
+<<<<<<< HEAD
 
+=======
+>>>>>>> a71ff95bc11b89198f20f71a72c2b05953ff1dca
         Log.e("avgRating", String.valueOf(mRating.getAvgRating()));
         Log.e("votersNum", String.valueOf(mRating.getVotersNum()));
     }
