@@ -24,6 +24,42 @@ public class SubjectUser
         this.setUserImgLink(i_UserImgLink);
     }
 
+    public void ChangeRating(int i_PercentsDelta, boolean i_IsIncrease)
+    {
+        if (i_PercentsDelta < 0 || i_PercentsDelta > 100) {
+            throw new IllegalArgumentException
+                    (String.format("A user cannot be rated with a score of %d", i_PercentsDelta));
+        }
+        else if(mRating == null)
+        {
+            mRating = new Rating(0, 0);
+        }
+        else{
+            float avgRating = mRating.getAvgRating();
+            float delta = (avgRating * i_PercentsDelta)/100;
+            float newAvgRating;
+            if(i_IsIncrease)
+            {
+                newAvgRating = avgRating + delta;
+            }
+            else
+            {
+                newAvgRating = avgRating - delta;
+            }
+            if(newAvgRating > 5)
+            {
+                mRating.setAvgRating(5);
+            }
+            else if(newAvgRating < 0)
+            {
+                mRating.setAvgRating(0);
+            }
+            else{
+                mRating.setAvgRating(newAvgRating);
+            }
+        }
+    }
+
     public void Rate(float i_Score)
     {
         if(mRating == null)
@@ -38,8 +74,9 @@ public class SubjectUser
 
         float avgRating = mRating.getAvgRating();
         long votersNum = mRating.getVotersNum();
+        float ratingSum = ((avgRating * votersNum) + i_Score);
         votersNum++;
-        avgRating = (avgRating * votersNum + i_Score)/(votersNum);
+        avgRating = ratingSum/votersNum;
         mRating.setAvgRating(avgRating);
         mRating.setVotersNum(votersNum);
         Log.e("avgRating", String.valueOf(mRating.getAvgRating()));

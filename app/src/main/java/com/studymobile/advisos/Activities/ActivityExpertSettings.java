@@ -494,6 +494,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         buildSubjectsListOptions();
         populateSubjectsListView();
 
+        m_DialogSubjList.setCanceledOnTouchOutside(false);
         m_DialogSubjList.findViewById(R.id.btn_new_of_dialog_subjects_list)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -21,6 +21,9 @@ import com.studymobile.advisos.R;
 public class FireBaseMsgService  extends FirebaseMessagingService
 {
 
+    private static final String CONTEXT = "context";
+    private static final String REQUEST = "request";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -41,7 +44,7 @@ public class FireBaseMsgService  extends FirebaseMessagingService
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultSoundUri);
         Intent resultIntent = new Intent(this, ActivityHomeScreen.class);
-        resultIntent.putExtra("ChatRoomID", "THE_ID");//should put the id in the 2nd argument
+        resultIntent.putExtra(CONTEXT,REQUEST);//should put the id in the 2nd argument
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

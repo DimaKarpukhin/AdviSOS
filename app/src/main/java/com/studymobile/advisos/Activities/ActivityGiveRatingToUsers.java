@@ -242,8 +242,15 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
 
                             Picasso.get().load(subjectUser.getUserImgLink()).into(i_ViewHolder.getUserImageView());
                             i_ViewHolder.setUserName(subjectUser.getUserName());
-                            i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
-                            i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                            if(i_ViewHolder.getRatingBar().isEnabled())
+                            {
+                                i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                            }
+                            else{
+                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                            }
 
                             mDatabase.getReference("ChatRooms").child(mChatRoomId)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -305,9 +312,17 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                             User user = i_DataSnapshot.getValue(User.class);
                             Picasso.get().load(user.getImgLink()).into(i_ViewHolder.getUserImageView());
                             i_ViewHolder.setUserName(user.getFirstName() + " " + user.getFamilyName());
-                            i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
-                            i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
-                            i_ViewHolder.getRatingBar().setEnabled(true);
+
+                            if(i_ViewHolder.getRatingBar().isEnabled())
+                            {
+                                i_ViewHolder.getIconChecked().setVisibility(View.INVISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.VISIBLE);
+                            }
+                            else{
+                                i_ViewHolder.getIconChecked().setVisibility(View.VISIBLE);
+                                i_ViewHolder.getButtonOk().setVisibility(View.INVISIBLE);
+                            }
+
 
 
 
@@ -363,6 +378,7 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
     {
         m_ConfirmDialog = new Dialog(ActivityGiveRatingToUsers.this);
         m_ConfirmDialog.setContentView(R.layout.dialog_confirm);
+        m_ConfirmDialog.setCanceledOnTouchOutside(false);
 
         final ImageButton closeBtn = m_ConfirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
         TextView fieldTitle = m_ConfirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
@@ -396,6 +412,8 @@ public class ActivityGiveRatingToUsers extends AppCompatActivity {
                }
             }
         });
+
+        m_ConfirmDialog.setCanceledOnTouchOutside(false);
 
         leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override

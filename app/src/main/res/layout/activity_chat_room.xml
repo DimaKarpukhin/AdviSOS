@@ -500,13 +500,14 @@
 <!--    </RelativeLayout>-->
 
 
-        <androidx.recyclerview.widget.RecyclerView
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/reyclerview_chat_messages"
-            android:background="@drawable/background_transparent"
-                 android:layout_above="@id/layout_chatbox"
-                 android:layout_below="@id/app_bar_layout_of_chat">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/reyclerview_chat_messages"
+        android:background="@drawable/background_transparent"
+        android:layout_above="@id/layout_chatbox"
+        android:layout_below="@id/app_bar_layout_of_chat">
 
     </androidx.recyclerview.widget.RecyclerView>
 

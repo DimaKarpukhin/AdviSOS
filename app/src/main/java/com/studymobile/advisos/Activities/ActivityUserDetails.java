@@ -161,7 +161,7 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
             {
                 if (m_IsImgPicked)
                 {
-                    uploadImgToStorage(m_FamilyName + m_FirstName);
+                    uploadImgToStorage(m_FamilyName + " "+ m_FirstName);
                 }else if (!m_IsImgStored &&
                         (m_AuthContext.equals(PHONE_AUTH) || m_AuthContext.equals(PASSWORD_AUTH))) {
                     uploadImgToStorage(DEFAULT);
@@ -257,11 +257,11 @@ public class ActivityUserDetails extends AppCompatActivity implements View.OnCli
                 .setVisibility(View.VISIBLE);
         m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
                 .setVisibility(View.VISIBLE);
-        if(m_IsSocialAvatarPicked){
+//        if(m_IsSocialAvatarPicked){
             Picasso.get().load(m_ProfileImgLink).into(m_DialogImgView);
-        }else {
-            m_DialogImgView.setImageURI(m_ProfileImgURI);
-        }
+//        }else {
+//            m_DialogImgView.setImageURI(m_ProfileImgURI);
+//        }
         m_PopupDialog.findViewById(R.id.btn_add_a_photo_of_dialog_profile_picture)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

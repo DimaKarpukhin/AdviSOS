@@ -106,6 +106,8 @@ public class ActivityHomeScreen extends AppCompatActivity implements
     private static final String DEFAULT = "Default";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
+    private static final String CONTEXT = "context";
+    private static final String REQUEST = "request";
 
     private Dialog m_DialogCreateSubj;
     private Uri m_DialogImgURI;
@@ -294,9 +296,10 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         setDialogSubjectsList();
         setDialogCreateSubject();
 
-        if(getIntent().getExtras() != null)
+        if(getIntent().getExtras() != null
+                && getIntent().getExtras().getString(CONTEXT).equals(REQUEST))
         {
-            Log.e("onStart, in condition", "going to switch to FragmentChatRequests");
+            mViewPager.setCurrentItem(3);
         }
     }
 
@@ -844,6 +847,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_DialogSubjList = new Dialog(ActivityHomeScreen.this);
         m_DialogSubjList.setContentView(R.layout.dialog_subjects_list);
         m_DialogSubjList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        m_DialogSubjList.setCanceledOnTouchOutside(false);
 
         m_SuggestionsList = new ArrayList<>();
 //        m_SearchBar = findViewById(R.id.search_bar_of_dialog_subjects_list);

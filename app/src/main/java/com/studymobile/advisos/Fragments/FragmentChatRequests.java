@@ -27,14 +27,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Activities.ActivityChatRoom;
 import com.studymobile.advisos.Activities.ActivitySubjectActionManager;
 import com.studymobile.advisos.Activities.ActivityUserDetails;
 import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatRequest;
+import com.studymobile.advisos.Models.Rating;
 import com.studymobile.advisos.Models.SubjectUser;
 import com.studymobile.advisos.R;
 import com.studymobile.advisos.ViewHolders.ViewHolderChatRequest;
@@ -148,9 +152,8 @@ public class FragmentChatRequests extends Fragment {
                 i_ViewHolder.getBtnReject().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View i_View) {
-                        showConfirmDialog("By rejecting a request you will lose 0.2% of your rating",
-                                "Cancel", "I agree",
-                                false, i_ChatRequest.getChatRoomId(),  i_ChatRequest.getRequestId());
+                        showConfirmDialog("By rejecting a request you will lose 1% of your rating",
+                                "Cancel", "I agree", i_ChatRequest);
                     }
                 });
             }
@@ -161,8 +164,7 @@ public class FragmentChatRequests extends Fragment {
     }
 
     private void showConfirmDialog(String i_Title, String i_LeftBtnTxt, String i_RightBtnTxt,
-                                   final boolean i_IsAcceptPressed,
-                                   final String i_ChatRoomId,   final String i_RequestId)
+                                   ChatRequest i_ChatRequest)
     {
         final Dialog confirmDialog = new Dialog(getContext());
         confirmDialog.setContentView(R.layout.dialog_confirm);
@@ -180,12 +182,10 @@ public class FragmentChatRequests extends Fragment {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(i_IsAcceptPressed)
-                {
-                    addUserToActiveChats(i_ChatRoomId);
-                }
+                downgradeUser(i_ChatRequest.getRequestedUserId(),
+                        i_ChatRequest.getChatRoomId(), 1);
 
-                removeRequestFromDB(i_RequestId);
+                removeRequestFromDB(i_ChatRequest.getRequestId());
                 confirmDialog.dismiss();
             }
         });
@@ -203,6 +203,47 @@ public class FragmentChatRequests extends Fragment {
         });
 
         confirmDialog.show();
+    }
+
+    private void downgradeUser(String i_UserId, String i_ChatRoomId, int i_PercentsDelta)
+    {
+        mDatabase.getReference("ChatRooms").child(i_ChatRoomId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot) {
+                        if(i_DataSnapshot.exists())
+                        {
+                            String subjectName = i_DataSnapshot.child("subjectName")
+                                    .getValue(String.class);
+
+                            mDatabase.getReference("SubjectUsers").child(subjectName).child(i_UserId)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                                {
+                                    if(i_DataSnapshot.exists())
+                                    {
+                                        SubjectUser user = i_DataSnapshot.getValue(SubjectUser.class);
+                                        Rating userRating = i_DataSnapshot.child("rating").getValue(Rating.class);
+                                        user.setRating(userRating);
+                                        user.ChangeRating(i_PercentsDelta, false);
+
+                                        mDatabase.getReference("SubjectUsers").child(subjectName)
+                                                .child(i_UserId).child("rating").setValue(user.getRating());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {
+
+                                }
+                            });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError i_DataSnapshot) { }
+                });
+
     }
 
 

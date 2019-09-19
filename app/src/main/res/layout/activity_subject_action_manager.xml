@@ -32,24 +32,24 @@
             android:background="@drawable/btn_rect_white_pressed_grey_light"
             android:src="@drawable/ic_arrow_back_blue"/>
 
-        <ImageButton
-            android:id="@+id/btn_restore_of_subject_action_manager"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_circle_white_pressed_grey_light"
-            android:src="@drawable/ic_replay"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_restore_of_subject_action_manager"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:background="@drawable/btn_circle_white_pressed_grey_light"-->
+<!--            android:src="@drawable/ic_replay"/>-->
 
         <ImageButton
-            android:id="@+id/btn_add_a_photo_of_subject_action_manager"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:id="@+id/btn_edit_of_subject_action_manager"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="5dp"
             android:background="@drawable/btn_circle_white_pressed_grey_light"
-            android:src="@drawable/ic_add_a_photo_blue"/>
+            android:src="@drawable/ic_create_blue"/>
 
         <TextView
             android:id="@+id/txt_subject_name_of_subject_action_manager"
