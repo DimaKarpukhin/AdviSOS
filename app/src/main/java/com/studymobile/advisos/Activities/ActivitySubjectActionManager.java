@@ -144,7 +144,9 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 mFieldTopic.setError("The field is required");
             }
             else {
-                checkIfTopicExists();
+                //createChatRoomActivity(mFieldTopic.getText().toString());
+                createPossibleSameChatsActivity(mFieldTopic.getText().toString());
+                //checkIfTopicExists();
             }
 
         }
@@ -173,7 +175,8 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                     @Override
                     public void onClick(View v) {
                         //startCreateChatRoomActivity();
-                        createChatRoomActivity(mFieldTopic.getText().toString());
+                        //createChatRoomActivity(mFieldTopic.getText().toString());
+                        createPossibleSameChatsActivity(mFieldTopic.getText().toString());
                     }
                 });
         viewSimilarBtn.setOnClickListener(new View.OnClickListener() {
@@ -397,5 +400,15 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 }
             });
         }
+    }
+
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+    private void createPossibleSameChatsActivity(String i_Topic)
+    {
+        //TopicAndContentMatcher matcher = new TopicAndContentMatcher(mSubjectName,i_Topic);
+        Intent intent = new Intent(this,ActivityPossibleSameTopicsAndChats.class);
+        intent.putExtra(SUBJECT_NAME,mSubjectName);
+        intent.putExtra("topic", i_Topic);
+        this.startActivity(intent);
     }
 }

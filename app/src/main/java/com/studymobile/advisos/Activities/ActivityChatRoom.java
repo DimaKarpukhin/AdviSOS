@@ -66,11 +66,13 @@ public class ActivityChatRoom extends AppCompatActivity {
     private CircleImageView mSubjectImg;
     private ImageButton mCloseChatButton;
     private FirebaseDatabase mDatabase;
+    private ImageButton mButtonJoinChat;
     private DatabaseReference mChatRoonIdRefMessages;
     private FirebaseAuth mAuth;
     private TextView mRoomNameTextView;
     private String mChatRoomId;
     private String mSubjectName;
+    private String mVistorType;
     private FirebaseUser mCurrentUser;
     private FirebaseStorage mStorage;
     private ViewHolderRecievedMessageHolder mImgLInk; //?
@@ -88,9 +90,31 @@ public class ActivityChatRoom extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
         setFirebaseReferences();
         init();
+        if(mVistorType != null)
+        {
+            if(mVistorType.equals("observer"))
+            {
+                disableAllOtherCommandViews();
+                showJoinChatRoomButton();
+            }
+        }
         showButtonCloseChatForChatRoomCreator();
         disableAndClearAllCommandViewsIfChatIsClosed();
 
+    }
+
+    private void showJoinChatRoomButton() {
+        mButtonJoinChat.setVisibility(View.VISIBLE);
+        mButtonJoinChat.setClickable(true);
+    }
+
+    private void disableAllOtherCommandViews() {
+        mMessageBodyText.setVisibility(View.INVISIBLE);
+        mMessageBodyText.setClickable(false);
+        mSendMessageButton.setVisibility(View.INVISIBLE);
+        mSendMessageButton.setClickable(false);
+        mCloseChatButton.setVisibility(View.INVISIBLE);
+        mCloseChatButton.setClickable(false);
     }
 
     private void disableAndClearAllCommandViewsIfChatIsClosed() {
@@ -103,14 +127,7 @@ public class ActivityChatRoom extends AppCompatActivity {
                   {
                      if(res)
                      {
-                         mMessageBodyText.setVisibility(View.INVISIBLE);
-                         mMessageBodyText.setClickable(false);
-                         mSendMessageButton.setVisibility(View.INVISIBLE);
-                         mSendMessageButton.setClickable(false);
-//                         mSendMessageButton.setCursorVisible(false);
-                         mCloseChatButton.setVisibility(View.INVISIBLE);
-      //                   mCloseChatButton.setCursorVisible(false);
-                         mCloseChatButton.setClickable(false);
+                         disableAllOtherCommandViews();
                      }
                   }
             }
@@ -151,12 +168,13 @@ public class ActivityChatRoom extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_of_chat_room);
         setSupportActionBar(toolbar);
         toolbar.getContentInsetLeft();
-
+        mVistorType = getIntent().getStringExtra("type");
         mSubjectImg = findViewById(R.id.img_subject_of_chat_room);
 
         String link = getIntent().getStringExtra("subject_image");
         Picasso.get().load(link).into(mSubjectImg);
         mCloseChatButton = findViewById(R.id.button_close_chat);
+        mButtonJoinChat = findViewById(R.id.button_join_chat);
         mSendMessageButton = findViewById(R.id.button_chatbox_send);
         mMessageBodyText = findViewById(R.id.edittext_chatbox);
         mRoomNameTextView = findViewById(R.id.textView_room_name_information_open);
@@ -196,6 +214,12 @@ public class ActivityChatRoom extends AppCompatActivity {
                 backToHomeActivity();
             }
         });
+        mButtonJoinChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonJoinChatPressed();
+            }
+        });
         DatabaseReference chatRoomReference = mDatabase.getReference("ChatRooms");
         chatRoomReference.child(mChatRoomId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -217,6 +241,63 @@ public class ActivityChatRoom extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void buttonJoinChatPressed() {
+        final Dialog confirmDialog = new Dialog(ActivityChatRoom.this);
+        confirmDialog.setContentView(R.layout.dialog_confirm);
+
+        String title = "You will be join to the chat room.\n"
+                +"Are you sure?";
+        String joinChatRoomTxt = "Join room";
+        String cancelTxt = "Cancel";
+
+        ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
+        TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
+        TextView joinRoomBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
+        TextView CancelBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
+
+        closeBtn.setVisibility(View.VISIBLE);
+        fieldTitle.setText(title);
+        joinRoomBtn.setText(joinChatRoomTxt);
+        CancelBtn.setText(cancelTxt);
+
+        joinRoomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addChatToActiveChats();
+                addUserToChatParticipants();
+                mButtonJoinChat.setClickable(false);
+                mButtonJoinChat.setVisibility(View.INVISIBLE);
+                confirmDialog.dismiss();
+            }
+        });
+        CancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+
+        confirmDialog.show();
+
+    }
+
+    private void addUserToChatParticipants() {
+        DatabaseReference participantsRes = mDatabase.getReference("Participants");
+        participantsRes.child(mChatRoomId).child(mCurrentUser.getUid()).setValue(mCurrentUser.getUid());
+    }
+
+    private void addChatToActiveChats() {
+        DatabaseReference activeChatsRef = mDatabase.getReference("ActiveChats");
+        ActiveChatRoom room = new ActiveChatRoom(mChatRoomId,mCurrentUser.getUid(),false);
+        activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).setValue(room);
     }
 
     @Override
