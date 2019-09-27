@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.studymobile.advisos.Activities.ActivityChatRoom;
+import com.studymobile.advisos.Adapters.AdapterPossibleActiveChats;
 import com.studymobile.advisos.Interfaces.ItemClickListener;
 import com.studymobile.advisos.Models.ActiveChatRoom;
 import com.studymobile.advisos.Models.ChatRoom;
@@ -30,6 +31,8 @@ import com.studymobile.advisos.R;
 import com.studymobile.advisos.ViewHolders.ViewHolderAdviceGroup;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,9 +50,10 @@ public class FragmentPossibleActiveChats extends Fragment {
     private String mSubjectName;
     private String mRoomName;
     private Set<String> mCurrentClientTopicWords;
-
-    private FirebaseRecyclerOptions<ChatRoom> mOptions;
-    private FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup> mAdapter;
+    private AdapterPossibleActiveChats mAdapter;
+    private List<ChatRoom> mFilteredChatsList;
+    private List<ChatRoom> mOptions;
+    //private FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup> mAdapter;
 
     public FragmentPossibleActiveChats(){}
 
@@ -61,6 +65,8 @@ public class FragmentPossibleActiveChats extends Fragment {
                              Bundle i_SavedInstanceState)
     {
         mSubjectName = getActivity().getIntent().getStringExtra("subject_name");
+        mFilteredChatsList = new LinkedList<>();
+        mOptions = new LinkedList<>();
         mRoomName = getActivity().getIntent().getStringExtra("topic");
         mViewPossibleActive = i_Inflater.inflate(R.layout.fragment_possible_active_chats, i_Container, false);
         mRecyclerPossibleActive = mViewPossibleActive.findViewById(R.id.recycler_possible_active_chats);
@@ -68,8 +74,8 @@ public class FragmentPossibleActiveChats extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
-        mActiveChat = mDatabase.getReference().child("ChatRooms");
-
+        mActiveChat = mDatabase.getReference("ChatRooms");
+        assignSet();
         return mViewPossibleActive;
     }
 
@@ -77,8 +83,11 @@ public class FragmentPossibleActiveChats extends Fragment {
     public void onStart() {
         super.onStart();
         buildPossibleActiveChatsOptions();
-        populatePossibleActiveChatsView();
-        assignSet();
+       // pupolateRecyclerView();
+//        mAdapter = new AdapterPossibleActiveChats(mFilteredChatsList,getContext());
+//        mRecyclerPossibleActive.setAdapter(mAdapter);
+
+
     }
 
     private void assignSet() {
@@ -89,58 +98,75 @@ public class FragmentPossibleActiveChats extends Fragment {
         }
     }
 
-    private void populatePossibleActiveChatsView() {
-        mAdapter = new FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup>(mOptions) {
-            @NonNull
-            @Override
-            public ViewHolderAdviceGroup onCreateViewHolder
-                    (@NonNull ViewGroup i_ViewGroup, int i_Position)
+//    private void populatePossibleActiveChatsView() {
+//        mAdapter = new FirebaseRecyclerAdapter<ChatRoom, ViewHolderAdviceGroup>(mOptions) {
+//            @NonNull
+//            @Override
+//            public ViewHolderAdviceGroup onCreateViewHolder
+//                    (@NonNull ViewGroup i_ViewGroup, int i_Position)
+//            {
+//                View view = LayoutInflater
+//                        .from(i_ViewGroup.getContext())
+//                        .inflate(R.layout.item_advice_group, i_ViewGroup, false);
+//
+//                return new ViewHolderAdviceGroup(view);
+//            }
+//
+//            @Override
+//            protected void onBindViewHolder
+//                    (@NonNull final ViewHolderAdviceGroup i_ViewHolder,
+//                     final int i_Position, @NonNull final ChatRoom i_ActiveChatRoom)
+//            {
+//                Log.e("Fragment Active Chats", i_ActiveChatRoom.getSubjectName());
+//                        if(mSubjectName.equals(i_ActiveChatRoom.getSubjectName())) {
+//                            int matchesInTopis = countMatchesInTopics(i_ActiveChatRoom.getRoomName());
+//                            if (matchesInTopis > 0) {
+//                                Log.e("In Fragment Active Chats:", i_ActiveChatRoom.getCreationDate());
+//                                Picasso.get().load(i_ActiveChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
+//                                i_ViewHolder.setParentSubjectName(i_ActiveChatRoom.getSubjectName());
+//                                i_ViewHolder.setGroupTopic(i_ActiveChatRoom.getRoomName());
+//                                i_ViewHolder.setLastMessageTime(i_ActiveChatRoom.getCreationTime());
+//                                i_ViewHolder.setLastMessageDate(i_ActiveChatRoom.getCreationDate());
+//                            }
+//                        }
+//                                i_ViewHolder.setItemClickListener(new ItemClickListener() {
+//                                    @Override
+//                                    public void onClick(View view, int position, boolean isLongClick) {
+//                                        Intent IntentChatRoom = new Intent(getContext(), ActivityChatRoom.class);
+//                                        IntentChatRoom.putExtra("chat_room_id", i_ActiveChatRoom.getRoomId());
+//                                        IntentChatRoom.putExtra("room_name", i_ActiveChatRoom.getRoomName());
+//                                        IntentChatRoom.putExtra("subject_name", i_ActiveChatRoom.getSubjectName());
+//                                        IntentChatRoom.putExtra("subject_image", i_ActiveChatRoom.getImgLink());
+//                                        IntentChatRoom.putExtra("type", "observer");
+//                                        startActivity(IntentChatRoom);
+//                                    }
+//                                });
+//
+//
+//
+//
+//
+//            }
+//        };
+//
+//        mAdapter.startListening();
+//        mRecyclerPossibleActive.setAdapter(mAdapter);
+//    }
+
+    private void pupolateRecyclerView(){
+        Log.e("Fragment Active Chats in pupolateRecyclerView(): mOptions size: ", " " + mOptions.size());
+        for(ChatRoom c : mOptions)
+        {
+            Log.e("Fragment Active Chats in pupolateRecyclerView(): ", c.getSubjectName());
+            if(mSubjectName.equals(c.getSubjectName()))
             {
-                View view = LayoutInflater
-                        .from(i_ViewGroup.getContext())
-                        .inflate(R.layout.item_advice_group, i_ViewGroup, false);
-
-                return new ViewHolderAdviceGroup(view);
+                Log.e("Fragment Active Chats in pupolateRecyclerView():: if(): ", c.getSubjectName());
+                int matchesInTopis = countMatchesInTopics(c.getRoomName());
+                if(matchesInTopis > 0)
+                    mFilteredChatsList.add(c);
             }
-
-            @Override
-            protected void onBindViewHolder
-                    (@NonNull final ViewHolderAdviceGroup i_ViewHolder,
-                     final int i_Position, @NonNull final ChatRoom i_ActiveChatRoom)
-            {
-                Log.e("Fragment Active Chats", i_ActiveChatRoom.getSubjectName());
-                        if(mSubjectName.equals(i_ActiveChatRoom.getSubjectName())) {
-                            int matchesInTopis = countMatchesInTopics(i_ActiveChatRoom.getRoomName());
-                            if (matchesInTopis > 0) {
-                                Log.e("In Fragment Active Chats:", i_ActiveChatRoom.getCreationDate());
-                                Picasso.get().load(i_ActiveChatRoom.getImgLink()).into(i_ViewHolder.getGroupProfileImg());
-                                i_ViewHolder.setParentSubjectName(i_ActiveChatRoom.getSubjectName());
-                                i_ViewHolder.setGroupTopic(i_ActiveChatRoom.getRoomName());
-                                i_ViewHolder.setLastMessageTime(i_ActiveChatRoom.getCreationTime());
-                                i_ViewHolder.setLastMessageDate(i_ActiveChatRoom.getCreationDate());
-                            }
-                        }
-                                i_ViewHolder.setItemClickListener(new ItemClickListener() {
-                                    @Override
-                                    public void onClick(View view, int position, boolean isLongClick) {
-                                        Intent IntentChatRoom = new Intent(getContext(), ActivityChatRoom.class);
-                                        IntentChatRoom.putExtra("chat_room_id", i_ActiveChatRoom.getRoomId());
-                                        IntentChatRoom.putExtra("room_name", i_ActiveChatRoom.getRoomName());
-                                        IntentChatRoom.putExtra("subject_name", i_ActiveChatRoom.getSubjectName());
-                                        IntentChatRoom.putExtra("subject_image", i_ActiveChatRoom.getImgLink());
-                                        IntentChatRoom.putExtra("type", "observer");
-                                        startActivity(IntentChatRoom);
-                                    }
-                                });
-
-
-
-
-
-            }
-        };
-
-        mAdapter.startListening();
+        }
+        mAdapter = new AdapterPossibleActiveChats(mFilteredChatsList,getContext());
         mRecyclerPossibleActive.setAdapter(mAdapter);
     }
 
@@ -160,7 +186,36 @@ public class FragmentPossibleActiveChats extends Fragment {
 
 
     private void buildPossibleActiveChatsOptions() {
-        mOptions = new FirebaseRecyclerOptions.Builder<ChatRoom>()
-                .setQuery(mActiveChat.orderByChild("mIsChatClosed").equalTo(false),ChatRoom.class).build();
+        mActiveChat.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for(DataSnapshot room: dataSnapshot.getChildren()){
+                        if(!room.child("mIsChatClosed").getValue(boolean.class))
+                        {
+                            mOptions.add(room.getValue(ChatRoom.class));
+                        }
+                    }
+                    pupolateRecyclerView();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFilteredChatsList.clear();
+        mOptions.clear();
+        if(mAdapter != null)
+            mAdapter.clearRecyclerView();
+
     }
 }

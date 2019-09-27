@@ -104,9 +104,81 @@ public class ActivityChatRoom extends AppCompatActivity {
     }
 
     private void showJoinChatRoomButton() {
-        mButtonJoinChat.setVisibility(View.VISIBLE);
-        mButtonJoinChat.setClickable(true);
+        DatabaseReference reference = mDatabase.getReference("ChatRooms").child(mChatRoomId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (!dataSnapshot.child("mIsChatClosed").getValue(boolean.class)) {
+                        mButtonJoinChat.setVisibility(View.VISIBLE);
+                        mButtonJoinChat.setClickable(true);
+                        disableJoinButtonIfRequestedToJoin();
+                        disableJoinButtonIfParticipant();
+                        
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
+
+    private void disableJoinButtonIfParticipant() {
+        DatabaseReference participantsRef = mDatabase.getReference("Participants");
+        participantsRef.child(mChatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for(DataSnapshot id : dataSnapshot.getChildren())
+                    {
+                        if(id.getKey().equals(mCurrentUser.getUid()))
+                        {
+                            mButtonJoinChat.setVisibility(View.INVISIBLE);
+                            mButtonJoinChat.setClickable(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void disableJoinButtonIfRequestedToJoin() {
+        DatabaseReference requests = mDatabase.getReference("ChatRequests");
+        requests.child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for(DataSnapshot roomId : dataSnapshot.getChildren())
+                    {
+                        if(roomId.getKey().equals(mChatRoomId))
+                        {
+                            mButtonJoinChat.setVisibility(View.INVISIBLE);
+                            mButtonJoinChat.setClickable(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
     private void disableAllOtherCommandViews() {
         mMessageBodyText.setVisibility(View.INVISIBLE);
@@ -146,7 +218,8 @@ public class ActivityChatRoom extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
                 {
-                    if(dataSnapshot.child("creatorId").getValue(String.class).equals(mCurrentUser.getUid()))
+                    if(dataSnapshot.child("creatorId").getValue(String.class).equals(mCurrentUser.getUid())
+                    && dataSnapshot.child("mIsChatClosed").getValue(Boolean.class)!= Boolean.TRUE)
                     {
                      //   mCloseChatButton.setCursorVisible(true);
                         mCloseChatButton.setClickable(true);
@@ -328,8 +401,9 @@ public class ActivityChatRoom extends AppCompatActivity {
                 if(!mCurrentUser.getUid().equals(dataSnapshot.getValue(String.class))){
 
                     activeChatsRef.child(mCurrentUser.getUid()).child(mChatRoomId).removeValue();
-
-                    startRateUsersActivity();
+                    if(mVistorType!= null){
+                        if(!mVistorType.equals("observer"))
+                              startRateUsersActivity();}
 
                 }
             }
