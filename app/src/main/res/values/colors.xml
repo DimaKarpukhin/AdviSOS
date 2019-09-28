@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparent">#B3FFFFFF</color>
     <color name="blue">#F20D4FA6</color>
+    <color name="bluePressed">#114285</color>
     <color name="blueDark">#ED0F2646</color>
     <color name="blueVeryDark">#CC040D1A</color>
     <color name="blueLight">#BDC8DF</color>

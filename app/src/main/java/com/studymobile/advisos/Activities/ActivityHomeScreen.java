@@ -1,6 +1,7 @@
 package com.studymobile.advisos.Activities;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,11 +96,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ActivityHomeScreen extends AppCompatActivity implements
-        TextWatcher, MaterialSearchBar.OnSearchActionListener,
-        NavigationView.OnNavigationItemSelectedListener
+        NavigationView.OnNavigationItemSelectedListener, TextWatcher
 {
     private static final String RES = "android.resource://";
     private static final String DRAWABLE_DEFAULT = "/drawable/img_advisos";
@@ -108,6 +109,10 @@ public class ActivityHomeScreen extends AppCompatActivity implements
     private static final int REQ_CODE = 2;
     private static final String CONTEXT = "context";
     private static final String REQUEST = "request";
+    private static final String TAG = "USER LOCATION";
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private static final String ALPHABETICALLY = "subjectName";
+    private static final String POPULARITY = "popularity";
 
     private Dialog m_DialogCreateSubj;
     private Uri m_DialogImgURI;
@@ -119,26 +124,24 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     private Dialog m_DialogSubjList;
     private RecyclerView m_DialogRecyclerView;
-    private ImageButton m_FabCreateSubj;
     private List<String> m_SuggestionsList;
     private HashMap<String, Boolean> m_SubjStateMap = new HashMap<>();
     private Set<String> m_SubjNamesSet = new HashSet<String>();
-    private SparseBooleanArray m_SubjStateArray = new SparseBooleanArray();
-    private MaterialSearchBar m_SearchBar;
+
+    private MaterialSearchBar m_PopUpSearchBar;
 
     private Dialog m_ConfirmDialog;
 
     private FirebaseRecyclerOptions<Subject> m_Options;
     private FirebaseRecyclerAdapter<Subject, ViewHolderSubject> m_Adapter;
 
-    private Toolbar mToolBar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private AdapterTabsAccessor mAdapterTabsAccessor;
 
     private NavigationView m_NavigationView;
     private DrawerLayout m_DrawerLayout;
-    private MaterialSearchBar m_SearchBar1;
+    private MaterialSearchBar m_SearchBar;
 
 
     private FirebaseAuth m_Auth;
@@ -149,20 +152,13 @@ public class ActivityHomeScreen extends AppCompatActivity implements
     private boolean m_IsOnline;
     private Menu m_NavigationMenu;
 
-    private ViewPager.OnPageChangeListener m_ViewPager;
     private FloatingActionButton m_FabCreate;
 
     private File m_PickedImage;
-    private  File m_CompressedImage;
+    private File m_CompressedImage;
 
-
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     protected Location mLastLocation;
     private FusedLocationProviderClient mFusedLocationClient;
-    private static final String TAG = "USER LOCATION";
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-
-
 
     @Override
     public void onStart() {
@@ -172,6 +168,41 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             requestPermissions();
         } else {
             getCurrentUserLocationOnGrantedAccess();
+        }
+
+        Intent PushNotificationIntent = getIntent();
+        if(PushNotificationIntent.getExtras() != null
+                && PushNotificationIntent.getExtras()
+                .getString(CONTEXT).equals(REQUEST))
+        {
+            mViewPager.setCurrentItem(3);
+        }
+
+        if(m_Adapter != null)
+        {
+            m_Adapter.startListening();
+        }
+    }
+
+
+    @Override
+    protected void onStop()
+    {
+        if(m_Adapter != null)
+        {
+            m_Adapter.stopListening();
+        }
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if(m_Adapter != null)
+        {
+            m_Adapter.startListening();
         }
     }
 
@@ -210,6 +241,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
+
     private void getCurrentUserLocationOnGrantedAccess()
     {
         mFusedLocationClient.getLastLocation()
@@ -276,11 +308,6 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             startLocationPermissionRequest();
         }
     }
-    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
-
 
 
     @Override
@@ -296,8 +323,10 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         setDialogSubjectsList();
         setDialogCreateSubject();
 
-        if(getIntent().getExtras() != null
-                && getIntent().getExtras().getString(CONTEXT).equals(REQUEST))
+        Intent PushNotificationIntent = getIntent();
+        if(PushNotificationIntent.getExtras() != null
+                && PushNotificationIntent.getExtras()
+                .getString(CONTEXT).equals(REQUEST))
         {
             mViewPager.setCurrentItem(3);
         }
@@ -313,13 +342,20 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             }
 
             @Override
-            public void onPageSelected(int position) {
-                switch (position) {
+            public void onPageSelected(int i_Position) {
+                switch (i_Position) {
                     case 0:
                         m_FabCreate.show();
                         break;
-                    default:
+                    case 1:
+                    case 2:
                         m_FabCreate.hide();
+                        disableSearch();
+                        disableOptions();
+                        break;
+                    case 3:
+                        m_FabCreate.hide();
+                        disableSearch();
                         break;
                 }
             }
@@ -327,6 +363,45 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+    }
+
+    private void disableOptions()
+    {
+        m_SearchBar = findViewById(R.id.search_bar_of_home_screen);
+        m_SearchBar.setMenuIcon(0);
+        m_SearchBar.getMenu().getMenu().clear();
+    }
+
+    private void disableSearch()
+    {
+        m_SearchBar = findViewById(R.id.search_bar_of_home_screen);
+        m_SearchBar.setSearchIcon(0);
+        m_SearchBar.getSearchEditText().setVisibility(View.GONE);
+        m_SearchBar.setClearIcon(0);
+        m_SearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener()
+        {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {}
+
+            @Override
+            public void onSearchConfirmed(CharSequence i_Text) {}
+
+            @Override
+            public void onButtonClicked(int i_Button)
+            {
+                switch (i_Button) {
+                    case MaterialSearchBar.BUTTON_NAVIGATION:
+                        m_DrawerLayout.openDrawer(Gravity.LEFT);
+                        break;
+                    case MaterialSearchBar.BUTTON_BACK:
+                        m_SearchBar.hideSuggestionsList();
+                        m_SearchBar.disableSearch();
+                        break;
+                }
+
+                m_SuggestionsList.clear();
             }
         });
     }
@@ -342,22 +417,12 @@ public class ActivityHomeScreen extends AppCompatActivity implements
 
     private void setActivityContent()
     {
-        //        mToolBar = findViewById(R.id.toolbar_of_homes_screen);
-//        setSupportActionBar(mToolBar);
-//        getSupportActionBar().setTitle("AdviSOS");
-
         mViewPager = findViewById(R.id.pager_of_home_screen);
         mAdapterTabsAccessor = new AdapterTabsAccessor(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapterTabsAccessor);
 
         mTabLayout = findViewById(R.id.tabs_of_home_screen);
         mTabLayout.setupWithViewPager(mViewPager);
-
-        m_SearchBar = findViewById(R.id.search_bar_of_home_screen);
-//        m_SearchBar.setCardViewElevation(10);
-        m_SearchBar.setMaxSuggestionCount(5);
-        m_SearchBar.addTextChangeListener(this);
-        m_SearchBar.setOnSearchActionListener(this);
 
         m_DrawerLayout = findViewById(R.id.drawer_layout_home_screen);
         m_NavigationView = findViewById(R.id.nav_view_home_screen);
@@ -373,56 +438,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             }
         });
 
-        //>>
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        //<<
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (m_DrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            m_DrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu i_Menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.options_of_home_screen, i_Menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem i_Item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = i_Item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(i_Item);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
     }
 
     @Override
@@ -584,30 +600,6 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         startActivity(IntentRegistration);
     }
 
-    @Override
-    public void onSearchStateChanged(boolean enabled) {
-
-    }
-
-    @Override
-    public void onSearchConfirmed(CharSequence text) {
-
-    }
-
-    @Override
-    public void onButtonClicked(int i_Button) {
-        switch (i_Button)
-        {
-            case MaterialSearchBar.BUTTON_NAVIGATION:
-                m_DrawerLayout.openDrawer(Gravity.LEFT);
-                break;
-            case MaterialSearchBar.BUTTON_BACK:
-                m_SearchBar.hideSuggestionsList();
-                m_SearchBar.disableSearch();
-                break;
-        }
-    }
-
     private void setDialogCreateSubject()
     {
         m_DialogCreateSubj = new Dialog(ActivityHomeScreen.this);
@@ -643,15 +635,32 @@ public class ActivityHomeScreen extends AppCompatActivity implements
                             m_FieldSubjName.setError("The field is required");
                         }
                         else {
-                            m_DialogCreateSubj.dismiss();
-                            if(m_IsImgPicked){
-                                uploadImageToStorage( m_FieldSubjName.getText().toString());
-                            }else{
-                                uploadImageToStorage(DEFAULT);
-                            }
+                            String subjName = m_FieldSubjName.getText().toString().toUpperCase();
+                            m_Database.getReference("Subjects").child(subjName)
+                                    .addListenerForSingleValueEvent(new ValueEventListener()
+                            {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                                {
+                                    if (i_DataSnapshot.exists()) {
+                                        m_FieldSubjName.setError("Subject already exists.");
+                                    }
+                                    else{
+                                        m_DialogCreateSubj.dismiss();
+                                        if(m_IsImgPicked){
+                                            uploadImageToStorage( m_FieldSubjName.getText().toString());
+                                        }else{
+                                            uploadImageToStorage(DEFAULT);
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
+                            });
                         }
                     }
                 });
+
         m_DialogCreateSubj.findViewById(R.id.btn_cancel_of_dialog_create_a_subj)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -729,10 +738,6 @@ public class ActivityHomeScreen extends AppCompatActivity implements
             m_DialogImgURI = Uri.fromFile(m_CompressedImage);
             m_DialogImgView.setImageURI(m_DialogImgURI);
             m_IsImgPicked = true;
-
-//            m_DialogImgURI = data.getData();
-//            m_DialogImgView.setImageURI(m_DialogImgURI);
-//            m_IsImgPicked = true;
         }
     }
 
@@ -789,7 +794,7 @@ public class ActivityHomeScreen extends AppCompatActivity implements
                     m_FieldSubjName.setError("Subject already exists.");
                 }
                 else {
-                    m_DialogCreateSubj.dismiss();
+                    subject.setPopularity(0);
                     subject.setSubjectName(subjName);
                     subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
                     subject.setImgLink(m_DialogImgURI.toString());
@@ -850,20 +855,69 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_DialogSubjList.setCanceledOnTouchOutside(false);
 
         m_SuggestionsList = new ArrayList<>();
-//        m_SearchBar = findViewById(R.id.search_bar_of_dialog_subjects_list);
-//        m_SearchBar.setCardViewElevation(10);
-//        m_SearchBar.setMaxSuggestionCount(5);
-//        m_SearchBar.addTextChangeListener(this);
-//        m_SearchBar.setOnSearchActionListener(this);
+        m_PopUpSearchBar = m_DialogSubjList.findViewById(R.id.search_bar_of_dialog_subjects_list);
+        m_PopUpSearchBar.setNavButtonEnabled(false);
+        m_PopUpSearchBar.setMaxSuggestionCount(5);
+        m_PopUpSearchBar.addTextChangeListener(this);
+        m_PopUpSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener()
+        {
+            @Override
+            public void onSearchStateChanged(boolean enabled)
+            {
+                m_PopUpSearchBar.setNavButtonEnabled(true);
+                m_PopUpSearchBar.hideSuggestionsList();
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence i_Text) {
+                search(i_Text);
+
+            }
+
+            @Override
+            public void onButtonClicked(int i_Button)
+            {
+                onBackClicked();
+                m_PopUpSearchBar.setNavButtonEnabled(false);
+            }
+        });
+
         m_DialogRecyclerView = m_DialogSubjList.findViewById(R.id.recycler_view_of_dialog_subjects_list);
         m_DialogRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         m_DialogRecyclerView.setLayoutManager(layoutManager);
     }
 
+    private void search(CharSequence i_Text)
+    {
+        if (i_Text.toString().isEmpty())
+        {
+            Toast.makeText(this, "Please enter your choice", Toast.LENGTH_SHORT).show();
+        }
+        else if (!m_SuggestionsList.contains(i_Text.toString().toUpperCase()))
+        {
+            Toast.makeText(this, "No dishes found, try another category", Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            buildSubjectsOptionsByContext(ALPHABETICALLY, i_Text.toString().toUpperCase());
+        }
+
+        populateSubjectsListView();
+    }
+
+    private void onBackClicked()
+    {
+        buildSubjectsOptionsByContext(POPULARITY, null);
+        populateSubjectsListView();
+        m_PopUpSearchBar.hideSuggestionsList();
+        m_PopUpSearchBar.disableSearch();
+        m_SuggestionsList.clear();
+    }
+
     private void showDialogSubjectsList()
     {
-        buildSubjectsListOptions();
+        buildSubjectsOptionsByContext(POPULARITY, null);
         populateSubjectsListView();
 
         m_DialogSubjList.findViewById(R.id.btn_new_of_dialog_subjects_list)
@@ -978,12 +1032,22 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         }
     }
 
-    private void buildSubjectsListOptions()
+    private void buildSubjectsOptionsByContext(String i_Context, String i_Key)
     {
-        DatabaseReference subjectRef = m_Database.getReference().child("Subjects");
-        m_Options = new FirebaseRecyclerOptions.Builder<Subject>()
-                .setQuery(subjectRef, Subject.class)
-                .build();
+       DatabaseReference subjectRef = m_Database.getReference().child("Subjects");
+        if(i_Key == null)
+        {
+            m_Options = new FirebaseRecyclerOptions
+                    .Builder<Subject>()
+                    .setQuery(subjectRef.orderByChild(i_Context), Subject.class)
+                    .build();
+        }
+        else{
+            m_Options = new FirebaseRecyclerOptions
+                    .Builder<Subject>()
+                    .setQuery(subjectRef.orderByChild(i_Context).equalTo(i_Key), Subject.class)
+                    .build();
+        }
     }
 
     private void populateSubjectsListView()
@@ -1054,4 +1118,62 @@ public class ActivityHomeScreen extends AppCompatActivity implements
         m_Adapter.startListening();
         m_DialogRecyclerView.setAdapter(m_Adapter);
     }
+
+    @Override
+    public void onTextChanged(CharSequence i_Text, int i_Start, int i_Before, int i_Count)
+    {
+        if(m_PopUpSearchBar.isSearchEnabled())
+        {
+            if (m_SuggestionsList.isEmpty())
+            {
+                setSuggestions();
+            }
+
+            List<String> suggestions = new ArrayList<>();
+            for (String searchOption : m_SuggestionsList)
+            {
+                if (!m_PopUpSearchBar.getText().isEmpty() && !m_PopUpSearchBar.getText().startsWith(" ") &&
+                        searchOption.toLowerCase().contains(m_PopUpSearchBar.getText().toLowerCase()) &&
+                        !suggestions.contains(searchOption.toLowerCase()))
+                {
+                    suggestions.add(searchOption.toLowerCase());
+                } else {
+                    m_PopUpSearchBar.hideSuggestionsList();
+                }
+            }
+
+            m_PopUpSearchBar.setLastSuggestions(suggestions);
+            if (!m_PopUpSearchBar.getText().isEmpty())
+            {
+                m_PopUpSearchBar.showSuggestionsList();
+            }
+        } else {
+            m_PopUpSearchBar.hideSuggestionsList();
+        }
+    }
+
+    private void setSuggestions()
+    {
+        m_Database.getReference().child("Subjects").orderByChild("subjectName")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                    {
+                        for (DataSnapshot snapshot : i_DataSnapshot.getChildren()) {
+                            Subject subject = snapshot.getValue(Subject.class);
+                            m_SuggestionsList.add(Objects.requireNonNull(subject).getSubjectName());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError i_DatabaseError) { }
+                });
+
+        m_PopUpSearchBar.setLastSuggestions(m_SuggestionsList);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence i_Text, int i_Start, int i_Count, int i_After) {m_PopUpSearchBar.hideSuggestionsList(); }
+
+    @Override
+    public void afterTextChanged(Editable i_Text) { }
 }

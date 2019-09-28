@@ -44,7 +44,7 @@ public class FireBaseMsgService  extends FirebaseMessagingService
                 .setPriority(Notification.PRIORITY_MAX)
                 .setSound(defaultSoundUri);
         Intent resultIntent = new Intent(this, ActivityHomeScreen.class);
-        resultIntent.putExtra(CONTEXT,REQUEST);//should put the id in the 2nd argument
+        resultIntent.putExtra(CONTEXT, REQUEST);//should put the id in the 2nd argument
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

@@ -6,6 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Item menu style. -->
+        <item name="android:itemBackground">@color/blue</item>
+        <item name="android:textColor">@color/blueLight</item>
+        <item name="android:colorControlNormal">@color/blueLight</item>
+        <item name="android:colorControlActivated">@color/blueLight</item>
+<!--        <item name="android:colorControlHighlight">@color/bluePressed</item>-->
+
+
     </style>
 
     <style name="SwitchBlueLight" parent="Theme.AppCompat.Light">
@@ -39,18 +48,6 @@
     <style name="AppTheme.ArrowBack" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Material.Title">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-    </style>
 
 
 </resources>

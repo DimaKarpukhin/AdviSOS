@@ -5,13 +5,14 @@ import java.util.List;
 
 public class Subject
 {
-    private boolean mIsChecked;//?
     private String mSubjectName, mSubjectDescription, mImgLink;
     private List<SubjectUser> mSubjectUsers = new LinkedList<SubjectUser>();
+    private int mPopularity;
 
     public Subject(){}
 
-    public Subject(String i_SubjectName, String i_SubjectDescription, String i_ImgLink, List<SubjectUser> i_SubjectUsers)
+    public Subject(String i_SubjectName, String i_SubjectDescription,
+                   String i_ImgLink, List<SubjectUser> i_SubjectUsers)
     {
         this.setSubjectName(i_SubjectName);
         this.setSubjectDescription(i_SubjectDescription);
@@ -19,12 +20,14 @@ public class Subject
         this.setSubjectUsers(i_SubjectUsers);
     }
 
-    public boolean getChecked() {
-        return mIsChecked;
+    public int getPopularity()
+    {
+        return mPopularity;
     }
 
-    public void setChecked(boolean i_Checked) {
-        mIsChecked = i_Checked;
+    public void setPopularity(int i_Popularity)
+    {
+        mPopularity = i_Popularity;
     }
 
     public String getSubjectName()

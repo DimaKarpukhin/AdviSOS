@@ -102,14 +102,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
 
 public class ActivityExpertSettings extends AppCompatActivity implements
-        View.OnClickListener, CompoundButton.OnCheckedChangeListener,
-        TextWatcher, MaterialSearchBar.OnSearchActionListener
+        View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher
 {
     private static final String RES = "android.resource://";
     private static final String DRAWABLE_DEFAULT = "/drawable/img_advisos";
     private static final String DEFAULT = "Default";
     private static final int IMG_REQ = 1;
     private static final int REQ_CODE = 2;
+    private static final String ALPHABETICALLY = "subjectName";
+    private static final String POPULARITY = "popularity";
 
     private File m_PickedImage;
     private  File m_CompressedImage;
@@ -136,7 +137,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
     private HashMap<String, Boolean> m_SubjStateMap = new HashMap<>();
     private Set<String> m_SubjNamesSet = new HashSet<String>();
     private SparseBooleanArray m_SubjStateArray = new SparseBooleanArray();
-    private MaterialSearchBar m_SearchBar;
+    private MaterialSearchBar m_PopUpSearchBar;
 
     private TextView m_BtnSubjects;
     private FloatingActionButton m_FabNext;
@@ -491,7 +492,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
     private void showDialogSubjectsList()
     {
-        buildSubjectsListOptions();
+        buildSubjectsOptionsByContext(POPULARITY, null);
         populateSubjectsListView();
 
         m_DialogSubjList.setCanceledOnTouchOutside(false);
@@ -557,12 +558,22 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         confirmDialog.show();
     }
 
-    private void buildSubjectsListOptions()
+    private void buildSubjectsOptionsByContext(String i_Context, String i_Key)
     {
         DatabaseReference subjectRef = m_Database.getReference().child("Subjects");
-        m_Options = new FirebaseRecyclerOptions.Builder<Subject>()
-                .setQuery(subjectRef, Subject.class)
-                .build();
+        if(i_Key == null)
+        {
+            m_Options = new FirebaseRecyclerOptions
+                    .Builder<Subject>()
+                    .setQuery(subjectRef.orderByChild(i_Context), Subject.class)
+                    .build();
+        }
+        else{
+            m_Options = new FirebaseRecyclerOptions
+                    .Builder<Subject>()
+                    .setQuery(subjectRef.orderByChild(i_Context).equalTo(i_Key), Subject.class)
+                    .build();
+        }
     }
 
     private void populateSubjectsListView()
@@ -655,16 +666,32 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                             m_FieldSubjName.setError("The field is required");
                         }
                         else {
-                            m_DialogCreateSubj.dismiss();
-                            if(m_IsImgPicked){
-                                uploadImageToStorage( m_FieldSubjName.getText().toString());
-                            }else{
-                                uploadImageToStorage(DEFAULT);
-                            }
-
+                            String subjName = m_FieldSubjName.getText().toString().toUpperCase();
+                            m_Database.getReference("Subjects").child(subjName)
+                                    .addListenerForSingleValueEvent(new ValueEventListener()
+                                    {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                                        {
+                                            if (i_DataSnapshot.exists()) {
+                                                m_FieldSubjName.setError("Subject already exists.");
+                                            }
+                                            else{
+                                                m_DialogCreateSubj.dismiss();
+                                                if(m_IsImgPicked){
+                                                    uploadImageToStorage( m_FieldSubjName.getText().toString());
+                                                }else{
+                                                    uploadImageToStorage(DEFAULT);
+                                                }
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError i_DataSnapshot) {}
+                                    });
                         }
                     }
                 });
+
         m_DialogCreateSubj.findViewById(R.id.btn_cancel_of_dialog_create_a_subj)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -801,7 +828,7 @@ public class ActivityExpertSettings extends AppCompatActivity implements
                             m_FieldSubjName.setError("Subject already exists.");
                         }
                         else {
-                            m_DialogCreateSubj.dismiss();
+                            subject.setPopularity(0);
                             subject.setSubjectName(subjName);
                             subject.setSubjectDescription(m_FieldSubjDescription.getText().toString());
                             subject.setImgLink(m_DialogImgURI.toString());
@@ -846,18 +873,63 @@ public class ActivityExpertSettings extends AppCompatActivity implements
         m_DialogSubjList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         m_SuggestionsList = new ArrayList<>();
-//        m_SearchBar = findViewById(R.id.search_bar_of_dialog_subjects_list);
-//
-//        m_SearchBar.setCardViewElevation(10);
-//        m_SearchBar.setMaxSuggestionCount(5);
-//        m_SearchBar.addTextChangeListener(this);
-//        m_SearchBar.setOnSearchActionListener(this);
+        m_PopUpSearchBar = m_DialogSubjList.findViewById(R.id.search_bar_of_dialog_subjects_list);
+        m_PopUpSearchBar.setNavButtonEnabled(false);
+        m_PopUpSearchBar.setMaxSuggestionCount(5);
+        m_PopUpSearchBar.addTextChangeListener(this);
+        m_PopUpSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener()
+        {
+            @Override
+            public void onSearchStateChanged(boolean enabled)
+            {
+                m_PopUpSearchBar.setNavButtonEnabled(true);
+                m_PopUpSearchBar.hideSuggestionsList();
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence i_Text) {
+                search(i_Text);
+            }
+
+            @Override
+            public void onButtonClicked(int i_Button)
+            {
+                onBackClicked();
+                m_PopUpSearchBar.setNavButtonEnabled(false);
+            }
+        });
 
         m_DialogRecyclerView = m_DialogSubjList.findViewById(R.id.recycler_view_of_dialog_subjects_list);
         m_DialogRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         m_DialogRecyclerView.setLayoutManager(layoutManager);
     }
+
+    private void search(CharSequence i_Text)
+    {
+        if (i_Text.toString().isEmpty())
+        {
+            Toast.makeText(this, "Please enter your choice", Toast.LENGTH_SHORT).show();
+        }
+        else if (!m_SuggestionsList.contains(i_Text.toString().toUpperCase())) {
+            Toast.makeText(this, "No dishes found, try another category", Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            buildSubjectsOptionsByContext(ALPHABETICALLY, i_Text.toString().toUpperCase());
+        }
+
+        populateSubjectsListView();
+    }
+
+    private void onBackClicked()
+    {
+        buildSubjectsOptionsByContext(POPULARITY, null);
+        populateSubjectsListView();
+        m_PopUpSearchBar.hideSuggestionsList();
+        m_PopUpSearchBar.disableSearch();
+    }
+
 
     private void setDialogCreateSubject()
     {
@@ -874,34 +946,63 @@ public class ActivityExpertSettings extends AppCompatActivity implements
 
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void onTextChanged(CharSequence i_Text, int i_Start, int i_Before, int i_Count)
+    {
+        if(m_PopUpSearchBar.isSearchEnabled())
+        {
+            if (m_SuggestionsList.isEmpty())
+            {
+                setSuggestions();
+            }
 
+            List<String> suggestions = new ArrayList<>();
+            for (String searchOption : m_SuggestionsList)
+            {
+                if (!m_PopUpSearchBar.getText().isEmpty() && !m_PopUpSearchBar.getText().startsWith(" ") &&
+                        searchOption.toLowerCase().contains(m_PopUpSearchBar.getText().toLowerCase()) &&
+                        !suggestions.contains(searchOption.toLowerCase()))
+                {
+                    suggestions.add(searchOption.toLowerCase());
+                } else {
+                    m_PopUpSearchBar.hideSuggestionsList();
+                }
+            }
+
+            m_PopUpSearchBar.setLastSuggestions(suggestions);
+            if (!m_PopUpSearchBar.getText().isEmpty())
+            {
+                m_PopUpSearchBar.showSuggestionsList();
+            }
+        } else {
+            m_PopUpSearchBar.hideSuggestionsList();
+        }
+    }
+
+    private void setSuggestions()
+    {
+        m_Database.getReference().child("Subjects").orderByChild("subjectName")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot i_DataSnapshot)
+                    {
+                        for (DataSnapshot snapshot : i_DataSnapshot.getChildren()) {
+                            Subject subject = snapshot.getValue(Subject.class);
+                            m_SuggestionsList.add(Objects.requireNonNull(subject).getSubjectName());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError i_DatabaseError) { }
+                });
+
+        m_PopUpSearchBar.setLastSuggestions(m_SuggestionsList);
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
+    public void beforeTextChanged(CharSequence i_Text, int i_Start, int i_Count, int i_After) {m_PopUpSearchBar.hideSuggestionsList(); }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable i_Text) { }
 
-    }
-
-    @Override
-    public void onSearchStateChanged(boolean enabled) {
-
-    }
-
-    @Override
-    public void onSearchConfirmed(CharSequence text) {
-
-    }
-
-    @Override
-    public void onButtonClicked(int buttonCode) {
-
-    }
 
     private void populateDatabaseWithExpertSettings()
     {

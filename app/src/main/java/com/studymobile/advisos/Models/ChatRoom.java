@@ -8,6 +8,7 @@ public class ChatRoom
     private String mCreationDate;
     private String mCreationTime;
     private String mSubjectName;
+    private int mNumOfParticipants;
     private Boolean mIsChatClosed = false;
 
 
@@ -16,7 +17,7 @@ public class ChatRoom
 
     public ChatRoom(String i_RoomId, String i_RoomName, String i_CreationDate,
                     String i_CreationTime, String i_SubjectName,
-                     String i_creator,  String i_ImgLink)
+                     String i_creator,  String i_ImgLink, int i_NumOfParticipants)
     {
         this.mImgLink = i_ImgLink;
 
@@ -26,7 +27,18 @@ public class ChatRoom
         this.setCreationTime(i_CreationTime);
         this.setSubjectName(i_SubjectName);
         this.mChatRoomCreatorUid = i_creator;
+        this.setNumOfParticipants(i_NumOfParticipants);
 
+    }
+
+    public void setNumOfParticipants(int i_NumOfParticipants)
+    {
+        mNumOfParticipants = i_NumOfParticipants;
+    }
+
+    public int getNumOfParticipants()
+    {
+        return mNumOfParticipants;
     }
 
     public void setImgLink(String i_ImgLink)

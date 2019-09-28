@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.options_of_home_screen, menu);
+        getMenuInflater().inflate(R.menu.options_of_fragment_subjects, menu);
         return true;
     }
 
@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.sort_by_a_z) {
             return true;
         }
 

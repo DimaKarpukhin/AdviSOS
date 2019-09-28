@@ -13,20 +13,20 @@
 
         <RelativeLayout
             android:id="@+id/layout_image"
-            android:layout_width="match_parent"
+            android:layout_width="290dp"
             android:layout_height="290dp"
             android:background="@color/blueLight">
             <RelativeLayout
-                android:layout_width="280dp"
-                android:layout_height="280dp"
+                android:layout_width="290dp"
+                android:layout_height="290dp"
                 android:layout_centerInParent="true">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/img_of_dialog_profile_picture"
-                    android:layout_margin="10dp"
-                    android:layout_width="280dp"
-                    android:layout_height="280dp"
+                    android:layout_margin="5dp"
+                    android:layout_width="290dp"
+                    android:layout_height="290dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/img_profile_picture"
                     app:civ_border_color="@color/blue"
@@ -39,7 +39,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@drawable/btn_circle_white_pressed_grey_light"
                     android:src="@drawable/ic_add_a_photo_blue">
 

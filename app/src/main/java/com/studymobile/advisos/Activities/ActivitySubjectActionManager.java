@@ -382,47 +382,47 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
     }
 
 
-    private void checkIfTopicExists()
-    {
-        final Dialog confirmDialog = new Dialog(ActivitySubjectActionManager.this);
-        confirmDialog.setContentView(R.layout.dialog_confirm);
-
-        String title = "Similar topics were discussed earlier";
-        String startNewBtnTxt = "Start new";
-        String viewSimilarBtnTxt = "View similar";
-
-        ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
-        TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
-        TextView startNewBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
-        TextView viewSimilarBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
-
-        closeBtn.setVisibility(View.VISIBLE);
-        fieldTitle.setText(title);
-        startNewBtn.setText(startNewBtnTxt);
-        viewSimilarBtn.setText(viewSimilarBtnTxt);
-
-        startNewBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //startCreateChatRoomActivity();
-                        createChatRoomActivity(mFieldTopic.getText().toString());
-                    }
-                });
-        viewSimilarBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog.dismiss();
-            }
-        });
-
-        confirmDialog.show();
-    }
+//    private void checkIfTopicExists()
+//    {
+//        final Dialog confirmDialog = new Dialog(ActivitySubjectActionManager.this);
+//        confirmDialog.setContentView(R.layout.dialog_confirm);
+//
+//        String title = "Similar topics were discussed earlier";
+//        String startNewBtnTxt = "Start new";
+//        String viewSimilarBtnTxt = "View similar";
+//
+//        ImageButton closeBtn = confirmDialog.findViewById(R.id.btn_close_of_dialog_confirm);
+//        TextView fieldTitle = confirmDialog.findViewById(R.id.txt_title_of_dialog_confirm);
+//        TextView startNewBtn = confirmDialog.findViewById(R.id.btn_right_of_dialog_confirm);
+//        TextView viewSimilarBtn = confirmDialog.findViewById(R.id.btn_left_of_dialog_confirm);
+//
+//        closeBtn.setVisibility(View.VISIBLE);
+//        fieldTitle.setText(title);
+//        startNewBtn.setText(startNewBtnTxt);
+//        viewSimilarBtn.setText(viewSimilarBtnTxt);
+//
+//        startNewBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //startCreateChatRoomActivity();
+//                        createChatRoomActivity(mFieldTopic.getText().toString());
+//                    }
+//                });
+//        viewSimilarBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
+//        closeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                confirmDialog.dismiss();
+//            }
+//        });
+//
+//        confirmDialog.show();
+//    }
 
     private void setFirebaseData()
     {
@@ -477,17 +477,15 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
         startActivity(IntentHomeScreen);
     }
 
-    private void startCreateChatRoomActivity()
-    {
-        Intent IntentCreateChatRoom = new Intent
-                (ActivitySubjectActionManager.this, ActivityCreateChatRoom.class);
-        IntentCreateChatRoom.putExtra(SUBJECT_NAME, mSubjectName);
-        startActivity(IntentCreateChatRoom);
-    }
-
     //===================================================
     private void createChatRoomActivity(String i_roomName)
     {
+        int subjectPopularity = mCurrentSubject.getPopularity();
+        subjectPopularity--;
+        mDatabase.getReference("Subjects")
+                .child(mCurrentSubject.getSubjectName())
+                .child("popularity").setValue(subjectPopularity);
+
         mChatRoomsRef = mDatabase.getReference("ChatRooms");
         mChatRoomUId = mChatRoomsRef.push().getKey();//push new chat room id and get UId
         Pair<String, String> date = getCreationDateAndTime();
@@ -497,7 +495,7 @@ public class ActivitySubjectActionManager extends AppCompatActivity implements V
                 (mChatRoomUId, i_roomName,
                 date.first, date.second,
                 mSubjectName,creatorID,
-                mCurrentSubject.getImgLink());
+                mCurrentSubject.getImgLink(), 1);
 
         mChatRoomsRef.child(mChatRoomUId).setValue(chatRoom);//add chat room information under room id
 

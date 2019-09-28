@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -49,6 +49,13 @@ public class ActivityDisplayClosedChats extends AppCompatActivity {
         setContentView(R.layout.activity_display_closed_chats);
         init();
         setFirebaseData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu i_Menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.options_of_fragment_subjects, i_Menu);
+        return true;
     }
 
     @Override

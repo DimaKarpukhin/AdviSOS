@@ -9,7 +9,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings"><i>Settings</i></string>
     <string name="txt_view_connect_with">Connect with</string>
     <string name="btn_phone_number">Phone number</string>
     <string name="btn_email_and_password"><![CDATA[Email&Password]]></string>
@@ -58,6 +58,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="the_topic">Topic:</string>
+    <string name="sort_by"><b><i><u>Sort by</u>:</i></b></string>
+    <string name="alphabetically"><i>A-Z</i></string>
+    <string name="popularity"><i>Popularity</i></string>
+    <string name="user"><i>User</i></string>
+    <string name="subject"><i>Subject</i></string>
 
 
 </resources>

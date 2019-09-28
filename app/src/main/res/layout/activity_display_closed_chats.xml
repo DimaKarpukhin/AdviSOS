@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_of_closed_chats"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/black"
-        android:backgroundTint="@color/blue"
-        android:elevation="4dp"
-        app:navigationIcon="@drawable/ic_arrow_back_white"
-        app:buttonGravity="bottom"
-        app:title="My closed chats"
-        app:titleTextColor="@color/white"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_of_closed_chats"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black"
+            android:backgroundTint="@color/blue"
+            android:elevation="4dp"
+            app:navigationIcon="@drawable/ic_arrow_back_white"
+            app:buttonGravity="bottom"
+            app:title="My closed chats"
+            app:titleTextColor="@color/white"
             />
     </com.google.android.material.appbar.AppBarLayout>
 
