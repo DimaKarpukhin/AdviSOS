@@ -3,52 +3,47 @@
 ## *An instant messaging service, that allows to get real time expert advice on any topic. Implemented in Java using Firebase real-time database and other Firebase services*
 
 <p align="center">
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/splashScreen.jpg"/>
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/DB.jpg"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/splash_screen.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/connect_with.jpeg" width="200"/>
 </p>
-
 ----------------
 
 # *Step 1: Registration*
 ## *i. Authentication*
 ***The system is integrated with quick authentication options and support appropriate verification and format checks. After the first sign up the system fill identify your user automatically, but you will still able to edit your personal information.***
 
-### _Google authentication_ 
+### _Google and Facebook authentication_ 
 <p align="center">
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authGoogle.jpg"/>
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authFaceBook.jpg"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_social.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_google.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_facebook.jpeg" width="200"/>
 </p>
 
-### _Facebook authentication_ 
+### _Phone number authentication with code varification_ 
 <p align="center">
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authGoogle.jpg"/>
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authFaceBook.jpg"/>
-</p>
-
-### _Phone number authentication_ 
-<p align="center">
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authGoogle.jpg"/>
- <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authFaceBook.jpg"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_phone_num.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_varification_1.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/auth_varification_2.jpeg" width="200"/>
 </p>
 
 ### _Email and Password authentication with 'reset password' option_
 <p align="center">
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/authMailPswd.jpg"/>
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/signUp.jpg"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/sign_up.jpeg" width="200"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/reset_password.jpeg" width="200"/>
 </p>
 
 ## *ii. Confirm personal details*
 ***The app will autofill an appropriate form fields according to your authentication method. Just complete the missing information and confirm.***
 <p align="center">
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/resetPswd.jpg"/>
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/gotMailResetPswd.jpg"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/confirm_details.jpeg" width="200"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/user_photo.jpeg" width="200"/>
 </p>
 
 ## *iii. Expert settings*
 ***Choose/add the subjects that you are an expert on from/to the subject's list and set the time of your week availability. You can change these setting any time you use the app***
 <p align="center">
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/resetPswd.jpg"/>
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/gotMailResetPswd.jpg"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/availability.jpeg" width="200"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/choose_subjects.jpeg" width="200"/>
 </p
   
 # *Step 2: Just ask an advice or/and help others*
@@ -58,8 +53,10 @@
 - _**"advice others"** tab - all active chats in which you are one of the experts_
 - _**"requests"** tab - all active chat requests as an expert_
 <p align="center">
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/resetPswd.jpg"/>
-  <img src="https://github.com/DimaKarpukhin/StarFoodApp/blob/master/screenshots/gotMailResetPswd.jpg"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/subjects.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/advice_me.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/advice_others.jpeg" width="200"/>
+ <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/group_requests.jpeg" width="200"/>
 </p>
 
 ## ***To get an advice from the experts:***
@@ -70,7 +67,10 @@
 5. _While the chat is active you can find it in **"advice me"** tab and when the chat is closed the system removes it from this tab to **"my closed chats"** of navigation menu on top left side of the screen_
 6. _The user who asked an advice is only the one, who can close the chat, after he got an expected answer from the experts_
 7. _At the time of closing the chat, each of the experts who participated in the chat should rate each other_
-
+<p align="center">
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/topic.jpeg" width="200"/>
+  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/nav_menu.jpeg" width="200"/>
+</p
 ## ***To give an advice as an experts:***
 1. _Mark/add the subjects you are an expert on and set your availability in the **"settings"** of navigation menu_
 2. _The system will send you push notification with chat request that you can find in the **"requests"** tab_
