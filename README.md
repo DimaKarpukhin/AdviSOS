@@ -6,7 +6,6 @@
  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/splash_screen.jpeg" width="240"/>
  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/connect_with.jpeg" width="240"/>
 </p>
-----------------
 
 # *How it works*
 ## *1. Authentication:*
