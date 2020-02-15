@@ -50,7 +50,7 @@
 - _**"subjects"** tab - most popular subjects for asking advice_
 - _**"advice me"** tab - all active chats with experts on the topic you ask_
 - _**"advice others"** tab - all active chats in which you are one of the experts_
-- _**"requests"** tab - all active chat requests as an expert_
+- _**"chat requests"** tab - all active chat requests as an expert_
 <p align="center">
  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/subjects.jpeg" width="200"/>
  <img src="https://github.com/DimaKarpukhin/AdviSOS/blob/master/screenshots/advice_me.jpeg" width="200"/>
@@ -75,7 +75,7 @@
 ## -
 ## *5. To give an advice as an experts:*
 1. _Mark/add the subjects you are an expert on and set your availability in the navigation menu on the top left side of the screen_
-2. _The system will send you push notification with chat request that you can find in the **"requests"** tab_
+2. _The system will send you push notification with chat request that you can find in the **"chat requests"** tab_
 3. _The system will send you chat request only at the time you set as available, that why if you reject the request or accept it too late, you will lose 2% of your current rating on this subject._
 4. _In the navigation menu there is **"online/offline"** option  to anable/disable chat requests in one click, without changing the availability settings_
 5. _While the chat is active you can find it in **"advice others"** tab and when the chat is closed the system deletes it from this tab._
